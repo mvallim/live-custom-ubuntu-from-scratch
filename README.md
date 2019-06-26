@@ -247,16 +247,16 @@ apt-get autoremove -y
 
 2. Copy kernel images
    ```
-   cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
+   sudo cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
 
-   cp chroot/boot/initrd.img-**-**-generic image/casper/initrd.gz
+   sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd.gz
    ```
 
 3. Copy isolinux and memtest binaries
    ```
-   cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
+   sudo cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
 
-   cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
+   sudo cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
 
-   cp /boot/memtest86+.bin image/install/memtest
+   sudo cp chroot/boot/memtest86+.bin image/install/memtest
    ```
