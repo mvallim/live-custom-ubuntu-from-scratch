@@ -56,22 +56,42 @@ export LC_ALL=C
 echo "ubuntu-live" > /etc/hostname
 ```
 
+## Configure apt sources.list and update
+
+Edit /etc/apt/source.list
+
+```
+cat <<EOF > /etc/apt/sources.list
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+EOF
+```
+
+## Upgrade packages if you want
+
 ```
 apt-get update
 
-apt-get install -y dbus
+apt-get -y upgrade
+```
 
+## Install and configure dbus
+
+```
+apt-get install -y systemd-sysv
+
+apt-get install -y dbus
+```
+
+```
 dbus-uuidgen > /var/lib/dbus/machine-id
 
 dpkg-divert --local --rename --add /sbin/initctl
 
 ln -s /bin/true /sbin/initctl
-```
-
-## Upgrade packages if you want:
-
-```
-apt-get -y upgrade
 ```
 
 ## Install packages needed for Live System
@@ -87,5 +107,10 @@ apt-get install -y linux-generic
 ## Graphical installer
 
 ```
-apt-get install ubiquity-frontend-gtk
+apt-get install -y \
+    ubiquity \
+    ubiquity-casper \
+    ubiquity-frontend-gtk \
+    ubiquity-slideshow-ubuntu \
+    ubiquity-ubuntu-artwork
 ```
