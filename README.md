@@ -18,7 +18,6 @@ mkdir $HOME/live-ubuntu-from-scratch
 ```
 
 ## Bootstrap and Configure Ubuntu
-
 ```
 sudo debootstrap \
     --arch=amd64 \
@@ -51,7 +50,6 @@ export LC_ALL=C
 ```
 
 ## Set a custom hostname
-
 ```
 echo "ubuntu-live" > /etc/hostname
 ```
@@ -71,7 +69,6 @@ EOF
 ```
 
 ## Upgrade packages if you want
-
 ```
 apt-get update
 
@@ -79,7 +76,6 @@ apt-get -y upgrade
 ```
 
 ## Install and configure dbus
-
 ```
 apt-get install -y systemd-sysv
 
@@ -95,7 +91,6 @@ ln -s /bin/true /sbin/initctl
 ```
 
 ## Install packages needed for Live System
-
 ```
 apt-get install -y \
     ubuntu-standard \
@@ -109,7 +104,6 @@ apt-get install -y \
 ```
 
 ## Graphical installer
-
 ```
 apt-get install -y \
     ubiquity \
@@ -120,7 +114,6 @@ apt-get install -y \
 ```
 
 ## Install window manager
-
 ```
 apt-get install -y \
     plymouth-theme-ubuntu-gnome-logo \
@@ -129,7 +122,6 @@ apt-get install -y \
 ```
 
 ## Install usefull applications
-
 ```
 apt-get install -y \
     clamav-daemon \
@@ -179,8 +171,14 @@ apt-get install -y \
    apt-get install google-chrome-stable
    ```
 
-## Remove unused applications
+## Install Java JDK 8
+```
+apt-get install -y \
+    openjdk-8-jdk \
+    openjdk-8-jre
+```
 
+## Remove unused applications
 ```
 apt-get purge -y \
     transmission-gtk \
@@ -193,7 +191,44 @@ apt-get purge -y \
 ```
 
 ## Remove unused packages
-
 ```
 apt-get autoremove -y
 ```
+
+## Cleanup the chroot environment
+
+1. If you installed software, be sure to run
+   ```
+   rm /var/lib/dbus/machine-id
+   ```
+
+2. Remove the diversion
+   ```
+   rm /sbin/initctl
+
+   dpkg-divert --rename --remove /sbin/initctl
+   ```
+
+3. Clean up
+   ```
+   apt-get clean
+
+   rm -rf /tmp/*
+
+   rm /etc/resolv.conf
+
+   umount /proc
+   
+   umount /sys
+   
+   umount /dev/pts
+   
+   exit
+   ```
+
+4. Unbind mount points
+   ```
+   sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
+
+   sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
+   ```
