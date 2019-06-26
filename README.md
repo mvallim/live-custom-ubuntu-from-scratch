@@ -256,7 +256,7 @@ apt-get autoremove -y
    ```
    cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
 
-   cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/ # for syslinux 5.00 and newer
+   cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
 
    cp /boot/memtest86+.bin image/install/memtest
    ```
