@@ -10,6 +10,8 @@ sudo apt-get install \
     squashfs-tools \
     genisoimage \
     syslinux \
+    syslinux-utils \
+    imagemagick \
     isolinux
 ```
 
@@ -258,7 +260,139 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    ```
    sudo cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
 
-   sudo cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/
+   sudo cp /usr/lib/syslinux/modules/bios/{chain,gfxboot,ldlinux,libutil,libcom32,vesamenu}.c32 image/isolinux/
 
    sudo cp chroot/boot/memtest86+.bin image/install/memtest
+   ```
+## Boot Instructions
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Create image/isolinux.txt
+    ```
+    cat <<EOF > image/isolinux.txt
+    splash.rle
+    ************************************************************************
+
+    This is an Ubuntu from scratch Live CD.
+
+    For the default live system, enter "live".  To run memtest86+, enter "memtest"
+
+    ************************************************************************
+    EOF
+    ```
+
+## Splash screen
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Create image 640x480 in png format (splash.png)
+
+3. Convert png image to ppm (indexed 16 colors)
+   ```
+   convert +dither -colors 16 splash.png splash.ppm
+   ```
+
+4. Convert ppm to rle
+   ```
+   ppmtolss16 '#ffffff=7' < splash.ppm > splash.rle
+   ```
+
+5. Move image
+   ```
+   sudo mv splash.rle image/
+   ```
+
+## Boot-loader configuration
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Create image/isolinux.cfg
+    ```
+    cat <<EOF > image/isolinux.cfg
+    path 
+    include menu.cfg
+    default vesamenu.c32
+    prompt 0
+    timeout 50
+    EOF
+    ```
+3. Create image/menu.cfg
+    ```
+    cat <<EOF > image/menu.cfg
+    menu hshift 13
+    menu width 49
+    menu margin 8
+
+    menu title Installer boot menu
+    include txt.cfg    
+    ```
+
+4. Create image/txt.cfg
+    ```
+    cat <<EOF > image/txt.cfg
+    default live
+    label live
+        menu label ^Try Ubuntu from scratch without installing
+        kernel /casper/vmlinuz
+        append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd quiet splash ---
+    label live-install
+        menu label ^Install Ubuntu from scratch
+        kernel /casper/vmlinuz
+        append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd quiet splash ---
+    label check
+        menu label ^Check disc for defects
+        kernel /casper/vmlinuz
+        append  boot=casper integrity-check initrd=/casper/initrd quiet splash ---
+    label memtest
+        menu label Test ^memory
+        kernel /install/memtest
+    EOF
+    ```
+
+## Create manifest
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Generate manifest
+   ```
+   sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
+
+   sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
+
+   REMOVE='ubiquity ubiquity-frontend-gtk ubiquity-frontend-kde casper lupin-casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4'
+
+   for i in $REMOVE
+   do
+       sudo sed -i "/${i}/d" image/casper/filesystem.manifest-desktop
+   done
+   ```
+
+## Compress the chroot
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Create squashfs
+   ```
+   sudo mksquashfs chroot image/casper/filesystem.squashfs
+   ```
+
+3. Write the filesystem.size
+   ```
+   printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
    ```
