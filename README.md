@@ -232,3 +232,31 @@ apt-get autoremove -y
 
    sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    ```
+
+## Create the CD image directory and populate it
+
+1. Access build directory
+   ```
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Create directories
+   ```
+   mkdir -p image/{casper,isolinux,install}
+   ```
+
+2. Copy kernel images
+   ```
+   cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
+
+   cp chroot/boot/initrd.img-**-**-generic image/casper/initrd.gz
+   ```
+
+3. Copy isolinux and memtest binaries
+   ```
+   cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
+
+   cp /usr/lib/syslinux/modules/bios/ldlinux.c32 image/isolinux/ # for syslinux 5.00 and newer
+
+   cp /boot/memtest86+.bin image/install/memtest
+   ```
