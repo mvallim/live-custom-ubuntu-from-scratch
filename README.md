@@ -294,6 +294,10 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
 
 2. Create image 640x480 in png format (splash.png)
 
+   <p align="center">
+       <img src="image/splash.png"><br>
+   </p>
+
 3. Convert png image to ppm (indexed 16 colors)
    ```
    convert +dither -colors 16 splash.png splash.ppm
