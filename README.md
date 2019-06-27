@@ -60,10 +60,13 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
    cat <<EOF > /etc/apt/sources.list
    deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 
    deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 
    deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse    
    EOF
    ```
 
@@ -116,7 +119,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
 8. **Install window manager**
    ```
    apt-get install -y \
-       plymouth-theme-ubuntu-gnome-logo \
+       plymouth-theme-ubuntu-logo \
        ubuntu-gnome-desktop \
        ubuntu-gnome-wallpapers
    ```
@@ -244,8 +247,6 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        apt-get clean
 
        rm -rf /tmp/* ~/.bash_history
-
-       rm /etc/resolv.conf
 
        umount /proc
        
@@ -400,12 +401,15 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
 
    sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
 
-   REMOVE='ubiquity ubiquity-frontend-gtk ubiquity-frontend-kde casper lupin-casper live-initramfs user-setup discover1 xresprobe os-prober    debian-installer4'
-
-   for i in $REMOVE
-   do
-       sudo sed -i "/${i}/d" image/casper/filesystem.manifest-desktop
-   done
+   sudo sed -i '/ubiquity/d' image/casper/filesystem.manifest-desktop
+   
+   sudo sed -i '/casper/d' image/casper/filesystem.manifest-desktop
+   
+   sudo sed -i '/discover/d' image/casper/filesystem.manifest-desktop
+   
+   sudo sed -i '/laptop-detect/d' image/casper/filesystem.manifest-desktop
+   
+   sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
    ```
 
 ## Compress the chroot
