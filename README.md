@@ -356,10 +356,6 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       label memtest
           menu label Test ^memory
           kernel /install/memtest
-      label rescue
-          menu label ^Rescue mode
-          kernel /install/vmlinuz
-          append vga=788 initrd=/install/initrd.gz rescue/enable=true --- quiet        
       EOF
       ```
    
