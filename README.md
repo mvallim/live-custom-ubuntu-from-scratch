@@ -10,8 +10,6 @@ sudo apt-get install \
     squashfs-tools \
     genisoimage \
     syslinux \
-    syslinux-utils \
-    imagemagick \
     isolinux
 ```
 
