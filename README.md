@@ -221,8 +221,6 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
 
        rm -rf /tmp/* ~/.bash_history
 
-       rm /etc/resolv.conf
-
        umount /proc
        
        umount /sys
