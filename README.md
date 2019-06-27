@@ -107,6 +107,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
    dpkg-reconfigure locales
    ```
+   >  **Select option all**
   
 8. **Graphical installer**
    ```
