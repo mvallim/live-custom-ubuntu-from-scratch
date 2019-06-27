@@ -102,14 +102,8 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        locales \
        linux-generic
    ```
-
-7. **Generate locales**
-   ```
-   dpkg-reconfigure locales
-   ```
-   >  **Select option all**
   
-8. **Graphical installer**
+7. **Graphical installer**
    ```
    apt-get install -y \
        ubiquity \
@@ -119,7 +113,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        ubiquity-ubuntu-artwork
    ```
 
-9. **Install window manager**
+8. **Install window manager**
    ```
    apt-get install -y \
        plymouth-theme-ubuntu-gnome-logo \
@@ -127,7 +121,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        ubuntu-gnome-wallpapers
    ```
 
-10. **Install usefull applications**
+9. **Install usefull applications**
    ```
    apt-get install -y \
        clamav-daemon \
@@ -138,7 +132,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        nano
    ```
 
-11. **Install Visual Studio Code**
+10. **Install Visual Studio Code**
 
     1. Download and install the key 
        ```
@@ -158,7 +152,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        apt-get install -y code
        ```
 
-12. **Install Google Chrome**
+11. **Install Google Chrome**
 
     1. Download and install the key 
        ```
@@ -177,14 +171,14 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        apt-get install google-chrome-stable
        ```
 
-13. **Install Java JDK 8**
+12. **Install Java JDK 8**
     ```
     apt-get install -y \
         openjdk-8-jdk \
         openjdk-8-jre
     ```
 
-14. **Remove unused applications**
+13. **Remove unused applications**
     ```
     apt-get purge -y \
         transmission-gtk \
@@ -196,12 +190,42 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
         hitori
     ```
 
-15. **Remove unused packages**
+14. **Remove unused packages**
     ```
     apt-get autoremove -y
     ```
 
-16. **Cleanup the chroot environment**
+15. **Reconfigure packages**
+
+    1. **Generate locales**
+       ```
+       dpkg-reconfigure locales
+       ```
+
+    2. **Reconfigure resolvconf**
+       ```
+       dpkg-reconfigure locales
+       ```
+
+    3. **Configure network-manager**
+       ```
+       cat <<EOF > /etc/NetworkManager/NetworkManager.conf
+       [main]
+       rc-manager=resolvconf
+       plugins=ifupdown,keyfile
+       dns=dnsmasq
+       
+       [ifupdown]
+       managed=false
+       EOF
+       ```
+
+    4. **Reconfigure network-manager**
+       ```
+       dpkg-reconfigure network-manager
+       ```
+
+15. **Cleanup the chroot environment**
 
     1. If you installed software, be sure to run
        ```
