@@ -208,7 +208,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
 
     2. **Reconfigure resolvconf**
        ```
-       dpkg-reconfigure locales
+       dpkg-reconfigure resolvconf
        ```
 
     3. **Configure network-manager**
