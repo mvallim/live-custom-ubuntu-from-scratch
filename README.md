@@ -122,7 +122,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
 9. **Install window manager**
    ```
    apt-get install -y \
-       plymouth-theme-ubuntu-gnome-logo \
+       plymouth-theme-ubuntu-logo \
        ubuntu-gnome-desktop \
        ubuntu-gnome-wallpapers
    ```
