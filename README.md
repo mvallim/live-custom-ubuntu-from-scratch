@@ -99,6 +99,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        laptop-detect \
        os-prober \
        network-manager \
+       resolvconf \
        net-tools \
        wireless-tools \
        wpagui \
