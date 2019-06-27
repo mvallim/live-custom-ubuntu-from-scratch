@@ -60,10 +60,13 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
    cat <<EOF > /etc/apt/sources.list
    deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
 
    deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
 
    deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
+   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse    
    EOF
    ```
 
