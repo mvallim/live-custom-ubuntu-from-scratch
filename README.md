@@ -340,7 +340,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       menu width 49
       menu margin 8
    
-      menu title Installer boot menu
+      menu title Installer boot menu
       include stdmenu.cfg
       include txt.cfg
       EOF
