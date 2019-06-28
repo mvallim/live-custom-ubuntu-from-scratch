@@ -128,7 +128,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        ubuntu-gnome-wallpapers
    ```
 
-9. **Install usefull applications**
+9. **Install useful applications**
    ```
    apt-get install -y \
        clamav-daemon \
