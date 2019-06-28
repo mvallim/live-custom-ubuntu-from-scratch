@@ -8,9 +8,10 @@ Install applications we need to build the environment.
 sudo apt-get install \
     debootstrap \
     squashfs-tools \
-    genisoimage \
-    syslinux \
-    isolinux
+    xorriso \
+    grub-pc-bin \
+    grub-efi-amd64-bin \
+    mtools
 ```
 
 ```
@@ -87,6 +88,8 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    dpkg-divert --local --rename --add /sbin/initctl
    
    ln -s /bin/true /sbin/initctl
+
+   ln -fs /var/lib/dbus/machine-id /etc/machine-id
    ```
 
 6. **Install packages needed for Live System**
@@ -286,109 +289,50 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
    ```
 
-3. Copy isolinux and memtest binaries
+3. Copy memtest binary
    ```
-   sudo cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/
-
-   sudo cp /usr/lib/syslinux/modules/bios/{chain,gfxboot,ldlinux,libutil,libcom32,vesamenu}.c32 image/isolinux/
-
    sudo cp chroot/boot/memtest86+.bin image/install/memtest
    ```
 
-## Boot Instructions
-
-1. **Splash screen**
+## Grub configuration
 
    1. Access build directory
       ```
       cd $HOME/live-ubuntu-from-scratch
       ```
    
-   2. Create image 640x480 in png format (splash.png)
-   
-      <p align="center">
-          <img src="image/splash.png"><br>
-      </p>
+   2. Create image/isolinux/grub.cfg
+      ```
+      cat <<EOF > image/isolinux/grub.cfg
 
-   3. Copy image
-      ```
-      sudo cp splash.png image/isolinux/
+      search --set=root --file /ubuntu
+
+      insmod all_video
+
+      set default="0"
+      set timeout=30
+
+      menuentry "Try Ubuntu without installing" {
+         linux /casper/vmlinuz boot=casper quiet splash ---
+         initrd /casper/initrd
+      }
+
+      menuentry "Install Ubuntu" {
+         linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
+         initrd /casper/initrd
+      }
+
+      menuentry "Check disc for defects" {
+         linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
+         initrd /casper/initrd
+      }
+
+      menuentry "Test memory" {
+         linux /install/memtest
+      }
+      EOF
       ```
 
-2. **Boot-loader configuration**
-
-   1. Access build directory
-      ```
-      cd $HOME/live-ubuntu-from-scratch
-      ```
-   
-   2. Create image/isolinux/isolinux.cfg
-      ```
-      cat <<EOF > image/isolinux/isolinux.cfg
-      path 
-      include menu.cfg
-      default vesamenu.c32
-      prompt 0
-      timeout 50
-      EOF
-      ```
-   
-   3. Create image/isolinux/menu.cfg
-      ```
-      cat <<EOF > image/isolinux/menu.cfg
-      menu hshift 13
-      menu width 49
-      menu margin 8
-   
-      menu title Installer boot menu
-      include stdmenu.cfg
-      include txt.cfg
-      EOF
-      ```
-   
-   4. Create image/isolinux/stdmenu.cfg
-      ```
-      cat <<EOF > image/isolinux/stdmenu.cfg
-      menu background splash.png
-      menu color title	    * #FFFFFFFF *
-      menu color border	* #00000000 #00000000 none
-      menu color sel		* #ffffffff #76a1d0ff *
-      menu color hotsel	1;7;37;40 #ffffffff #76a1d0ff *
-      menu color tabmsg	* #ffffffff #00000000 *
-      menu color help		37;40 #ffdddd00 #00000000 none
-      menu vshift 12
-      menu rows 10
-      menu helpmsgrow 15
-      # The command line must be at least one line from the bottom.
-      menu cmdlinerow 16
-      menu timeoutrow 16
-      menu tabmsgrow 18
-      menu tabmsg Press ENTER to boot or TAB to edit a menu entry
-      EOF
-      ```
-   
-   5. Create image/isolinux/txt.cfg
-      ```
-      cat <<EOF > image/isolinux/txt.cfg
-      default live
-      label live
-          menu label ^Try Ubuntu without installing
-          kernel /casper/vmlinuz
-          append boot=casper initrd=/casper/initrd quiet splash ---
-      label live-install
-          menu label ^Install Ubuntu
-          kernel /casper/vmlinuz
-          append boot=casper only-ubiquity initrd=/casper/initrd quiet splash ---
-      label check
-          menu label ^Check disc for defects
-          kernel /casper/vmlinuz
-          append boot=casper integrity-check initrd=/casper/initrd quiet splash ---
-      label memtest
-          menu label Test ^memory
-          kernel /install/memtest
-      EOF
-      ```
-   
 ## Create manifest
 
 1. Access build directory
@@ -466,33 +410,78 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    mkdir image/.disk
    ```
 
-## Calculate MD5
-
-1. Access build directory
-   ```
-   cd $HOME/live-ubuntu-from-scratch
-   ```
-
-2. Generate md5sum.txt
-   ```
-   sudo /bin/bash -c "(cd image && find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt" > md5sum.txt)"
-   ```
-
-## Create ISO Image for a LiveCD
+## Create ISO Image for a LiveCD (BIOS + UEFI)
 
 1. Access image directory
    ```
    cd $HOME/live-ubuntu-from-scratch/image
    ```
 
-2. Create iso from the image directory using the command-line
+2. Create a grub UEFI image
    ```
-   sudo genisoimage -D -r \
-       -V "Ubuntu from scratch" \
-       -cache-inodes -J -l \
-       -b isolinux/isolinux.bin \
-       -c isolinux/boot.cat \
-       -no-emul-boot \
-       -boot-load-size 4 \
-       -boot-info-table -o ../ubuntu-from-scratch.iso .
+   grub-mkstandalone \
+      --format=x86_64-efi \
+      --output=isolinux/bootx64.efi \
+      --locales="" \
+      --fonts="" \
+      "boot/grub/grub.cfg=isolinux/grub.cfg"   
+   ```
+
+4. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+   ```
+   (
+      cd isolinux && \
+      dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
+      sudo mkfs.vfat efiboot.img && \
+      mmd -i efiboot.img efi efi/boot && \
+      mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+   )
+   ```
+
+5. Create a grub BIOS image
+   ```
+   grub-mkstandalone \
+      --format=i386-pc \
+      --output=isolinux/core.img \
+      --install-modules="linux normal iso9660 biosdisk memdisk search tar ls" \
+      --modules="linux normal iso9660 biosdisk search" \
+      --locales="" \
+      --fonts="" \
+      "boot/grub/grub.cfg=isolinux/grub.cfg"
+   ```
+
+6. Combine a bootable Grub cdboot.img
+   ```
+   cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
+   ```
+
+7. Generate sha256sum.txt
+   ```
+   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 sha256sum | grep -v "\./sha256sum.txt" > sha256sum.txt)"
+   ```
+
+7. Create iso from the image directory using the command-line
+   ```
+   sudo xorriso \
+      -as mkisofs \
+      -iso-level 3 \
+      -full-iso9660-filenames \
+      -volid "Ubuntu from scratch" \
+      -eltorito-boot \
+         boot/grub/bios.img \
+         -no-emul-boot \
+         -boot-load-size 4 \
+         -boot-info-table \
+         --eltorito-catalog boot/grub/boot.cat \
+      --grub2-boot-info \
+      --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+      -eltorito-alt-boot \
+         -e EFI/efiboot.img \
+         -no-emul-boot \
+      -append_partition 2 0xef isolinux/efiboot.img \
+      -output "../ubuntu-from-scratch.iso" \
+      -graft-points \
+         "." \
+         /boot/grub/bios.img=isolinux/bios.img \
+         /EFI/efiboot.img=isolinux/efiboot.img
    ```
