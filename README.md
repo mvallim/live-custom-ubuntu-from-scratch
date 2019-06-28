@@ -310,9 +310,9 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
           <img src="image/splash.png"><br>
       </p>
 
-   3. Move image
+   3. Copy image
       ```
-      sudo mv splash.png image/isolinux/
+      sudo cp splash.png image/isolinux/
       ```
 
 2. **Boot-loader configuration**
