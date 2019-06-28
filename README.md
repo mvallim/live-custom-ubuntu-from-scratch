@@ -374,15 +374,15 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       label live
           menu label ^Try Ubuntu without installing
           kernel /casper/vmlinuz
-          append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd quiet splash ---
+          append boot=casper initrd=/casper/initrd quiet splash ---
       label live-install
           menu label ^Install Ubuntu
           kernel /casper/vmlinuz
-          append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd quiet splash ---
+          append boot=casper only-ubiquity initrd=/casper/initrd quiet splash ---
       label check
           menu label ^Check disc for defects
           kernel /casper/vmlinuz
-          append  boot=casper integrity-check initrd=/casper/initrd quiet splash ---
+          append boot=casper integrity-check initrd=/casper/initrd quiet splash ---
       label memtest
           menu label Test ^memory
           kernel /install/memtest
