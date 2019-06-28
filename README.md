@@ -1,4 +1,4 @@
-# Create live custom Ubuntu from scratch
+# How to create custom Ubuntu live from scratch
 
 ## Prerequisites (GNU/Linux Debian/Ubuntu)
 
