@@ -522,9 +522,9 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-7. Generate sha256sum.txt
+7. Generate md5sum.txt
    ```
-   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 sha256sum | grep -v "\./sha256sum.txt" > sha256sum.txt)"
+   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt" > md5sum.txt)"
    ```
 
 7. Create iso from the image directory using the command-line
