@@ -1,4 +1,4 @@
-# How to create custom Ubuntu live from scratch
+# How to create a custom Ubuntu live from scratch
 
 This procedure works and can create a bootable and installable Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
 
@@ -52,7 +52,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo chroot $HOME/live-ubuntu-from-scratch/chroot
   ```
 
-2. **Configure mount points**
+2. **Configure mount points, home and locale**
    ```
    mount none -t proc /proc
 
@@ -64,6 +64,8 @@ mkdir $HOME/live-ubuntu-from-scratch
 
    export LC_ALL=C
    ```
+
+   These mount points are necessary inside the chroot environment, so we can be able to finish the installations without errors.
 
 3. **Set a custom hostname**
    ```
