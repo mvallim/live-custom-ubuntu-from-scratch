@@ -395,7 +395,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       }
 
       menuentry "Test memory" {
-         linux /install/memtest
+         linux16 /install/memtest
       }
       EOF
       ```
@@ -510,8 +510,8 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    grub-mkstandalone \
       --format=i386-pc \
       --output=isolinux/core.img \
-      --install-modules="linux normal iso9660 biosdisk memdisk search tar ls" \
-      --modules="linux normal iso9660 biosdisk search" \
+      --install-modules="linux16 linux normal iso9660 biosdisk memdisk search tar ls" \
+      --modules="linux16 linux normal iso9660 biosdisk search" \
       --locales="" \
       --fonts="" \
       "boot/grub/grub.cfg=isolinux/grub.cfg"
