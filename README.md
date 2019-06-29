@@ -99,9 +99,9 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 5. **Configure machine-id and divert**
    ```
-   dbus-uuidgen > /var/lib/dbus/machine-id
+   dbus-uuidgen > /etc/machine-id
 
-   ln -fs /var/lib/dbus/machine-id /etc/machine-id
+   ln -fs /etc/machine-id /var/lib/dbus/machine-id
    ```
    > The `/etc/machine-id` file contains the unique machine ID of the local system that is set during installation or boot. The machine ID is a single newline-terminated, hexadecimal, 32-character, lowercase ID. When decoded from hexadecimal, this corresponds to a 16-byte/128-bit value. This ID may not be all zeros.
    
@@ -276,7 +276,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
     1. If you installed software, be sure to run
        ```
-       rm /var/lib/dbus/machine-id
+       truncate -s 0 /etc/machine-id   
        ```
 
     2. Remove the diversion
