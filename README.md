@@ -129,7 +129,20 @@ mkdir $HOME/live-ubuntu-from-scratch
        locales \
        linux-generic
    ```
-  
+
+   1. Configure grub
+      <p align="center">
+        <img src="images/grub-configure-01.png">
+      </p>
+
+      <p align="center">
+        <img src="images/grub-configure-02.png">
+      </p>
+
+      <p align="center">
+        <img src="images/grub-configure-03.png">
+      </p>
+
 7. **Graphical installer**
    ```
    apt-get install -y \
@@ -139,6 +152,20 @@ mkdir $HOME/live-ubuntu-from-scratch
        ubiquity-slideshow-ubuntu \
        ubiquity-ubuntu-artwork
    ```
+
+   1. Configure keyboard
+      <p align="center">
+        <img src="images/keyboard-configure-01.png">
+      </p>
+
+      <p align="center">
+        <img src="images/keyboard-configure-02.png">
+      </p>
+
+   2. Console setup
+      <p align="center">
+        <img src="images/console-configure-01.png">
+      </p>
 
 8. **Install window manager**
    ```
