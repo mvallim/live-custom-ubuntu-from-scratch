@@ -99,9 +99,9 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 5. **Configure machine-id and divert**
    ```
-   dbus-uuidgen > /var/lib/dbus/machine-id
+   dbus-uuidgen > /etc/machine-id
 
-   ln -fs /var/lib/dbus/machine-id /etc/machine-id
+   ln -fs /etc/machine-id /var/lib/dbus/machine-id
    ```
    > The `/etc/machine-id` file contains the unique machine ID of the local system that is set during installation or boot. The machine ID is a single newline-terminated, hexadecimal, 32-character, lowercase ID. When decoded from hexadecimal, this corresponds to a 16-byte/128-bit value. This ID may not be all zeros.
    
@@ -303,7 +303,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
     1. If you installed software, be sure to run
        ```
-       rm /var/lib/dbus/machine-id
+       truncate -s 0 /etc/machine-id   
        ```
 
     2. Remove the diversion
@@ -534,17 +534,16 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       -iso-level 3 \
       -full-iso9660-filenames \
       -volid "Ubuntu from scratch" \
-      -eltorito-boot \
-         boot/grub/bios.img \
-         -no-emul-boot \
-         -boot-load-size 4 \
-         -boot-info-table \
-         --eltorito-catalog boot/grub/boot.cat \
+      -eltorito-boot boot/grub/bios.img \
+      -no-emul-boot \
+      -boot-load-size 4 \
+      -boot-info-table \
+      --eltorito-catalog boot/grub/boot.cat \
       --grub2-boot-info \
       --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
       -eltorito-alt-boot \
-         -e EFI/efiboot.img \
-         -no-emul-boot \
+      -e EFI/efiboot.img \
+      -no-emul-boot \
       -append_partition 2 0xef isolinux/efiboot.img \
       -output "../ubuntu-from-scratch.iso" \
       -graft-points \
