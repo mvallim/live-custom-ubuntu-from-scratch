@@ -1,5 +1,7 @@
 # How to create custom Ubuntu live from scratch
 
+This procedure works and can create a bootable and installable Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
+
 ## Prerequisites (GNU/Linux Debian/Ubuntu)
 
 Install applications we need to build the environment.
@@ -19,27 +21,38 @@ mkdir $HOME/live-ubuntu-from-scratch
 ```
 
 ## Bootstrap and Configure Ubuntu
-```
-sudo debootstrap \
-    --arch=amd64 \
-    --variant=minbase \
-    bionic \
-    $HOME/live-ubuntu-from-scratch/chroot \
-    http://us.archive.ubuntu.com/ubuntu/
-```
 
-```
-sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
+* Checkout bootstrap
+  ```
+  sudo debootstrap \
+     --arch=amd64 \
+     --variant=minbase \
+     bionic \
+     $HOME/live-ubuntu-from-scratch/chroot \
+     http://us.archive.ubuntu.com/ubuntu/
+  ```
+  > **debootstrap** is used to create a Debian base system from scratch, without requiring the availability of **dpkg** or **apt**. It does this by downloading .deb files from a mirror site, and carefully unpacking them into a directory which can eventually be **chrooted** into.
 
-sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
-```
+* Configure external mount points
+  ```
+  sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
+  
+  sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
+  ```
+  As we will be updating and installing packages (among them grub), these mount points are necessary inside the chroot environment, so we can be able to finish the installations without errors.
 
-## Access chroot environment
-```
-sudo chroot $HOME/live-ubuntu-from-scratch/chroot
-```
+## Define chroot environment
 
-1. **Configure mount points**
+*A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot(2) system call or the chroot(8) wrapper program. The modified environment is called a chroot jail.*
+
+> Reference: https://en.wikipedia.org/wiki/Chroot
+
+1. Access chroot environment
+  ```
+  sudo chroot $HOME/live-ubuntu-from-scratch/chroot
+  ```
+
+2. **Configure mount points**
    ```
    mount none -t proc /proc
 
@@ -52,12 +65,12 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    export LC_ALL=C
    ```
 
-2. **Set a custom hostname**
+3. **Set a custom hostname**
    ```
    echo "ubuntu-live" > /etc/hostname
    ```
 
-3. **Configure apt sources.list**
+4. **Configure apt sources.list**
    ```
    cat <<EOF > /etc/apt/sources.list
    deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
@@ -80,17 +93,22 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
    apt-get install -y systemd-sysv
    ```
+   > **systemd** is a system and service manager for Linux. It provides aggressive parallelization capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, keeps track of processes using Linux control groups, maintains mount and automount points and implements an elaborate transactional dependency-based service control logic.
 
 5. **Configure machine-id and divert**
    ```
    dbus-uuidgen > /var/lib/dbus/machine-id
 
-   dpkg-divert --local --rename --add /sbin/initctl
-   
-   ln -s /bin/true /sbin/initctl
-
    ln -fs /var/lib/dbus/machine-id /etc/machine-id
    ```
+   > The `/etc/machine-id` file contains the unique machine ID of the local system that is set during installation or boot. The machine ID is a single newline-terminated, hexadecimal, 32-character, lowercase ID. When decoded from hexadecimal, this corresponds to a 16-byte/128-bit value. This ID may not be all zeros.
+   
+   ```
+   dpkg-divert --local --rename --add /sbin/initctl
+
+   ln -s /bin/true /sbin/initctl
+   ```
+   > **dpkg-divert** is the utility used to set up and update the list of diversions.
 
 6. **Install packages needed for Live System**
    ```
@@ -152,7 +170,7 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        rm microsoft.gpg
        ```
 
-    2. Then update the package cache and install the package using:
+    2. Then update the package cache and install the package using
        ```
        apt-get update
        
@@ -164,14 +182,11 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
     1. Download and install the key 
        ```
        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-       ```
 
-    2. Add the key to the repository
-       ```
        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
        ```
 
-    3. Finally, Update repository and install Google Chrome.
+    2. Then update the package cache and install the package using
        ```
        apt-get update
 
@@ -209,10 +224,34 @@ sudo chroot $HOME/live-ubuntu-from-scratch/chroot
        dpkg-reconfigure locales
        ```
 
+       1. Select locales
+          <p align="center">
+            <img src="images/locales-select.png">
+          </p>
+
+       2. Select default locale
+          <p align="center">
+            <img src="images/locales-default.png">
+          </p>   
+
     2. **Reconfigure resolvconf**
        ```
        dpkg-reconfigure resolvconf
        ```
+
+       1. Confirm changes
+          <p align="center">
+            <img src="images/resolvconf-confirm-01.png">
+          </p>
+
+          <p align="center">
+            <img src="images/resolvconf-confirm-02.png">
+          </p>
+
+          <p align="center">
+            <img src="images/resolvconf-confirm-03.png">
+          </p>
+
 
     3. **Configure network-manager**
        ```
