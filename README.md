@@ -183,7 +183,8 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-transport-https \
        curl \
        vim \
-       nano
+       nano \
+       less
    ```
 
 10. **Install Visual Studio Code**
