@@ -507,17 +507,16 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       -iso-level 3 \
       -full-iso9660-filenames \
       -volid "Ubuntu from scratch" \
-      -eltorito-boot \
-         boot/grub/bios.img \
-         -no-emul-boot \
-         -boot-load-size 4 \
-         -boot-info-table \
-         --eltorito-catalog boot/grub/boot.cat \
+      -eltorito-boot boot/grub/bios.img \
+      -no-emul-boot \
+      -boot-load-size 4 \
+      -boot-info-table \
+      --eltorito-catalog boot/grub/boot.cat \
       --grub2-boot-info \
       --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
       -eltorito-alt-boot \
-         -e EFI/efiboot.img \
-         -no-emul-boot \
+      -e EFI/efiboot.img \
+      -no-emul-boot \
       -append_partition 2 0xef isolinux/efiboot.img \
       -output "../ubuntu-from-scratch.iso" \
       -graft-points \
