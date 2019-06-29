@@ -47,7 +47,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 > Reference: https://en.wikipedia.org/wiki/Chroot
 
-1. Access chroot environment
+1. **Access chroot environment**
   ```
   sudo chroot $HOME/live-ubuntu-from-scratch/chroot
   ```
@@ -219,27 +219,27 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 15. **Reconfigure packages**
 
-    1. **Generate locales**
+    1. Generate locales
        ```
        dpkg-reconfigure locales
        ```
 
-       1. Select locales
+       1. *Select locales*
           <p align="center">
             <img src="images/locales-select.png">
           </p>
 
-       2. Select default locale
+       2. *Select default locale*
           <p align="center">
             <img src="images/locales-default.png">
           </p>   
 
-    2. **Reconfigure resolvconf**
+    2. Reconfigure resolvconf
        ```
        dpkg-reconfigure resolvconf
        ```
 
-       1. Confirm changes
+       1. *Confirm changes*
           <p align="center">
             <img src="images/resolvconf-confirm-01.png">
           </p>
@@ -252,8 +252,7 @@ mkdir $HOME/live-ubuntu-from-scratch
             <img src="images/resolvconf-confirm-03.png">
           </p>
 
-
-    3. **Configure network-manager**
+    3. Configure network-manager
        ```
        cat <<EOF > /etc/NetworkManager/NetworkManager.conf
        [main]
@@ -266,7 +265,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        EOF
        ```
 
-    4. **Reconfigure network-manager**
+    4. Reconfigure network-manager
        ```
        dpkg-reconfigure network-manager
        ```
