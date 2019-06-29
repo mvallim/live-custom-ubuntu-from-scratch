@@ -69,7 +69,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 3. **Set a custom hostname**
    ```
-   echo "ubuntu-live" > /etc/hostname
+   echo "ubuntu-fs-live" > /etc/hostname
    ```
 
 4. **Configure apt sources.list**
