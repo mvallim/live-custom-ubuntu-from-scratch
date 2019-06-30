@@ -409,8 +409,11 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       }
       
       menuentry "Test memory Memtest86 (UEFI, long load time)" {
+         insmod part_gpt
+         insmod search_fs_uuid
+         insmod chain
          loopback loop /install/memtest86
-         chainloader (loop,1)/EFI/BOOT/BOOTX64.efi
+         chainloader (loop,1)/efi/boot/BOOTX64.efi
       }
       EOF
       ```
