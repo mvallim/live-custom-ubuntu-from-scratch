@@ -552,3 +552,10 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
          /boot/grub/bios.img=isolinux/bios.img \
          /EFI/efiboot.img=isolinux/efiboot.img
    ```
+
+## Make a bootable USB image
+
+It is simple and easy, using "dd"
+```
+dd if=ubuntu-from-scratch.iso of=<device> bs=4M ; sync
+```
