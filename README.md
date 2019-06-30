@@ -557,5 +557,5 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
 
 It is simple and easy, using "dd"
 ```
-dd if=ubuntu-from-scratch.iso of=<device> bs=4M ; sync
+sudo dd if=ubuntu-from-scratch.iso of=<device> bs=4M
 ```
