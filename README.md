@@ -413,7 +413,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
          insmod search_fs_uuid
          insmod chain
          loopback loop /install/memtest86
-         chainloader (loop,1)/efi/boot/BOOTX64.efi
+         chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
       }
       EOF
       ```
