@@ -400,12 +400,12 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       set default="0"
       set timeout=30
 
-      menuentry "Try Ubuntu without installing" {
+      menuentry "Try Ubuntu FS without installing" {
          linux /casper/vmlinuz boot=casper quiet splash ---
          initrd /casper/initrd
       }
 
-      menuentry "Install Ubuntu" {
+      menuentry "Install Ubuntu FS" {
          linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
          initrd /casper/initrd
       }
