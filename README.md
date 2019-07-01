@@ -368,7 +368,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
    ```
    
-4. Extract memtest86 binary (UEFI)
+4. Download and extract memtest86 binary (UEFI)
    ```
    wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
    
@@ -467,6 +467,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
    sudo mksquashfs chroot image/casper/filesystem.squashfs
    ```
    > Squashfs is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
+
    > Squashfs is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used), and in constrained block device/memory systems (e.g. embedded systems) where low overhead is needed.
 
 3. Write the filesystem.size
