@@ -174,12 +174,12 @@ mkdir $HOME/live-ubuntu-from-scratch
       </p>
 
 10. **Install window manager**
-   ```
-   apt-get install -y \
-       plymouth-theme-ubuntu-logo \
-       ubuntu-gnome-desktop \
-       ubuntu-gnome-wallpapers
-   ```
+    ```
+    apt-get install -y \
+        plymouth-theme-ubuntu-logo \
+        ubuntu-gnome-desktop \
+        ubuntu-gnome-wallpapers
+    ```
 
 11. **Install useful applications**
     ```
