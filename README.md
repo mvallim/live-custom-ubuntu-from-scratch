@@ -363,9 +363,18 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
    ```
 
-3. Copy memtest binary
+3. Copy memtest86+ binary (BIOS)
    ```
-   sudo cp chroot/boot/memtest86+.bin image/install/memtest
+   sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
+   ```
+   
+4. Extract memtest86 binary (UEFI)
+   ```
+   wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
+   
+   unzip -p image/install/memtest86-usb.zip memtest86-usb.img > image/install/memtest86
+   
+   rm image/install/memtest86-usb.zip
    ```
 
 ## Grub configuration
@@ -406,8 +415,16 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
          initrd /casper/initrd
       }
 
-      menuentry "Test memory" {
-         linux16 /install/memtest
+      menuentry "Test memory Memtest86+ (BIOS)" {
+         linux16 /install/memtest86+
+      }
+      
+      menuentry "Test memory Memtest86 (UEFI, long load time)" {
+         insmod part_gpt
+         insmod search_fs_uuid
+         insmod chain
+         loopback loop /install/memtest86
+         chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
       }
       EOF
       ```
