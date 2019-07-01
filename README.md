@@ -1,6 +1,6 @@
 # How to create a custom Ubuntu live from scratch
 
-This procedure works and can create a bootable and installable Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
+This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
 
 ## Prerequisites (GNU/Linux Debian/Ubuntu)
 
@@ -39,11 +39,11 @@ mkdir $HOME/live-ubuntu-from-scratch
   
   sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
   ```
-  As we will be updating and installing packages (among them grub), these mount points are necessary inside the chroot environment, so we can be able to finish the installations without errors.
+  As we will be updating and installing packages (grub among them), these mount points are necessary inside the chroot environment, so we are able to finish the installation without errors.
 
 ## Define chroot environment
 
-*A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot(2) system call or the chroot(8) wrapper program. The modified environment is called a chroot jail.*
+*A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot system call or the chroot wrapper program. The modified environment is called a chroot jail.*
 
 > Reference: https://en.wikipedia.org/wiki/Chroot
 
@@ -65,7 +65,7 @@ mkdir $HOME/live-ubuntu-from-scratch
    export LC_ALL=C
    ```
 
-   These mount points are necessary inside the chroot environment, so we can be able to finish the installations without errors.
+   These mount points are necessary inside the chroot environment, so we are able to finish the installation without errors.
 
 3. **Set a custom hostname**
    ```
@@ -130,15 +130,19 @@ mkdir $HOME/live-ubuntu-from-scratch
        linux-generic
    ```
 
+   The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having to be informed or executed.
+
    1. Configure grub
       <p align="center">
         <img src="images/grub-configure-01.png">
       </p>
 
+   2. Don’t select any options
       <p align="center">
         <img src="images/grub-configure-02.png">
       </p>
 
+   3. Only confirm “Yes”
       <p align="center">
         <img src="images/grub-configure-03.png">
       </p>
@@ -152,6 +156,8 @@ mkdir $HOME/live-ubuntu-from-scratch
        ubiquity-slideshow-ubuntu \
        ubiquity-ubuntu-artwork
    ```
+
+   The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having to be informed or executed.
 
    1. Configure keyboard
       <p align="center">
@@ -368,6 +374,11 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       ```
       cd $HOME/live-ubuntu-from-scratch
       ```
+
+   2. Create base point access file to grub
+      ```
+      touch image/ubuntu
+      ```
    
    2. Create image/isolinux/grub.cfg
       ```
@@ -402,6 +413,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       ```
 
 ## Create manifest
+In the next steps the creation of the manifest is important because it tells us which version of each package installed in the Live version and which packages will be removed or maintained in the version that will be installed (persisted in the hard drive).
 
 1. Access build directory
    ```
@@ -426,6 +438,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    ```
 
 ## Compress the chroot
+After everything has been installed and preconfigured in the **chrooted** environment, we need to generate an image of everything that was done by following the next steps.
 
 1. Access build directory
    ```
@@ -436,6 +449,8 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    ```
    sudo mksquashfs chroot image/casper/filesystem.squashfs
    ```
+   > Squashfs is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
+   > Squashfs is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used), and in constrained block device/memory systems (e.g. embedded systems) where low overhead is needed.
 
 3. Write the filesystem.size
    ```
@@ -443,6 +458,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    ```
 
 ## Create diskdefines
+**README** file often found on Linux LiveCD installer discs, such as an Ubuntu Linux installation CD; typically named “**README.diskdefines**” and may be referenced during installation.
 
 1. Access build directory
    ```
@@ -462,20 +478,6 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    #define TOTALNUM  0
    #define TOTALNUM0  1
    EOF
-   ```
-
-## Recognition as an Ubuntu from scratch
-
-1. Access build directory
-   ```
-   cd $HOME/live-ubuntu-from-scratch
-   ```
-
-2. Create an empty file named "ubuntu" and a hidden ".disk" folder. 
-   ```
-   touch image/ubuntu
-   
-   mkdir image/.disk
    ```
 
 ## Create ISO Image for a LiveCD (BIOS + UEFI)
