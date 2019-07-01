@@ -97,7 +97,7 @@ mkdir $HOME/live-ubuntu-from-scratch
    ```
    > **systemd** is a system and service manager for Linux. It provides aggressive parallelization capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, keeps track of processes using Linux control groups, maintains mount and automount points and implements an elaborate transactional dependency-based service control logic.
 
-5. **Configure machine-id and divert**
+6. **Configure machine-id and divert**
    ```
    dbus-uuidgen > /etc/machine-id
 
@@ -112,7 +112,7 @@ mkdir $HOME/live-ubuntu-from-scratch
    ```
    > **dpkg-divert** is the utility used to set up and update the list of diversions.
 
-6. **Install packages needed for Live System**
+7. **Install packages needed for Live System**
    ```
    apt-get install -y \
        ubuntu-standard \
@@ -147,7 +147,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         <img src="images/grub-configure-03.png">
       </p>
 
-7. **Graphical installer**
+8. **Graphical installer**
    ```
    apt-get install -y \
        ubiquity \
@@ -173,7 +173,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         <img src="images/console-configure-01.png">
       </p>
 
-8. **Install window manager**
+9. **Install window manager**
    ```
    apt-get install -y \
        plymouth-theme-ubuntu-logo \
@@ -181,7 +181,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        ubuntu-gnome-wallpapers
    ```
 
-9. **Install useful applications**
+10. **Install useful applications**
    ```
    apt-get install -y \
        clamav-daemon \
@@ -193,7 +193,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        less
    ```
 
-10. **Install Visual Studio Code**
+11. **Install Visual Studio Code**
 
     1. Download and install the key 
        ```
@@ -213,7 +213,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install -y code
        ```
 
-11. **Install Google Chrome**
+12. **Install Google Chrome**
 
     1. Download and install the key 
        ```
@@ -229,14 +229,14 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install google-chrome-stable
        ```
 
-12. **Install Java JDK 8**
+13. **Install Java JDK 8**
     ```
     apt-get install -y \
         openjdk-8-jdk \
         openjdk-8-jre
     ```
 
-13. **Remove unused applications**
+14. **Remove unused applications**
     ```
     apt-get purge -y \
         transmission-gtk \
@@ -248,12 +248,12 @@ mkdir $HOME/live-ubuntu-from-scratch
         hitori
     ```
 
-14. **Remove unused packages**
+15. **Remove unused packages**
     ```
     apt-get autoremove -y
     ```
 
-15. **Reconfigure packages**
+16. **Reconfigure packages**
 
     1. Generate locales
        ```
@@ -306,7 +306,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        dpkg-reconfigure network-manager
        ```
 
-15. **Cleanup the chroot environment**
+17. **Cleanup the chroot environment**
 
     1. If you installed software, be sure to run
        ```
