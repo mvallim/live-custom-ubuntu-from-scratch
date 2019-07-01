@@ -194,7 +194,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         less
     ```
 
-12. **Install Visual Studio Code**
+12. **Install Visual Studio Code (optional)**
 
     1. Download and install the key 
        ```
@@ -214,7 +214,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install -y code
        ```
 
-13. **Install Google Chrome**
+13. **Install Google Chrome (optional)**
 
     1. Download and install the key 
        ```
@@ -230,14 +230,14 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install google-chrome-stable
        ```
 
-14. **Install Java JDK 8**
+14. **Install Java JDK 8 (optional)**
     ```
     apt-get install -y \
         openjdk-8-jdk \
         openjdk-8-jre
     ```
 
-15. **Remove unused applications**
+15. **Remove unused applications (optional)**
     ```
     apt-get purge -y \
         transmission-gtk \
