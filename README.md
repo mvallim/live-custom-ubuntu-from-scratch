@@ -8,6 +8,7 @@ Install applications we need to build the environment.
 
 ```
 sudo apt-get install \
+    binutils \
     debootstrap \
     squashfs-tools \
     xorriso \
