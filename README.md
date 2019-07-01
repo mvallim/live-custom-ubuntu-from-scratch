@@ -384,7 +384,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       cd $HOME/live-ubuntu-from-scratch
       ```
 
-   2. Create base point access file to grub
+   2. Create base point access file for grub
       ```
       touch image/ubuntu
       ```
