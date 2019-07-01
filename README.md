@@ -48,9 +48,9 @@ mkdir $HOME/live-ubuntu-from-scratch
 > Reference: https://en.wikipedia.org/wiki/Chroot
 
 1. **Access chroot environment**
-  ```
-  sudo chroot $HOME/live-ubuntu-from-scratch/chroot
-  ```
+   ```
+   sudo chroot $HOME/live-ubuntu-from-scratch/chroot
+   ```
 
 2. **Configure mount points, home and locale**
    ```
