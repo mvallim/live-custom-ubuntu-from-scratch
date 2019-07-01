@@ -182,16 +182,16 @@ mkdir $HOME/live-ubuntu-from-scratch
    ```
 
 10. **Install useful applications**
-   ```
-   apt-get install -y \
-       clamav-daemon \
-       terminator \
-       apt-transport-https \
-       curl \
-       vim \
-       nano \
-       less
-   ```
+    ```
+    apt-get install -y \
+        clamav-daemon \
+        terminator \
+        apt-transport-https \
+        curl \
+        vim \
+        nano \
+        less
+    ```
 
 11. **Install Visual Studio Code**
 
