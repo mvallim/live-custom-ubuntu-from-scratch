@@ -578,5 +578,5 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 
 It is simple and easy, using "dd"
 ```
-sudo dd if=ubuntu-from-scratch.iso of=<device> bs=4M
+sudo dd if=ubuntu-from-scratch.iso of=<device> status=progress oflag=sync
 ```
