@@ -6,7 +6,7 @@ This procedure shows how to create a **bootable** and **installable** Ubuntu Liv
 
 Install applications we need to build the environment.
 
-```
+```shell
 sudo apt-get install \
     binutils \
     debootstrap \
@@ -17,14 +17,15 @@ sudo apt-get install \
     mtools
 ```
 
-```
+```shell
 mkdir $HOME/live-ubuntu-from-scratch
 ```
 
 ## Bootstrap and Configure Ubuntu
 
 * Checkout bootstrap
-  ```
+
+  ```shell
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
@@ -32,14 +33,17 @@ mkdir $HOME/live-ubuntu-from-scratch
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
+  
   > **debootstrap** is used to create a Debian base system from scratch, without requiring the availability of **dpkg** or **apt**. It does this by downloading .deb files from a mirror site, and carefully unpacking them into a directory which can eventually be **chrooted** into.
 
 * Configure external mount points
-  ```
+  
+  ```shell
   sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
   
   sudo mount --bind /run $HOME/live-ubuntu-from-scratch/chroot/run
   ```
+
   As we will be updating and installing packages (grub among them), these mount points are necessary inside the chroot environment, so we are able to finish the installation without errors.
 
 ## Define chroot environment
@@ -49,12 +53,14 @@ mkdir $HOME/live-ubuntu-from-scratch
 > Reference: https://en.wikipedia.org/wiki/Chroot
 
 1. **Access chroot environment**
-   ```
+
+   ```shell
    sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
 
 2. **Configure mount points, home and locale**
-   ```
+
+   ```shell
    mount none -t proc /proc
 
    mount none -t sysfs /sys
@@ -69,12 +75,14 @@ mkdir $HOME/live-ubuntu-from-scratch
    These mount points are necessary inside the chroot environment, so we are able to finish the installation without errors.
 
 3. **Set a custom hostname**
-   ```
+
+   ```shell
    echo "ubuntu-fs-live" > /etc/hostname
    ```
 
 4. **Configure apt sources.list**
-   ```
+
+   ```shell
    cat <<EOF > /etc/apt/sources.list
    deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
    deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
@@ -88,33 +96,40 @@ mkdir $HOME/live-ubuntu-from-scratch
    ```
 
 5. **Update indexes packages**
-   ```
+
+   ```shell
    apt-get update
    ```
 
 6. **Install systemd**
-   ```
+
+   ```shell
    apt-get install -y systemd-sysv
    ```
+
    > **systemd** is a system and service manager for Linux. It provides aggressive parallelization capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, keeps track of processes using Linux control groups, maintains mount and automount points and implements an elaborate transactional dependency-based service control logic.
 
 7. **Configure machine-id and divert**
-   ```
+
+   ```shell
    dbus-uuidgen > /etc/machine-id
 
    ln -fs /etc/machine-id /var/lib/dbus/machine-id
    ```
+
    > The `/etc/machine-id` file contains the unique machine ID of the local system that is set during installation or boot. The machine ID is a single newline-terminated, hexadecimal, 32-character, lowercase ID. When decoded from hexadecimal, this corresponds to a 16-byte/128-bit value. This ID may not be all zeros.
-   
-   ```
+
+   ```shell
    dpkg-divert --local --rename --add /sbin/initctl
 
    ln -s /bin/true /sbin/initctl
    ```
+
    > **dpkg-divert** is the utility used to set up and update the list of diversions.
 
 8. **Install packages needed for Live System**
-   ```
+
+   ```shell
    apt-get install -y \
        ubuntu-standard \
        casper \
@@ -149,7 +164,8 @@ mkdir $HOME/live-ubuntu-from-scratch
       </p>
 
 9. **Graphical installer**
-   ```
+
+   ```shell
    apt-get install -y \
        ubiquity \
        ubiquity-casper \
@@ -175,7 +191,8 @@ mkdir $HOME/live-ubuntu-from-scratch
       </p>
 
 10. **Install window manager**
-    ```
+
+    ```shell
     apt-get install -y \
         plymouth-theme-ubuntu-logo \
         ubuntu-gnome-desktop \
@@ -183,7 +200,8 @@ mkdir $HOME/live-ubuntu-from-scratch
     ```
 
 11. **Install useful applications**
-    ```
+
+    ```shell
     apt-get install -y \
         clamav-daemon \
         terminator \
@@ -196,49 +214,55 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 12. **Install Visual Studio Code (optional)**
 
-    1. Download and install the key 
-       ```
+    1. Download and install the key
+
+       ```shell
        curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 
        install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-       
+
        echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
 
        rm microsoft.gpg
        ```
 
     2. Then update the package cache and install the package using
-       ```
+
+       ```shell
        apt-get update
-       
+
        apt-get install -y code
        ```
 
 13. **Install Google Chrome (optional)**
 
-    1. Download and install the key 
-       ```
+    1. Download and install the key
+
+       ```shell
        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 
        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
        ```
 
     2. Then update the package cache and install the package using
-       ```
+
+       ```shell
        apt-get update
 
        apt-get install google-chrome-stable
        ```
 
 14. **Install Java JDK 8 (optional)**
-    ```
+
+    ```shell
     apt-get install -y \
         openjdk-8-jdk \
         openjdk-8-jre
     ```
 
 15. **Remove unused applications (optional)**
-    ```
+
+    ```shell
     apt-get purge -y \
         transmission-gtk \
         transmission-common \
@@ -250,14 +274,16 @@ mkdir $HOME/live-ubuntu-from-scratch
     ```
 
 16. **Remove unused packages**
-    ```
+
+    ```shell
     apt-get autoremove -y
     ```
 
 17. **Reconfigure packages**
 
     1. Generate locales
-       ```
+
+       ```shell
        dpkg-reconfigure locales
        ```
 
@@ -272,7 +298,8 @@ mkdir $HOME/live-ubuntu-from-scratch
           </p>   
 
     2. Reconfigure resolvconf
-       ```
+
+       ```shell
        dpkg-reconfigure resolvconf
        ```
 
@@ -290,56 +317,62 @@ mkdir $HOME/live-ubuntu-from-scratch
           </p>
 
     3. Configure network-manager
-       ```
+
+       ```shell
        cat <<EOF > /etc/NetworkManager/NetworkManager.conf
        [main]
        rc-manager=resolvconf
        plugins=ifupdown,keyfile
        dns=dnsmasq
-       
+
        [ifupdown]
        managed=false
        EOF
        ```
 
     4. Reconfigure network-manager
-       ```
+
+       ```shell
        dpkg-reconfigure network-manager
        ```
 
 18. **Cleanup the chroot environment**
 
     1. If you installed software, be sure to run
-       ```
-       truncate -s 0 /etc/machine-id   
+
+       ```shell
+       truncate -s 0 /etc/machine-id
        ```
 
     2. Remove the diversion
-       ```
+
+       ```shell
        rm /sbin/initctl
 
        dpkg-divert --rename --remove /sbin/initctl
        ```
 
     3. Clean up
-       ```
+
+       ```shell
        apt-get clean
 
        rm -rf /tmp/* ~/.bash_history
 
        umount /proc
-       
+
        umount /sys
-       
+
        umount /dev/pts
 
        export HISTSIZE=0
-       
+
        exit
        ```
 
 ## Unbind mount points
-```
+
+```shell
 sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
 
 sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
@@ -348,50 +381,58 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
 ## Create the CD image directory and populate it
 
 1. Access build directory
-   ```
+
+   ```shell
    cd $HOME/live-ubuntu-from-scratch
    ```
 
 2. Create directories
-   ```
+
+   ```shell
    mkdir -p image/{casper,isolinux,install}
    ```
 
-2. Copy kernel images
-   ```
+3. Copy kernel images
+
+   ```shell
    sudo cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
 
    sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
    ```
 
-3. Copy memtest86+ binary (BIOS)
-   ```
+4. Copy memtest86+ binary (BIOS)
+
+   ```shell
    sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
    ```
-   
-4. Download and extract memtest86 binary (UEFI)
-   ```
+
+5. Download and extract memtest86 binary (UEFI)
+
+   ```shell
    wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
-   
+
    unzip -p image/install/memtest86-usb.zip memtest86-usb.img > image/install/memtest86
-   
+
    rm image/install/memtest86-usb.zip
    ```
 
 ## Grub configuration
 
    1. Access build directory
-      ```
+
+      ```shell
       cd $HOME/live-ubuntu-from-scratch
       ```
 
    2. Create base point access file for grub
-      ```
+
+      ```shell
       touch image/ubuntu
       ```
-   
-   2. Create image/isolinux/grub.cfg
-      ```
+
+   3. Create image/isolinux/grub.cfg
+
+      ```shell
       cat <<EOF > image/isolinux/grub.cfg
 
       search --set=root --file /ubuntu
@@ -419,7 +460,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       menuentry "Test memory Memtest86+ (BIOS)" {
          linux16 /install/memtest86+
       }
-      
+
       menuentry "Test memory Memtest86 (UEFI, long load time)" {
          insmod part_gpt
          insmod search_fs_uuid
@@ -431,61 +472,71 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       ```
 
 ## Create manifest
+
 In the next steps the creation of the manifest is important because it tells us which version of each package installed in the Live version and which packages will be removed or maintained in the version that will be installed (persisted in the hard drive).
 
 1. Access build directory
-   ```
+
+   ```shell
    cd $HOME/live-ubuntu-from-scratch
    ```
 
 2. Generate manifest
-   ```
+
+   ```shell
    sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
 
    sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
 
    sudo sed -i '/ubiquity/d' image/casper/filesystem.manifest-desktop
-   
+
    sudo sed -i '/casper/d' image/casper/filesystem.manifest-desktop
-   
+
    sudo sed -i '/discover/d' image/casper/filesystem.manifest-desktop
-   
+
    sudo sed -i '/laptop-detect/d' image/casper/filesystem.manifest-desktop
-   
+
    sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
    ```
 
 ## Compress the chroot
+
 After everything has been installed and preconfigured in the **chrooted** environment, we need to generate an image of everything that was done by following the next steps.
 
 1. Access build directory
-   ```
+
+   ```shell
    cd $HOME/live-ubuntu-from-scratch
    ```
 
 2. Create squashfs
-   ```
+
+   ```shell
    sudo mksquashfs chroot image/casper/filesystem.squashfs
    ```
-   > **Squashfs** is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
 
+   > **Squashfs** is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
    > **Squashfs** is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used), and in constrained block device/memory systems (e.g. **embedded systems**) where low overhead is needed.
 
 3. Write the filesystem.size
-   ```
+
+   ```shell
    printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
    ```
 
 ## Create diskdefines
+
 **README** file often found on Linux LiveCD installer discs, such as an Ubuntu Linux installation CD; typically named “**README.diskdefines**” and may be referenced during installation.
 
 1. Access build directory
-   ```
+
+   ```shell
    cd $HOME/live-ubuntu-from-scratch
    ```
 
 2. Create file image/README.diskdefines
-   ```
+
+   ```shell
    cat <<EOF > image/README.diskdefines
    #define DISKNAME  Ubuntu from scratch
    #define TYPE  binary
@@ -502,22 +553,25 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 ## Create ISO Image for a LiveCD (BIOS + UEFI)
 
 1. Access image directory
-   ```
+
+   ```shell
    cd $HOME/live-ubuntu-from-scratch/image
    ```
 
 2. Create a grub UEFI image
-   ```
+
+   ```shell
    grub-mkstandalone \
       --format=x86_64-efi \
       --output=isolinux/bootx64.efi \
       --locales="" \
       --fonts="" \
-      "boot/grub/grub.cfg=isolinux/grub.cfg"   
+      "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-4. Create a FAT16 UEFI boot disk image containing the EFI bootloader
-   ```
+3. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+
+   ```shell
    (
       cd isolinux && \
       dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
@@ -527,8 +581,9 @@ After everything has been installed and preconfigured in the **chrooted** enviro
    )
    ```
 
-5. Create a grub BIOS image
-   ```
+4. Create a grub BIOS image
+
+   ```shell
    grub-mkstandalone \
       --format=i386-pc \
       --output=isolinux/core.img \
@@ -539,18 +594,21 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-6. Combine a bootable Grub cdboot.img
-   ```
+5. Combine a bootable Grub cdboot.img
+
+   ```shell
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-7. Generate md5sum.txt
-   ```
+6. Generate md5sum.txt
+
+   ```shell
    sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt" > md5sum.txt)"
    ```
 
 7. Create iso from the image directory using the command-line
-   ```
+
+   ```shell
    sudo xorriso \
       -as mkisofs \
       -iso-level 3 \
@@ -577,6 +635,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 ## Make a bootable USB image
 
 It is simple and easy, using "dd"
-```
+
+```shell
 sudo dd if=ubuntu-from-scratch.iso of=<device> status=progress oflag=sync
 ```
