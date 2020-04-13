@@ -576,8 +576,8 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       cd isolinux && \
       dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
       sudo mkfs.vfat efiboot.img && \
-      mmd -i efiboot.img efi efi/boot && \
-      mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+      LC_CTYPE=C mmd -i efiboot.img efi efi/boot && \
+      LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
    )
    ```
 
