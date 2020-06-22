@@ -29,7 +29,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
-     bionic \
+     focal \
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
@@ -84,14 +84,14 @@ mkdir $HOME/live-ubuntu-from-scratch
 
    ```shell
    cat <<EOF > /etc/apt/sources.list
-   deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
-   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse 
+   deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
-   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse 
+   deb http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse 
-   deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse    
+   deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
    EOF
    ```
 
@@ -104,7 +104,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 6. **Install systemd**
 
    ```shell
-   apt-get install -y systemd-sysv
+   apt-get install -y libterm-readline-gnu-perl systemd-sysv
    ```
 
    > **systemd** is a system and service manager for Linux. It provides aggressive parallelization capabilities, uses socket and D-Bus activation for starting services, offers on-demand starting of daemons, keeps track of processes using Linux control groups, maintains mount and automount points and implements an elaborate transactional dependency-based service control logic.
@@ -127,7 +127,13 @@ mkdir $HOME/live-ubuntu-from-scratch
 
    > **dpkg-divert** is the utility used to set up and update the list of diversions.
 
-8. **Install packages needed for Live System**
+8. **Upgrade packages**
+
+   ```shell
+   apt-get -y upgrade
+   ```
+
+9. **Install packages needed for Live System**
 
    ```shell
    apt-get install -y \
@@ -163,34 +169,34 @@ mkdir $HOME/live-ubuntu-from-scratch
         <img src="images/grub-configure-03.png">
       </p>
 
-9. **Graphical installer**
+10. **Graphical installer**
 
-   ```shell
-   apt-get install -y \
+    ```shell
+    apt-get install -y \
        ubiquity \
        ubiquity-casper \
        ubiquity-frontend-gtk \
        ubiquity-slideshow-ubuntu \
        ubiquity-ubuntu-artwork
-   ```
+    ```
 
-   The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having to be informed or executed.
+    The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having  to be informed or executed.
 
-   1. Configure keyboard
-      <p align="center">
-        <img src="images/keyboard-configure-01.png">
-      </p>
+    1. Configure keyboard
+       <p align="center">
+       <img src="images/keyboard-configure-01.png">
+       </p>
 
-      <p align="center">
-        <img src="images/keyboard-configure-02.png">
-      </p>
+       <p align="center">
+       <img src="images/keyboard-configure-02.png">
+       </p>
 
-   2. Console setup
-      <p align="center">
-        <img src="images/console-configure-01.png">
-      </p>
+    2. Console setup
+       <p align="center">
+       <img src="images/console-configure-01.png">
+       </p>
 
-10. **Install window manager**
+11. **Install window manager**
 
     ```shell
     apt-get install -y \
@@ -199,7 +205,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         ubuntu-gnome-wallpapers
     ```
 
-11. **Install useful applications**
+12. **Install useful applications**
 
     ```shell
     apt-get install -y \
@@ -212,7 +218,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         less
     ```
 
-12. **Install Visual Studio Code (optional)**
+13. **Install Visual Studio Code (optional)**
 
     1. Download and install the key
 
@@ -234,7 +240,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install -y code
        ```
 
-13. **Install Google Chrome (optional)**
+14. **Install Google Chrome (optional)**
 
     1. Download and install the key
 
@@ -252,7 +258,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        apt-get install google-chrome-stable
        ```
 
-14. **Install Java JDK 8 (optional)**
+15. **Install Java JDK 8 (optional)**
 
     ```shell
     apt-get install -y \
@@ -260,7 +266,7 @@ mkdir $HOME/live-ubuntu-from-scratch
         openjdk-8-jre
     ```
 
-15. **Remove unused applications (optional)**
+16. **Remove unused applications (optional)**
 
     ```shell
     apt-get purge -y \
@@ -273,13 +279,13 @@ mkdir $HOME/live-ubuntu-from-scratch
         hitori
     ```
 
-16. **Remove unused packages**
+17. **Remove unused packages**
 
     ```shell
     apt-get autoremove -y
     ```
 
-17. **Reconfigure packages**
+18. **Reconfigure packages**
 
     1. Generate locales
 
@@ -336,7 +342,7 @@ mkdir $HOME/live-ubuntu-from-scratch
        dpkg-reconfigure network-manager
        ```
 
-18. **Cleanup the chroot environment**
+19. **Cleanup the chroot environment**
 
     1. If you installed software, be sure to run
 
@@ -413,7 +419,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
 
    unzip -p image/install/memtest86-usb.zip memtest86-usb.img > image/install/memtest86
 
-   rm image/install/memtest86-usb.zip
+   rm -f image/install/memtest86-usb.zip
    ```
 
 ## Grub configuration
@@ -443,7 +449,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
       set timeout=30
 
       menuentry "Try Ubuntu FS without installing" {
-         linux /casper/vmlinuz boot=casper quiet splash ---
+         linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
          initrd /casper/initrd
       }
 
@@ -603,7 +609,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 6. Generate md5sum.txt
 
    ```shell
-   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt" > md5sum.txt)"
+   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
    ```
 
 7. Create iso from the image directory using the command-line
@@ -626,10 +632,12 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -no-emul-boot \
       -append_partition 2 0xef isolinux/efiboot.img \
       -output "../ubuntu-from-scratch.iso" \
+      -m "isolinux/efiboot.img" \
+      -m "isolinux/bios.img" \
       -graft-points \
-         "." \
-         /boot/grub/bios.img=isolinux/bios.img \
-         /EFI/efiboot.img=isolinux/efiboot.img
+         "/EFI/efiboot.img=isolinux/efiboot.img" \
+         "/boot/grub/bios.img=isolinux/bios.img" \
+         "."
    ```
 
 ## Make a bootable USB image
