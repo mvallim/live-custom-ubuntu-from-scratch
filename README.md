@@ -1,5 +1,9 @@
 # How to create a custom Ubuntu live from scratch
 
+<p align="center">
+   <img src="images/live-boot.png">
+</p>
+
 This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
 
 ## Prerequisites (GNU/Linux Debian/Ubuntu)
