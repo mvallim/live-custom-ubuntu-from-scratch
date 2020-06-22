@@ -29,7 +29,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
-     bionic \
+     focal \
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
