@@ -426,7 +426,7 @@ sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
    rm -f image/install/memtest86-usb.zip
    ```
 
-## Grub configuration
+## GRUB menu configuration
 
    1. Access build directory
 
@@ -624,24 +624,92 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -iso-level 3 \
       -full-iso9660-filenames \
       -volid "Ubuntu from scratch" \
-      -eltorito-boot boot/grub/bios.img \
-      -no-emul-boot \
-      -boot-load-size 4 \
-      -boot-info-table \
-      --eltorito-catalog boot/grub/boot.cat \
-      --grub2-boot-info \
-      --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
-      -eltorito-alt-boot \
-      -e EFI/efiboot.img \
-      -no-emul-boot \
-      -append_partition 2 0xef isolinux/efiboot.img \
       -output "../ubuntu-from-scratch.iso" \
+      -eltorito-boot boot/grub/bios.img \
+         -no-emul-boot \
+         -boot-load-size 4 \
+         -boot-info-table \
+         --eltorito-catalog boot/grub/boot.cat \
+         --grub2-boot-info \
+         --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+      -eltorito-alt-boot \
+         -e EFI/efiboot.img \
+         -no-emul-boot \
+      -append_partition 2 0xef isolinux/efiboot.img \
       -m "isolinux/efiboot.img" \
       -m "isolinux/bios.img" \
       -graft-points \
          "/EFI/efiboot.img=isolinux/efiboot.img" \
          "/boot/grub/bios.img=isolinux/bios.img" \
          "."
+   ```
+
+## Alternative way, if previous one fails, create an Hybrid ISO
+
+   1. Create a ISOLINUX (syslinux) boot menu
+
+      ```shell
+      cat <<EOF> isolinux/isolinux.cfg
+      UI vesamenu.c32
+
+      MENU TITLE Boot Menu
+      DEFAULT linux
+      TIMEOUT 600
+      MENU RESOLUTION 640 480
+      MENU COLOR border       30;44   #40ffffff #a0000000 std
+      MENU COLOR title        1;36;44 #9033ccff #a0000000 std
+      MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
+      MENU COLOR unsel        37;44   #50ffffff #a0000000 std
+      MENU COLOR help         37;40   #c0ffffff #a0000000 std
+      MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
+      MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
+      MENU COLOR msg07        37;40   #90ffffff #a0000000 std
+      MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
+
+      LABEL linux
+       MENU LABEL Try Ubuntu FS
+       MENU DEFAULT
+       KERNEL /casper/vmlinuz
+       APPEND initrd=/casper/initrd boot=casper
+
+      LABEL linux
+       MENU LABEL Try Ubuntu FS (nomodeset)
+       MENU DEFAULT
+       KERNEL /casper/vmlinuz
+       APPEND initrd=/casper/initrd boot=casper nomodeset
+      EOF
+      ```
+
+   2. Include syslinux bios modules
+
+   ```shell
+      apt install -y syslinux-common && \
+      cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ && \
+      cp /usr/lib/syslinux/modules/bios/* isolinux/
+      ```
+
+   3. Create iso from the image directory
+
+   ```shell
+   sudo xorriso \
+      -as mkisofs \
+      -iso-level 3 \
+      -full-iso9660-filenames \
+      -volid "Ubuntu from scratch" \
+      -output "../ubuntu-from-scratch.iso" \
+    -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
+    -eltorito-boot \
+        isolinux/isolinux.bin \
+        -no-emul-boot \
+        -boot-load-size 4 \
+        -boot-info-table \
+        --eltorito-catalog isolinux/isolinux.cat \
+    -eltorito-alt-boot \
+        -e /EFI/boot/efiboot.img \
+        -no-emul-boot \
+        -isohybrid-gpt-basdat \
+    -append_partition 2 0xef EFI/boot/efiboot.img \
+      "$HOME/live-ubuntu-from-scratch/image"
    ```
 
 ## Make a bootable USB image
