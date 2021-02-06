@@ -38,9 +38,9 @@ mkdir $HOME/live-ubuntu-from-scratch
      http://us.archive.ubuntu.com/ubuntu/
   ```
   
-  > **debootstrap** is used to create a Debian base system from scratch, without requiring the availability of **dpkg** or **apt**. It does this by downloading .deb files from a mirror site, and carefully unpacking them into a directory which can eventually be **chrooted** into.
+  > **debootstrap** is used to create a Debian base system from scratch, without requiring the availability of **dpkg** or **apt**. It does this by downloading .deb files from a mirror site, and carefully unpacking them into a directory which can eventually be **chrooted** into.
 
-* Configure external mount points
+* Configure external mount points
   
   ```shell
   sudo mount --bind /dev $HOME/live-ubuntu-from-scratch/chroot/dev
@@ -52,7 +52,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 ## Define chroot environment
 
-*A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot system call or the chroot wrapper program. The modified environment is called a chroot jail.*
+*A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot system call or the chroot wrapper program. The modified environment is called a chroot jail.*
 
 > Reference: https://en.wikipedia.org/wiki/Chroot
 
@@ -62,7 +62,7 @@ mkdir $HOME/live-ubuntu-from-scratch
    sudo chroot $HOME/live-ubuntu-from-scratch/chroot
    ```
 
-2. **Configure mount points, home and locale**
+2. **Configure mount points, home and locale**
 
    ```shell
    mount none -t proc /proc
@@ -186,19 +186,19 @@ mkdir $HOME/live-ubuntu-from-scratch
 
     The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having  to be informed or executed.
 
-    1. Configure keyboard
-       <p align="center">
-       <img src="images/keyboard-configure-01.png">
-       </p>
+   1. Configure keyboard
+      <p align="center">
+      <img src="images/keyboard-configure-01.png">
+      </p>
 
-       <p align="center">
-       <img src="images/keyboard-configure-02.png">
-       </p>
+      <p align="center">
+      <img src="images/keyboard-configure-02.png">
+      </p>
 
-    2. Console setup
-       <p align="center">
-       <img src="images/console-configure-01.png">
-       </p>
+   2. Console setup
+      <p align="center">
+      <img src="images/console-configure-01.png">
+      </p>
 
 11. **Install window manager**
 
@@ -224,43 +224,43 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 13. **Install Visual Studio Code (optional)**
 
-    1. Download and install the key
+   1. Download and install the key
 
-       ```shell
-       curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      ```shell
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 
-       install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+      install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 
-       echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
 
-       rm microsoft.gpg
-       ```
+      rm microsoft.gpg
+      ```
 
-    2. Then update the package cache and install the package using
+   2. Then update the package cache and install the package using
 
-       ```shell
-       apt-get update
+      ```shell
+      apt-get update
 
-       apt-get install -y code
-       ```
+      apt-get install -y code
+      ```
 
 14. **Install Google Chrome (optional)**
 
-    1. Download and install the key
+   1. Download and install the key
 
-       ```shell
-       wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+      ```shell
+      wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 
-       echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-       ```
+      echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+      ```
 
-    2. Then update the package cache and install the package using
+   2. Then update the package cache and install the package using
 
-       ```shell
-       apt-get update
+      ```shell
+      apt-get update
 
-       apt-get install google-chrome-stable
-       ```
+      apt-get install google-chrome-stable
+      ```
 
 15. **Install Java JDK 8 (optional)**
 
@@ -291,94 +291,94 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 18. **Reconfigure packages**
 
-    1. Generate locales
+   1. Generate locales
 
-       ```shell
-       dpkg-reconfigure locales
-       ```
+      ```shell
+      dpkg-reconfigure locales
+      ```
 
-       1. *Select locales*
-          <p align="center">
-            <img src="images/locales-select.png">
-          </p>
+      1. *Select locales*
+         <p align="center">
+         <img src="images/locales-select.png">
+         </p>
 
-       2. *Select default locale*
-          <p align="center">
-            <img src="images/locales-default.png">
-          </p>   
+      2. *Select default locale*
+         <p align="center">
+         <img src="images/locales-default.png">
+         </p>   
 
-    2. Reconfigure resolvconf
+   2. Reconfigure resolvconf
 
-       ```shell
-       dpkg-reconfigure resolvconf
-       ```
+      ```shell
+      dpkg-reconfigure resolvconf
+      ```
 
-       1. *Confirm changes*
-          <p align="center">
-            <img src="images/resolvconf-confirm-01.png">
-          </p>
+      1. *Confirm changes*
+         <p align="center">
+         <img src="images/resolvconf-confirm-01.png">
+         </p>
 
-          <p align="center">
-            <img src="images/resolvconf-confirm-02.png">
-          </p>
+         <p align="center">
+         <img src="images/resolvconf-confirm-02.png">
+         </p>
 
-          <p align="center">
-            <img src="images/resolvconf-confirm-03.png">
-          </p>
+         <p align="center">
+         <img src="images/resolvconf-confirm-03.png">
+         </p>
 
-    3. Configure network-manager
+   3. Configure network-manager
 
-       ```shell
-       cat <<EOF > /etc/NetworkManager/NetworkManager.conf
-       [main]
-       rc-manager=resolvconf
-       plugins=ifupdown,keyfile
-       dns=dnsmasq
+      ```shell
+      cat <<EOF > /etc/NetworkManager/NetworkManager.conf
+      [main]
+      rc-manager=resolvconf
+      plugins=ifupdown,keyfile
+      dns=dnsmasq
 
-       [ifupdown]
-       managed=false
-       EOF
-       ```
+      [ifupdown]
+      managed=false
+      EOF
+      ```
 
-    4. Reconfigure network-manager
+   4. Reconfigure network-manager
 
-       ```shell
-       dpkg-reconfigure network-manager
-       ```
+      ```shell
+      dpkg-reconfigure network-manager
+      ```
 
 19. **Cleanup the chroot environment**
 
-    1. If you installed software, be sure to run
+   1. If you installed software, be sure to run
 
-       ```shell
-       truncate -s 0 /etc/machine-id
-       ```
+      ```shell
+      truncate -s 0 /etc/machine-id
+      ```
 
-    2. Remove the diversion
+   2. Remove the diversion
 
-       ```shell
-       rm /sbin/initctl
+      ```shell
+      rm /sbin/initctl
 
-       dpkg-divert --rename --remove /sbin/initctl
-       ```
+      dpkg-divert --rename --remove /sbin/initctl
+      ```
 
-    3. Clean up
+   3. Clean up
 
-       ```shell
-       apt-get clean
+      ```shell
+      apt-get clean
 
-       rm -rf /tmp/* ~/.bash_history
+      rm -rf /tmp/* ~/.bash_history
 
-       umount /proc
+      umount /proc
 
-       umount /sys
+      umount /sys
 
-       umount /dev/pts
+      umount /dev/pts
 
-       export HISTSIZE=0
+      export HISTSIZE=0
 
-       exit
-       ```
+      exit
+      ```
 
 ## Unbind mount points
 
@@ -646,49 +646,49 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 
 ## Alternative way, if previous one fails, create an Hybrid ISO
 
-   1. Create a ISOLINUX (syslinux) boot menu
-
-      ```shell
-      cat <<EOF> isolinux/isolinux.cfg
-      UI vesamenu.c32
-
-      MENU TITLE Boot Menu
-      DEFAULT linux
-      TIMEOUT 600
-      MENU RESOLUTION 640 480
-      MENU COLOR border       30;44   #40ffffff #a0000000 std
-      MENU COLOR title        1;36;44 #9033ccff #a0000000 std
-      MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
-      MENU COLOR unsel        37;44   #50ffffff #a0000000 std
-      MENU COLOR help         37;40   #c0ffffff #a0000000 std
-      MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
-      MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
-      MENU COLOR msg07        37;40   #90ffffff #a0000000 std
-      MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
-
-      LABEL linux
-       MENU LABEL Try Ubuntu FS
-       MENU DEFAULT
-       KERNEL /casper/vmlinuz
-       APPEND initrd=/casper/initrd boot=casper
-
-      LABEL linux
-       MENU LABEL Try Ubuntu FS (nomodeset)
-       MENU DEFAULT
-       KERNEL /casper/vmlinuz
-       APPEND initrd=/casper/initrd boot=casper nomodeset
-      EOF
-      ```
-
-   2. Include syslinux bios modules
+1. Create a ISOLINUX (syslinux) boot menu
 
    ```shell
-      apt install -y syslinux-common && \
-      cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ && \
-      cp /usr/lib/syslinux/modules/bios/* isolinux/
-      ```
+   cat <<EOF> isolinux/isolinux.cfg
+   UI vesamenu.c32
 
-   3. Create iso from the image directory
+   MENU TITLE Boot Menu
+   DEFAULT linux
+   TIMEOUT 600
+   MENU RESOLUTION 640 480
+   MENU COLOR border       30;44   #40ffffff #a0000000 std
+   MENU COLOR title        1;36;44 #9033ccff #a0000000 std
+   MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
+   MENU COLOR unsel        37;44   #50ffffff #a0000000 std
+   MENU COLOR help         37;40   #c0ffffff #a0000000 std
+   MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
+   MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
+   MENU COLOR msg07        37;40   #90ffffff #a0000000 std
+   MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
+
+   LABEL linux
+    MENU LABEL Try Ubuntu FS
+    MENU DEFAULT
+    KERNEL /casper/vmlinuz
+    APPEND initrd=/casper/initrd boot=casper
+
+   LABEL linux
+    MENU LABEL Try Ubuntu FS (nomodeset)
+    MENU DEFAULT
+    KERNEL /casper/vmlinuz
+    APPEND initrd=/casper/initrd boot=casper nomodeset
+   EOF
+   ```
+
+2. Include syslinux bios modules
+
+   ```shell
+   apt install -y syslinux-common && \
+   cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ && \
+   cp /usr/lib/syslinux/modules/bios/* isolinux/
+   ```
+
+3. Create iso from the image directory
 
    ```shell
    sudo xorriso \
