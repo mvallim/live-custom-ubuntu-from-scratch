@@ -21,7 +21,7 @@ do_buildiso() {
 sudo debootstrap --arch=amd64 --variant=minbase groovy filesystem http://archive.ubuntu.com/ubuntu/"; exit
 #sudo debootstrap --arch=amd64 --variant=minbase bullseye $FS_DIR http://deb.debian.org/debian/"; exit
     fi
-    ISO_NAME=`grep PRETTY_NAME filesystem/etc/os-release | sed s/^[^=]*=// | sed -e 's/^"//' -e 's/"$//'`
+    ISO_NAME=`grep PRETTY_NAME filesystem/etc/os-release | sed s/^[^=]*=// | sed -e 's/^"//' -e 's/"$//' | cut -c -16`
     ISO_VERS=`grep VERSION_CODE filesystem/etc/os-release | sed s/^[^=]*=//`
     ISO_FILE=$ISO_VERS-live-amd64.iso
     mkdir -p iso/{casper,isolinux}
@@ -85,7 +85,7 @@ EOF
         mkfs.vfat efiboot.img && \
         LC_CTYPE=C mmd -i efiboot.img efi efi/boot && \
         LC_CTYPE=C mcopy -i efiboot.img bootx64.efi ::efi/boot/
-    ) &> /dev/null
+    )
     # Create a BIOS bootable GRUB image
     grub-mkstandalone \
         --format=i386-pc \
@@ -247,7 +247,7 @@ case "$1" in
     -e) do_extract $2;;
     -r) do_rebuild ;;
     -i) chmod +x "$0"; cp -vf "$0" /usr/local/bin/${0%.sh};
-        apt install -y grub-pc-bin grub-efi-amd64-bin xorriso squashfs-tools \
+        apt install -y grub-pc-bin grub-efi-amd64-bin mtools xorriso squashfs-tools \
         genisoimage syslinux-utils xserver-xephyr;;
     -h|--help) echo "This script builds bootstrap environment.
 -b|build    Build ISO image
