@@ -141,6 +141,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
    ```shell
    apt-get install -y \
+       sudo \
        ubuntu-standard \
        casper \
        lupin-casper \
