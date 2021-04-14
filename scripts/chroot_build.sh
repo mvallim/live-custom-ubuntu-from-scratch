@@ -76,6 +76,7 @@ function install_pkg() {
 
     # install live linux packages
     apt-get install -y \
+    sudo \
     ubuntu-standard \
     casper \
     lupin-casper \
