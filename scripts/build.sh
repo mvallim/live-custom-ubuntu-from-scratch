@@ -5,6 +5,14 @@ set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 #set -x
 
+if [[ -f ./configuration.sh ]]; then 
+    source configuration.sh
+fi
+
+if [[ -z "$GRUB_LIVEBOOT_LABEL" ]]; then
+    GRUB_LIVEBOOT_LABEL="Ubuntu FS"
+fi
+
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 CMD=(setup_host debootstrap run_chroot build_iso)
@@ -97,7 +105,6 @@ function run_chroot() {
     chroot_exit_teardown
 }
 
-
 function build_iso() {
     echo "=====> running build_iso ..."
 
@@ -126,12 +133,12 @@ insmod all_video
 set default="0"
 set timeout=30
 
-menuentry "Try Ubuntu FS without installing" {
+menuentry "Try ${GRUB_LIVEBOOT_LABEL} without installing" {
    linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
    initrd /casper/initrd
 }
 
-menuentry "Install Ubuntu FS" {
+menuentry "Install ${GRUB_LIVEBOOT_LABEL}" {
    linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
    initrd /casper/initrd
 }
@@ -177,7 +184,7 @@ EOF
 
     # create diskdefines
     cat <<EOF > image/README.diskdefines
-#define DISKNAME  Ubuntu from scratch
+#define DISKNAME  ${GRUB_LIVEBOOT_LABEL}
 #define TYPE  binary
 #define TYPEbinary  1
 #define ARCH  amd64
