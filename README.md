@@ -4,7 +4,13 @@
    <img src="images/live-boot.png">
 </p>
 
-This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.
+This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.  The steps described below are also available in this repo in the `/scripts` directory.
+
+## Ways of Using this Tutorial
+
+* (Recommended) follow the directions step by step below to understand how to build an Ubuntu ISO.
+* Run the `build.sh` script in the `scripts` directory after checking this repo out locally.
+* Fork this repo and run the github action `build`.  This will generate an ISO in your github account.
 
 ## Prerequisites (GNU/Linux Debian/Ubuntu)
 
