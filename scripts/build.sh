@@ -61,10 +61,10 @@ function chroot_exit_teardown() {
 }
 
 function check_host() {
-    local os_ver;
-    os_ver=`lsb_release -d | grep "Ubuntu 20.04"`
-    if [[ $os_ver == "" ]]; then
-        echo "WARNING : OS is not Ubuntu 20.04 and is untested"
+    local os_ver
+    os_ver=`lsb_release -i | grep -E "(Ubuntu|Debian)"`
+    if [[ -z "$os_ver" ]]; then
+        echo "WARNING : OS is not Debian or Ubuntu and is untested"
     fi
 
     if [ $(id -u) -eq 0 ]; then
@@ -91,7 +91,6 @@ function run_chroot() {
     chroot_enter_setup
 
     sudo ln -f $SCRIPT_DIR/chroot_build.sh chroot/root/chroot_build.sh
-    sudo cp -f /etc/apt/sources.list chroot/etc/apt/
     sudo chroot chroot /root/chroot_build.sh -
     sudo rm -f chroot/root/chroot_build.sh
 
@@ -165,7 +164,15 @@ EOF
     sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
 
     # compress rootfs
-    sudo mksquashfs chroot image/casper/filesystem.squashfs
+    sudo mksquashfs chroot image/casper/filesystem.squashfs \
+        -noappend -no-duplicates -no-recovery \
+        -wildcards \
+        -e "var/cache/apt/archives/*" \
+        -e "root/*" \
+        -e "root/.*" \
+        -e "tmp/*" \
+        -e "tmp/.*" \
+        -e "swapfile"
     printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
 
     # create diskdefines
