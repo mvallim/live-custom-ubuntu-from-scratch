@@ -5,14 +5,6 @@ set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 #set -x
 
-if [[ -f ./configuration.sh ]]; then 
-    source configuration.sh
-fi
-
-if [[ -z "$GRUB_LIVEBOOT_LABEL" ]]; then
-    GRUB_LIVEBOOT_LABEL="Ubuntu FS"
-fi
-
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 CMD=(setup_host debootstrap run_chroot build_iso)
@@ -22,7 +14,7 @@ DATE=`TZ="UTC" date +"%y%m%d-%H%M%S"`
 function help() {
     # if $1 is set, use $1 as headline message in help()
     if [ -z ${1+x} ]; then
-        echo -e "This script builds bootable ubuntu ISO image"
+        echo -e "This script builds a bootable ubuntu ISO image"
         echo -e
     else
         echo -e $1
@@ -81,6 +73,29 @@ function check_host() {
     fi
 }
 
+# Load configuration values from file
+function load_config() {
+    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then 
+        . "$SCRIPT_DIR/config.sh"
+    elif [[ -f "$SCRIPT_DIR/default_config.sh" ]]; then
+        . "$SCRIPT_DIR/default_config.sh"
+    else
+        >&2 echo "Unable to find default config file  $SCRIPT_DIR/default_config.sh, aborting."
+        exit 1
+    fi
+}
+
+# Verify that necessary configuration values are set and they are valid
+function check_config() {
+    local expected_config_version
+    expected_config_version="0.1"
+
+    if [[ "$CONFIG_FILE_VERSION" != "$expected_config_version" ]]; then
+        >&2 echo "Invalid or old config version $CONFIG_FILE_VERSION, expected $expected_config_version. Please update your configuration file from the default."
+        exit 1
+    fi
+}
+
 function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
@@ -98,9 +113,22 @@ function run_chroot() {
 
     chroot_enter_setup
 
+    # Setup build scripts in chroot environment
     sudo ln -f $SCRIPT_DIR/chroot_build.sh chroot/root/chroot_build.sh
+    sudo ln -f $SCRIPT_DIR/default_config.sh chroot/root/default_config.sh
+    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
+        sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
+    fi    
+
+    # Launch into chroot environment to build install image.
     sudo chroot chroot /root/chroot_build.sh -
+
+    # Cleanup after image changes
     sudo rm -f chroot/root/chroot_build.sh
+    sudo rm -f chroot/root/default_config.sh
+    if [[ -f "chroot/root/config.sh" ]]; then
+        sudo rm -f chroot/root/config.sh
+    fi
 
     chroot_exit_teardown
 }
@@ -133,12 +161,12 @@ insmod all_video
 set default="0"
 set timeout=30
 
-menuentry "Try ${GRUB_LIVEBOOT_LABEL} without installing" {
+menuentry "${GRUB_LIVEBOOT_LABEL}" {
    linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
    initrd /casper/initrd
 }
 
-menuentry "Install ${GRUB_LIVEBOOT_LABEL}" {
+menuentry "${GRUB_INSTALL_LABEL}" {
    linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
    initrd /casper/initrd
 }
@@ -257,6 +285,8 @@ EOF
 # we always stay in $SCRIPT_DIR
 cd $SCRIPT_DIR
 
+load_config
+check_config
 check_host
 
 # check number of args
