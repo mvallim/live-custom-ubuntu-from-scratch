@@ -164,6 +164,7 @@ function finish_up() {
 
 # =============   main  ================
 
+load_config
 check_host
 
 # check number of args
