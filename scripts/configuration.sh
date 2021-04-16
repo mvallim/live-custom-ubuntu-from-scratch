@@ -1,0 +1,1 @@
+GRUB_LIVEBOOT_LABEL="Ubuntu FS"
