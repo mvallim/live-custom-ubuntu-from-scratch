@@ -88,7 +88,7 @@ function load_config() {
 # Verify that necessary configuration values are set and they are valid
 function check_config() {
     local expected_config_version
-    expected_config_version="0.1"
+    expected_config_version="0.2"
 
     if [[ "$CONFIG_FILE_VERSION" != "$expected_config_version" ]]; then
         >&2 echo "Invalid or old config version $CONFIG_FILE_VERSION, expected $expected_config_version. Please update your configuration file from the default."
@@ -105,7 +105,7 @@ function setup_host() {
 
 function debootstrap() {
     echo "=====> running debootstrap ... will take a couple of minutes ..."
-    sudo debootstrap  --arch=amd64 --variant=minbase focal chroot  http://us.archive.ubuntu.com/ubuntu/
+    sudo debootstrap  --arch=amd64 --variant=minbase $TARGET_UBUNTU_VERSION chroot http://us.archive.ubuntu.com/ubuntu/
 }
 
 function run_chroot() {
@@ -257,7 +257,7 @@ EOF
         -as mkisofs \
         -iso-level 3 \
         -full-iso9660-filenames \
-        -volid "Ubuntu from scratch" \
+        -volid "$TARGET_NAME" \
         -eltorito-boot boot/grub/bios.img \
         -no-emul-boot \
         -boot-load-size 4 \
@@ -269,7 +269,7 @@ EOF
         -e EFI/efiboot.img \
         -no-emul-boot \
         -append_partition 2 0xef isolinux/efiboot.img \
-        -output "../ubuntu-from-scratch.iso" \
+        -output "$SCRIPT_DIR/$TARGET_NAME.iso" \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
         -graft-points \
