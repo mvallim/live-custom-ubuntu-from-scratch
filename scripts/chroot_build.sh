@@ -56,17 +56,17 @@ function setup_host() {
     echo "=====> running setup_host ..."
 
    cat <<EOF > /etc/apt/sources.list
-deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+deb http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION main restricted universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION main restricted universe multiverse
 
-deb http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION-security main restricted universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION-security main restricted universe multiverse
 
-deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
+deb-src http://us.archive.ubuntu.com/ubuntu/ $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
 EOF
 
-    echo "ubuntu-fs-live" > /etc/hostname
+    echo "$TARGET_NAME" > /etc/hostname
 
     # we need to install systemd first, to configure machine id
     apt-get update
@@ -98,7 +98,7 @@ function install_pkg() {
     echo "=====> running install_pkg ... will take a long time ..."
     apt-get -y upgrade
 
-    # install live linux packages
+    # install live packages
     apt-get install -y \
     sudo \
     ubuntu-standard \
@@ -112,8 +112,10 @@ function install_pkg() {
     net-tools \
     wireless-tools \
     wpagui \
-    locales \
-    linux-generic
+    locales
+    
+    # install kernel
+    apt-get install -y --install-recommends $TARGET_KERNEL_PACKAGE
 
     # graphic installer - ubiquity
     apt-get install -y \

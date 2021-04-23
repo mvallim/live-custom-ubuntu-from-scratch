@@ -5,9 +5,17 @@
 # Usage: Copy this file to config.sh and make changes there.  Keep this file (default_config.sh) as-is
 #   so that subsequent changes can be easily merged from upstream.  Keep all customiations in config.sh
 
-# Used to version the configuration.  If breaking changes occur, manual
-# updates to this file from the default may be necessary.
-export CONFIG_FILE_VERSION="0.1"
+# The version of Ubuntu to generate.  Successfully tested: focal, groovy
+# See https://wiki.ubuntu.com/DevelopmentCodeNames for details
+export TARGET_UBUNTU_VERSION="focal"
+
+# The packaged version of the Linux kernel to install on target image.
+# See https://wiki.ubuntu.com/Kernel/LTSEnablementStack for details
+export TARGET_KERNEL_PACKAGE="linux-generic"
+
+# The file (no extension) of the ISO containing the generated disk image,
+# the volume id, and the hostname of the live environment are set from this name.
+export TARGET_NAME="ubuntu-from-scratch"
 
 # The text label shown in GRUB for booting into the live environment
 export GRUB_LIVEBOOT_LABEL="Try Ubuntu FS without installing"
@@ -44,3 +52,7 @@ function customize_image() {
     aisleriot \
     hitori
 }
+
+# Used to version the configuration.  If breaking changes occur, manual
+# updates to this file from the default may be necessary.
+export CONFIG_FILE_VERSION="0.2"
