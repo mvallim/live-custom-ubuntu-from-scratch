@@ -23,6 +23,15 @@ export GRUB_LIVEBOOT_LABEL="Try Ubuntu FS without installing"
 # The text label shown in GRUB for starting installation
 export GRUB_INSTALL_LABEL="Install Ubuntu FS"
 
+# Packages to be removed from the target system after installation completes succesfully
+export TARGET_PACKAGE_REMOVE="
+    ubiquity \
+    casper \
+    discover \
+    laptop-detect \
+    os-prober \
+"
+
 # Package customisation function.  Update this function to customize packages
 # present on the installed system.
 function customize_image() {
@@ -55,4 +64,4 @@ function customize_image() {
 
 # Used to version the configuration.  If breaking changes occur, manual
 # updates to this file from the default may be necessary.
-export CONFIG_FILE_VERSION="0.2"
+export CONFIG_FILE_VERSION="0.3"

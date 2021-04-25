@@ -88,7 +88,7 @@ function load_config() {
 # Verify that necessary configuration values are set and they are valid
 function check_config() {
     local expected_config_version
-    expected_config_version="0.2"
+    expected_config_version="0.3"
 
     if [[ "$CONFIG_FILE_VERSION" != "$expected_config_version" ]]; then
         >&2 echo "Invalid or old config version $CONFIG_FILE_VERSION, expected $expected_config_version. Please update your configuration file from the default."
@@ -192,11 +192,9 @@ EOF
     # generate manifest
     sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
     sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
-    sudo sed -i '/ubiquity/d' image/casper/filesystem.manifest-desktop
-    sudo sed -i '/casper/d' image/casper/filesystem.manifest-desktop
-    sudo sed -i '/discover/d' image/casper/filesystem.manifest-desktop
-    sudo sed -i '/laptop-detect/d' image/casper/filesystem.manifest-desktop
-    sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
+    for pkg in $TARGET_PACKAGE_REMOVE; do
+        sudo sed -i "/$pkg/d" image/casper/filesystem.manifest-desktop
+    done
 
     # compress rootfs
     sudo mksquashfs chroot image/casper/filesystem.squashfs \
