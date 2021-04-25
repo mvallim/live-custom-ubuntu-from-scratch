@@ -504,7 +504,7 @@ We are now back in our `build environment` after setting up our `live system` an
 
 ## Create manifest
 
-Next we create a file `filesystem.manifest` to specify each package and it's version that is installed on the `live system`.  We create another file `filesystem.manifest-desktop` which specifies which files will be installed on the `target` system.  Once the Ubiquity installer completes, it will
+Next we create a file `filesystem.manifest` to specify each package and it's version that is installed on the `live system`.  We create another file `filesystem.manifest-desktop` which specifies which files will be installed on the `target system`.  Once the Ubiquity installer completes, it will
 remove packages specified in `filesystem.manifest` that are *not* listed in `filesystem.manifest-desktop`.
 
 1. Access build directory
