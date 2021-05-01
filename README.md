@@ -502,6 +502,19 @@ We are now back in our `build environment` after setting up our `live system` an
       EOF
       ```
 
+## Ubiquity Configuration
+
+In this step we provide some configuration to the interactive installer, Ubiquity to display the correct name of the target distribution
+as well as provide release notes to the user at install time.
+
+    ```shell
+    mkdir image/.disk
+    touch image/.disk/base_installable
+    echo "full_cd/single" > image/.disk/cd_type
+    echo "Ubuntu FS 20.04" > image/.disk/info
+    echo "https://wiki.ubuntu.com/FocalFossa/ReleaseNotes" > image/.disk/release_notes_url
+    ```
+
 ## Create manifest
 
 Next we create a file `filesystem.manifest` to specify each package and it's version that is installed on the `live system`.  We create another file `filesystem.manifest-desktop` which specifies which files will be installed on the `target system`.  Once the Ubiquity installer completes, it will

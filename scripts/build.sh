@@ -88,7 +88,7 @@ function load_config() {
 # Verify that necessary configuration values are set and they are valid
 function check_config() {
     local expected_config_version
-    expected_config_version="0.3"
+    expected_config_version="0.4"
 
     if [[ "$CONFIG_FILE_VERSION" != "$expected_config_version" ]]; then
         >&2 echo "Invalid or old config version $CONFIG_FILE_VERSION, expected $expected_config_version. Please update your configuration file from the default."
@@ -221,6 +221,13 @@ EOF
 #define TOTALNUM0  1
 EOF
 
+    # Configure Ubiquity
+    mkdir image/.disk
+    touch image/.disk/base_installable
+    echo "full_cd/single" > image/.disk/cd_type
+    echo "$VERSIONED_DISTRO_NAME" > image/.disk/info
+    echo "$RELEASE_NOTES_URL" > image/.disk/release_notes_url
+
     # create iso image
     pushd $SCRIPT_DIR/image
     grub-mkstandalone \
@@ -267,7 +274,7 @@ EOF
         -e EFI/efiboot.img \
         -no-emul-boot \
         -append_partition 2 0xef isolinux/efiboot.img \
-        -output "$SCRIPT_DIR/$TARGET_NAME.iso" \
+        -output "$SCRIPT_DIR/${VERSIONED_DISTRO_NAME// /_}.iso" \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
         -graft-points \
