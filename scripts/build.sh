@@ -223,8 +223,6 @@ EOF
 
     # Configure Ubiquity
     mkdir image/.disk
-    touch image/.disk/base_installable
-    echo "full_cd/single" > image/.disk/cd_type
     echo "$VERSIONED_DISTRO_NAME" > image/.disk/info
     echo "$RELEASE_NOTES_URL" > image/.disk/release_notes_url
 
