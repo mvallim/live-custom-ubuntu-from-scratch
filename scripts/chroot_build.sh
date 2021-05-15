@@ -112,10 +112,12 @@ function install_pkg() {
     net-tools \
     wireless-tools \
     wpagui \
-    locales
+    locales \
+    shim-signed
     
     # install kernel
-    apt-get install -y --install-recommends $TARGET_KERNEL_PACKAGE
+    apt-get install -y --install-recommends \
+    $TARGET_KERNEL_PACKAGE
 
     # graphic installer - ubiquity
     apt-get install -y \
