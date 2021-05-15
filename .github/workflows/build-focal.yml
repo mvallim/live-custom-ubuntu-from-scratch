@@ -14,11 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Initiate Build
+      - name: Build
         run: |
           cd scripts
           ./build.sh -
-
-      - name: Debug
+      - name: Compress
         run: |
-          ls -hl scripts/
+          gzip scripts/ubuntu-from-scratch.iso
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: focal-latest
+          prerelease: true
+          files: |
+            scripts/ubuntu-from-scratch.iso.gz
