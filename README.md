@@ -6,6 +6,11 @@
 
 This procedure shows how to create a **bootable** and **installable** Ubuntu Live (along with the automatic hardware detection and configuration) from scratch.  The steps described below are also available in this repo in the `/scripts` directory.
 
+## Authors
+
+* **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
+* **Ken Gilmer** -  *Commiter, Development, Test, Documentation* - [kgilmer](https://github.com/kgilmer)
+
 ## Ways of Using this Tutorial
 
 * (Recommended) follow the directions step by step below to understand how to build an Ubuntu ISO.
@@ -753,11 +758,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## Versioning
 
 We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/live-custom-ubuntu-from-scratch/tags).
-
-## Authors
-
-* **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
-* **Ken Gilmer** -  *Commiter, Development, Test, Documentation* - [kgilmer](https://github.com/kgilmer)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
