@@ -11,6 +11,8 @@ This procedure shows how to create a **bootable** and **installable** Ubuntu Liv
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
 * **Ken Gilmer** -  *Commiter, Development, Test, Documentation* - [kgilmer](https://github.com/kgilmer)
 
+See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
+
 ## Ways of Using this Tutorial
 
 * (Recommended) follow the directions step by step below to understand how to build an Ubuntu ISO.
@@ -758,8 +760,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## Versioning
 
 We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/live-custom-ubuntu-from-scratch/tags).
-
-See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
 ## License
 
