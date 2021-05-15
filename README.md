@@ -757,6 +757,7 @@ We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for 
 ## Authors
 
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
+* **Ken Gilmer** -  *Commiter, Development, Test, Documentation* - [kgilmer](https://github.com/kgilmer)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
