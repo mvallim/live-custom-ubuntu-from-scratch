@@ -17,7 +17,8 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          TARGET_UBUNTU_VERSION=focal ./build.sh -
+          export TARGET_UBUNTU_VERSION=focal
+          ./build.sh -
       - name: Compress
         run: |
           gzip scripts/ubuntu-from-scratch.iso
