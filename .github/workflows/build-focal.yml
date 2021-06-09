@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          export TARGET_UBUNTU_VERSION=focal
+          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="focal"/g' default_config.sh
           ./build.sh -
       - name: Compress
         run: |
