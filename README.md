@@ -19,6 +19,7 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 * Run the `build.sh` script in the `scripts` directory after checking this repo out locally.
 * Fork this repo and run the github action `build`.  This will generate an ISO in your github account.
 
+[![build-bionic](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml)
 [![build-focal](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml)
 
 ## Terms
