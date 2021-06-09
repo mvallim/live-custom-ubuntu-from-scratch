@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          TARGET_UBUNTU_VERSION=focal ./build.sh -
+          TARGET_UBUNTU_VERSION=bionic ./build.sh -
       - name: Compress
         run: |
           gzip scripts/ubuntu-from-scratch.iso
@@ -26,7 +26,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: focal-latest
+          tag_name: bionic-latest
           prerelease: true
           files: |
             scripts/ubuntu-from-scratch.iso.gz
