@@ -112,12 +112,15 @@ function install_pkg() {
     net-tools \
     wireless-tools \
     wpagui \
-    locales \
-    shim-signed
+    grub-common \
+    grub-gfxpayload-lists \
+    grub-pc \
+    grub-pc-bin \
+    grub2-common \
+    locales
     
     # install kernel
-    apt-get install -y --install-recommends \
-    $TARGET_KERNEL_PACKAGE
+    apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
 
     # graphic installer - ubiquity
     apt-get install -y \

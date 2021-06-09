@@ -179,25 +179,16 @@ From this point we will be configuring the `live system`.
        wireless-tools \
        wpagui \
        locales \
-       linux-generic
+       grub-common \
+       grub-gfxpayload-lists \
+       grub-pc \
+       grub-pc-bin \
+       grub2-common
    ```
 
-   The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having to be informed or executed.
-
-   1. Configure grub
-      <p align="center">
-        <img src="images/grub-configure-01.png">
-      </p>
-
-   2. Don’t select any options
-      <p align="center">
-        <img src="images/grub-configure-02.png">
-      </p>
-
-   3. Only confirm “Yes”
-      <p align="center">
-        <img src="images/grub-configure-03.png">
-      </p>
+   ```shell
+   apt-get install -y --no-install-recommends linux-generic
+   ```
 
 10. **Graphical installer**
 
@@ -212,7 +203,8 @@ From this point we will be configuring the `live system`.
 
     The next steps will appear, as a result of the packages that will be installed from the previous step, this will happen without anything having  to be informed or executed.
 
-   1. Configure keyboard
+    1. Configure keyboard
+
       <p align="center">
       <img src="images/keyboard-configure-01.png">
       </p>
@@ -221,7 +213,8 @@ From this point we will be configuring the `live system`.
       <img src="images/keyboard-configure-02.png">
       </p>
 
-   2. Console setup
+    2. Console setup
+
       <p align="center">
       <img src="images/console-configure-01.png">
       </p>
