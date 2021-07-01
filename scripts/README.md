@@ -17,8 +17,11 @@ Syntax: ./build.sh [start_cmd] [-] [end_cmd]
 
 ## How to Customize
 
-1. Copy the `default_config.sh` file to `config.sh` in the scripts directory.
+1. Copy the `chroot_files/default_config.sh` file to `chroot_files/config.sh` in the scripts directory.
 2. Make any necessary edits there, the script will pick up `config.sh` over `default_config.sh`.
+3. If you need to copy some files to the chroot environment, you can put them in `chroot_files` directory
+and retrieve these files in `/root` directory inside the chroot (the files will be purged after the chroot
+script was executed).
 
 ## How to Update
 
