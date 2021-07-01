@@ -75,12 +75,12 @@ function check_host() {
 
 # Load configuration values from file
 function load_config() {
-    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then 
-        . "$SCRIPT_DIR/config.sh"
-    elif [[ -f "$SCRIPT_DIR/default_config.sh" ]]; then
+    if [[ -f "$SCRIPT_DIR/chroot_files/config.sh" ]]; then
+        . "$SCRIPT_DIR/chroot_files/config.sh"
+    elif [[ -f "$SCRIPT_DIR/chroot_files/default_config.sh" ]]; then
         . "$SCRIPT_DIR/default_config.sh"
     else
-        >&2 echo "Unable to find default config file  $SCRIPT_DIR/default_config.sh, aborting."
+        >&2 echo "Unable to find default config file  $SCRIPT_DIR/chroot_files/default_config.sh, aborting."
         exit 1
     fi
 }
@@ -114,21 +114,17 @@ function run_chroot() {
     chroot_enter_setup
 
     # Setup build scripts in chroot environment
-    sudo ln -f $SCRIPT_DIR/chroot_build.sh chroot/root/chroot_build.sh
-    sudo ln -f $SCRIPT_DIR/default_config.sh chroot/root/default_config.sh
-    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
-        sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
-    fi    
+    for i in $(ls $SCRIPT_DIR/chroot_files -1); do
+        sudo ln -f $SCRIPT_DIR/chroot_files/$i chroot/root/$i
+    done
 
     # Launch into chroot environment to build install image.
     sudo chroot chroot /root/chroot_build.sh -
 
     # Cleanup after image changes
-    sudo rm -f chroot/root/chroot_build.sh
-    sudo rm -f chroot/root/default_config.sh
-    if [[ -f "chroot/root/config.sh" ]]; then
-        sudo rm -f chroot/root/config.sh
-    fi
+    for i in $(ls $SCRIPT_DIR/chroot_files -1); do
+        sudo rm -f chroot/root/$i
+    done
 
     chroot_exit_teardown
 }
