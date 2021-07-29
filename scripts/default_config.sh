@@ -9,6 +9,10 @@
 # See https://wiki.ubuntu.com/DevelopmentCodeNames for details
 export TARGET_UBUNTU_VERSION="focal"
 
+# The Ubuntu Mirror URL. It's better to change for faster download.
+# More mirrors see: https://launchpad.net/ubuntu/+archivemirrors
+export  TARGET_UBUNTU_MIRROR="http://mirrors.aliyun.com/ubuntu/"
+
 # The packaged version of the Linux kernel to install on target image.
 # See https://wiki.ubuntu.com/Kernel/LTSEnablementStack for details
 export TARGET_KERNEL_PACKAGE="linux-generic"
