@@ -75,7 +75,7 @@ function check_host() {
 
 # Load configuration values from file
 function load_config() {
-    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then 
+    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
         . "$SCRIPT_DIR/config.sh"
     elif [[ -f "$SCRIPT_DIR/default_config.sh" ]]; then
         . "$SCRIPT_DIR/default_config.sh"
@@ -114,21 +114,25 @@ function run_chroot() {
     chroot_enter_setup
 
     # Setup build scripts in chroot environment
-    sudo ln -f $SCRIPT_DIR/chroot_build.sh chroot/root/chroot_build.sh
-    sudo ln -f $SCRIPT_DIR/default_config.sh chroot/root/default_config.sh
+    sudo ln -f $SCRIPT_DIR/default_config.sh chroot/tmp/default_config.sh
     if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
-        sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
-    fi    
+        sudo ln -f $SCRIPT_DIR/config.sh chroot/tmp/config.sh
+    fi
+
+    # Build chroot_files archive and extract it into chroot directory
+    tar -czf chroot_files.tar.gz -C chroot_files .
+    sudo tar --owner root --group root -C chroot -xzf chroot_files.tar.gz
+    # For an unknown reason tar change chroot ownership so we need this little hack
+    sudo chown root:root chroot
+    rm -f chroot_files.tar.gz
 
     # Launch into chroot environment to build install image.
-    sudo chroot chroot /root/chroot_build.sh -
+    sudo chroot chroot /tmp/chroot_build.sh -
 
     # Cleanup after image changes
-    sudo rm -f chroot/root/chroot_build.sh
-    sudo rm -f chroot/root/default_config.sh
-    if [[ -f "chroot/root/config.sh" ]]; then
-        sudo rm -f chroot/root/config.sh
-    fi
+    for i in $(ls chroot/tmp/ -1); do
+        sudo rm -f chroot/tmp/$i
+    done
 
     chroot_exit_teardown
 }

@@ -19,6 +19,9 @@ Syntax: ./build.sh [start_cmd] [-] [end_cmd]
 
 1. Copy the `default_config.sh` file to `config.sh` in the scripts directory.
 2. Make any necessary edits there, the script will pick up `config.sh` over `default_config.sh`.
+3. If you need to copy some files to the chroot environment, you can put them in `chroot_files`. The directories
+tree inside `chroot_files` will be reproduced inside chroot (files inside `chroot_files/tmp` will be cleanup).
+/!\ `chroot_files/tmp` unix right's should be 1777
 
 ## How to Update
 
