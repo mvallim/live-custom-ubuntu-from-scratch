@@ -118,8 +118,12 @@ function run_chroot() {
     if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
         sudo ln -f $SCRIPT_DIR/config.sh chroot/tmp/config.sh
     fi
+
+    # Build chroot_files archive and extract it into chroot directory
     tar -czf chroot_files.tar.gz -C chroot_files .
-    sudo tar -C chroot -xzf chroot_files.tar.gz
+    sudo tar --owner root --group root -C chroot -xzf chroot_files.tar.gz
+    # For an unknown reason tar change chroot ownership so we need this little hack
+    sudo chown root:root chroot
     rm -f chroot_files.tar.gz
 
     # Launch into chroot environment to build install image.
