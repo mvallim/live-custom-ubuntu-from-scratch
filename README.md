@@ -757,4 +757,4 @@ We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for 
 
 ## License
 
-This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE](LICENSE) file for details
