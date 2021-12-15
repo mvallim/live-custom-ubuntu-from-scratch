@@ -19,16 +19,3 @@ jobs:
           cd scripts
           sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="focal"/g' default_config.sh
           ./build.sh -
-      - name: Compress
-        run: |
-          gzip scripts/ubuntu-from-scratch.iso
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: ${{ github.base_ref == null }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: focal-latest
-          prerelease: true
-          files: |
-            scripts/ubuntu-from-scratch.iso.gz
