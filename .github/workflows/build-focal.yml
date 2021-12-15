@@ -24,6 +24,7 @@ jobs:
           gzip scripts/ubuntu-from-scratch.iso
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: ${{ github.base_ref == null }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
