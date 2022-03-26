@@ -121,7 +121,7 @@ function run_chroot() {
     fi
 
     # Launch into chroot environment to build install image.
-    sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND-} /root/chroot_build.sh -
+    sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-dialog} /root/chroot_build.sh -
 
     # Cleanup after image changes
     sudo rm -f chroot/root/chroot_build.sh
