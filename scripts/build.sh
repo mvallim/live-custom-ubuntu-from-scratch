@@ -75,7 +75,7 @@ function check_host() {
 
 # Load configuration values from file
 function load_config() {
-    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then 
+    if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
         . "$SCRIPT_DIR/config.sh"
     elif [[ -f "$SCRIPT_DIR/default_config.sh" ]]; then
         . "$SCRIPT_DIR/default_config.sh"
@@ -118,10 +118,10 @@ function run_chroot() {
     sudo ln -f $SCRIPT_DIR/default_config.sh chroot/root/default_config.sh
     if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
         sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
-    fi    
+    fi
 
     # Launch into chroot environment to build install image.
-    sudo chroot chroot /root/chroot_build.sh -
+    sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-readline} /root/chroot_build.sh -
 
     # Cleanup after image changes
     sudo rm -f chroot/root/chroot_build.sh
@@ -229,7 +229,7 @@ EOF
         --locales="" \
         --fonts="" \
         "boot/grub/grub.cfg=isolinux/grub.cfg"
-    
+
     (
         cd isolinux && \
         dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
@@ -317,4 +317,3 @@ for ((ii=$start_index; ii<$end_index; ii++)); do
 done
 
 echo "$0 - Initial build is done!"
-
