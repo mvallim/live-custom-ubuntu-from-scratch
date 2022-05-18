@@ -99,7 +99,7 @@ function check_config() {
 function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
-    sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools
+    sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools dosfstools unzip
     sudo mkdir -p chroot
 }
 
