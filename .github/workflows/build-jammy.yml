@@ -24,4 +24,7 @@ jobs:
       - uses: softprops/action-gh-release@v1
         with:
           name: Ubuntu 22.04 (Jammy) Build
-          files: scripts/ubuntu-from-scratch.iso
+          tag_name: ubuntu-jammy-latest
+          files: |
+            scripts/ubuntu-from-scratch.iso
+            scripts/image/md5sum.txt
