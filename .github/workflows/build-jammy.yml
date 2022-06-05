@@ -20,3 +20,8 @@ jobs:
           sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="jammy"/g' default_config.sh
           sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
+          cd ..
+      - uses: softprops/action-gh-release@v1
+        with:
+          name: Ubuntu 22.04 (Jammy) Build
+          files: scripts/ubuntu-from-scratch.iso
