@@ -103,7 +103,6 @@ function install_pkg() {
     sudo \
     ubuntu-standard \
     casper \
-    lupin-casper \
     discover \
     laptop-detect \
     os-prober \
