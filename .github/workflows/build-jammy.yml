@@ -21,10 +21,10 @@ jobs:
           sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
-      - uses: softprops/action-gh-release@v1
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: Ubuntu 22.04 (Jammy) Build
-          tag_name: ubuntu-jammy-latest
-          files: |
+          name: ubuntu-from-scratch
+          path: |
             scripts/ubuntu-from-scratch.iso
             scripts/image/md5sum.txt
