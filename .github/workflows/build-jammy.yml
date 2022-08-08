@@ -18,7 +18,6 @@ jobs:
         run: |
           cd scripts
           sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="jammy"/g' default_config.sh
-          sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
       - name: Archive artifacts

@@ -103,7 +103,6 @@ function install_pkg() {
     sudo \
     ubuntu-standard \
     casper \
-    lupin-casper \
     discover \
     laptop-detect \
     os-prober \
@@ -118,6 +117,15 @@ function install_pkg() {
     grub-pc-bin \
     grub2-common \
     locales
+    
+    case $TARGET_UBUNTU_VERSION in
+        "focal" | "bionic")
+            apt-get install -y lupin-casper
+            ;;
+        *)
+            echo "Package lupin-casper is not needed. Skipping."
+            ;;
+    esac
     
     # install kernel
     apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
