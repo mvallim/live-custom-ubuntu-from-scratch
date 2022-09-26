@@ -1,3 +1,4 @@
 Marcos Vallim <tischer@gmail.com>
 Ken Gilmer <kgilmer@gmail.com>
 monkey-jsun <>
+Andreas Blaesius <andi@unlegacy-android.org>
