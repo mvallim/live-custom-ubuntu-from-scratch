@@ -19,3 +19,10 @@ jobs:
           cd scripts
           sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="bionic"/g' default_config.sh
           ./build.sh -
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ubuntu-from-scratch
+          path: |
+            scripts/ubuntu-from-scratch.iso
+            scripts/image/md5sum.txt
