@@ -57,7 +57,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
-     focal \
+     jammy \
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
