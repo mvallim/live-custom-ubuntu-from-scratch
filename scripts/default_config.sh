@@ -63,7 +63,7 @@ function customize_image() {
     gnome-mines \
     gnome-sudoku \
     aisleriot \
-    hitori\
+    hitori
 
     # Sporveien
     apt-get install -y \
