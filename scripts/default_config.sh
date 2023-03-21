@@ -64,6 +64,10 @@ function customize_image() {
     gnome-sudoku \
     aisleriot \
     hitori
+
+    # Sporveien
+    apt-get install -y \
+    syslog-ng
 }
 
 # Used to version the configuration.  If breaking changes occur, manual
