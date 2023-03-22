@@ -22,7 +22,7 @@ export TARGET_KERNEL_PACKAGE="linux-generic"
 export TARGET_NAME="cots"
 
 # The text label shown in GRUB for booting into the live environment
-export GRUB_LIVEBOOT_LABEL="Try COTS PC without installing - TROUBLESHOOTING ONLY"
+export GRUB_LIVEBOOT_LABEL="Try COTS PC live"
 
 # The text label shown in GRUB for starting installation
 export GRUB_INSTALL_LABEL="Install COTS PC"
@@ -40,8 +40,8 @@ export TARGET_PACKAGE_REMOVE="
 # present on the installed system.
 function customize_image() {
     # install graphics and desktop
-    #apt-get install -y \
-    #plymouth-theme-ubuntu-logo \
+    apt-get install -y \
+    plymouth-theme-ubuntu-logo \
     #ubuntu-gnome-desktop \
     #ubuntu-gnome-wallpapers
 
@@ -67,7 +67,8 @@ function customize_image() {
 
     # Sporveien
     apt-get install -y \
-    syslog-ng
+    syslog-ng \
+    mosquitto-clients
 }
 
 # Used to version the configuration.  If breaking changes occur, manual
