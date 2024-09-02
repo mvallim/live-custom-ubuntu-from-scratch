@@ -598,7 +598,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
      cd isolinux && \
      dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
      sudo mkfs.vfat efiboot.img && \
-     LOOP_DEVICE=`losetup --find --show $PWD/efiboot.img` && \
+     LOOP_DEVICE=`sudo losetup --find --show $PWD/efiboot.img` && \
      mkdir efi && \
      sudo mount $LOOP_DEVICE efi && \
      sudo grub-install --efi-directory=efi --uefi-secure-boot --removable --no-nvram $LOOP_DEVICE && \
