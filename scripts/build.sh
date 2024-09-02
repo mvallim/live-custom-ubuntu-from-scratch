@@ -225,15 +225,15 @@ EOF
     pushd $SCRIPT_DIR/image
     (
         cd isolinux && \
-        dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
-        sudo mkfs.vfat efiboot.img && \
+        sudo dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
         LOOP_DEVICE=`sudo losetup --find --show $PWD/efiboot.img` && \
-        mkdir efi && \
+        sudo mkfs.vfat -F 32 $LOOP_DEVICE && \
+        sudo mkdir efi && \
         sudo mount $LOOP_DEVICE efi && \
-        sudo grub-install --efi-directory=efi --uefi-secure-boot --removable --no-nvram $LOOP_DEVICE && \
+        sudo grub-install --target=x86_64-efi --efi-directory=efi --uefi-secure-boot --removable --no-nvram $LOOP_DEVICE && \
         sudo umount $LOOP_DEVICE && \
         sudo losetup --detach $LOOP_DEVICE && \
-        rm -rf efi
+        sudo rm -rf efi
     )
 
     grub-mkstandalone \
