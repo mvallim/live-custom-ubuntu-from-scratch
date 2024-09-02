@@ -99,7 +99,7 @@ function check_config() {
 function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
-    sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools dosfstools unzip
+    sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools dosfstools unzip grub2-common
     sudo mkdir -p chroot
 }
 
@@ -223,19 +223,15 @@ EOF
 
     # create iso image
     pushd $SCRIPT_DIR/image
-    grub-mkstandalone \
-        --format=x86_64-efi \
-        --output=isolinux/bootx64.efi \
-        --locales="" \
-        --fonts="" \
-        "boot/grub/grub.cfg=isolinux/grub.cfg"
-
     (
         cd isolinux && \
         dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
         sudo mkfs.vfat efiboot.img && \
-        LC_CTYPE=C mmd -i efiboot.img efi efi/boot && \
-        LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+        mkdir efi && \
+        sudo mount efiboot.img efi && \
+        sudo grub-install --efi-directory=efi --uefi-secure-boot --removable --no-nvram && \
+        sudo umount efi && \
+        rm -rf efi
     )
 
     grub-mkstandalone \
@@ -272,6 +268,7 @@ EOF
         -m "isolinux/bios.img" \
         -graft-points \
            "/EFI/efiboot.img=isolinux/efiboot.img" \
+           "/boot/grub/grub.cfg=isolinux/grub.cfg" \
            "/boot/grub/bios.img=isolinux/bios.img" \
            "."
 

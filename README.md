@@ -591,30 +591,22 @@ After everything has been installed and preconfigured in the **chrooted** enviro
    cd $HOME/live-ubuntu-from-scratch/image
    ```
 
-2. Create a grub UEFI image
-
-   ```shell
-   grub-mkstandalone \
-      --format=x86_64-efi \
-      --output=isolinux/bootx64.efi \
-      --locales="" \
-      --fonts="" \
-      "boot/grub/grub.cfg=isolinux/grub.cfg"
-   ```
-
-3. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+2. Create a FAT16 UEFI boot disk image containing the EFI bootloader
 
    ```shell
    (
       cd isolinux && \
       dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
       sudo mkfs.vfat efiboot.img && \
-      LC_CTYPE=C mmd -i efiboot.img efi efi/boot && \
-      LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+      mkdir efi && \
+      sudo mount efiboot.img efi && \
+      sudo grub-install --efi-directory=efi --uefi-secure-boot --removable --no-nvram && \
+      sudo umount efi && \
+      rm -rf efi
    )
    ```
 
-4. Create a grub BIOS image
+3. Create a grub BIOS image
 
    ```shell
    grub-mkstandalone \
@@ -627,19 +619,19 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-5. Combine a bootable Grub cdboot.img
+4. Combine a bootable Grub cdboot.img
 
    ```shell
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-6. Generate md5sum.txt
+5. Generate md5sum.txt
 
    ```shell
    sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
    ```
 
-7. Create iso from the image directory using the command-line
+6. Create iso from the image directory using the command-line
 
    ```shell
    sudo xorriso \
@@ -663,6 +655,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -m "isolinux/bios.img" \
       -graft-points \
          "/EFI/efiboot.img=isolinux/efiboot.img" \
+         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
          "/boot/grub/bios.img=isolinux/bios.img" \
          "."
    ```
