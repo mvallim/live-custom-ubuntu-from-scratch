@@ -545,7 +545,16 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 2. Create squashfs
 
    ```shell
-   sudo mksquashfs chroot image/casper/filesystem.squashfs
+   sudo mksquashfs chroot image/casper/filesystem.squashfs \
+        -noappend -no-duplicates -no-recovery \
+        -wildcards \
+        -comp xz -b 1M -Xdict-size 100% \
+        -e "var/cache/apt/archives/*" \
+        -e "root/*" \
+        -e "root/.*" \
+        -e "tmp/*" \
+        -e "tmp/.*" \
+        -e "swapfile"
    ```
 
    > **Squashfs** is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
