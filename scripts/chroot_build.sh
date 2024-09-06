@@ -119,6 +119,7 @@ function install_pkg() {
         grub2-common \
         grub-efi-amd64-signed \
         shim-signed \
+        mtools \
         binutils
     
     case $TARGET_UBUNTU_VERSION in
