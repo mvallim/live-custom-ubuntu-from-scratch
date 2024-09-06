@@ -154,6 +154,8 @@ function build_iso() {
     # write the filesystem.size
     printf $(sudo du -sx --block-size=1 chroot | cut -f1) | sudo tee image/casper/filesystem.size
 
+    pushd $SCRIPT_DIR/image
+
     sudo xorriso \
         -as mkisofs \
         -iso-level 3 \
