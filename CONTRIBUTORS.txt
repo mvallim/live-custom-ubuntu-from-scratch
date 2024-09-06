@@ -1,4 +1,7 @@
-Marcos Vallim <tischer@gmail.com>
-Ken Gilmer <kgilmer@gmail.com>
+Marcos Vallim <tischer@gmail.com> - mvallim
+Ken Gilmer <kgilmer@gmail.com> - kgilmer
+Anduin Xue <anduin@aiursoft.com> - Anduin2017
+Andreas Blaesius <andi@unlegacy-android.org> - andi34
+Andre Julius <> - NotNorom
+sostela <>
 monkey-jsun <>
-Andreas Blaesius <andi@unlegacy-android.org>
