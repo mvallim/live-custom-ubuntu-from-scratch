@@ -1,4 +1,4 @@
-name: build-jammy
+name: build-noble
 
 on:
   push:
