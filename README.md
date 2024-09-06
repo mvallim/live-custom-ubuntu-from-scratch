@@ -37,12 +37,7 @@ sudo apt-get install \
     binutils \
     debootstrap \
     squashfs-tools \
-    xorriso \
-    grub-pc-bin \
-    grub-efi-amd64-bin \
-    mtools \
-    openssl \
-    sbsigntool
+    xorriso
 ```
 
 ```shell
@@ -211,13 +206,13 @@ From this point we will be configuring the `live system`.
 
     1. Configure keyboard
 
-      <p align="center">
-      <img src="images/keyboard-configure-01.png">
-      </p>
+       <p align="center">
+       <img src="images/keyboard-configure-01.png">
+       </p>
 
-      <p align="center">
-      <img src="images/keyboard-configure-02.png">
-      </p>
+       <p align="center">
+       <img src="images/keyboard-configure-02.png">
+       </p>
 
     2. Console setup
 

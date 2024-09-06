@@ -99,13 +99,13 @@ function check_config() {
 function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
-    sudo apt install -y binutils debootstrap squashfs-tools xorriso grub-pc-bin grub-efi-amd64-bin mtools dosfstools unzip
+    sudo apt install -y binutils debootstrap squashfs-tools xorriso dosfstools unzip
     sudo mkdir -p chroot
 }
 
 function debootstrap() {
     echo "=====> running debootstrap ... will take a couple of minutes ..."
-    sudo debootstrap  --arch=amd64 --variant=minbase $TARGET_UBUNTU_VERSION chroot $TARGET_UBUNTU_MIRROR
+    sudo debootstrap --arch=amd64 --variant=minbase $TARGET_UBUNTU_VERSION chroot $TARGET_UBUNTU_MIRROR
 }
 
 function run_chroot() {
@@ -136,120 +136,23 @@ function run_chroot() {
 function build_iso() {
     echo "=====> running build_iso ..."
 
-    rm -rf image
-    mkdir -p image/{casper,isolinux,install}
-
-    # copy kernel files
-    sudo cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
-    sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
-
-    # memtest86
-    sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
-
-    wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
-    unzip -p image/install/memtest86-usb.zip memtest86-usb.img > image/install/memtest86
-    rm -f image/install/memtest86-usb.zip
-
-    # grub
-    touch image/ubuntu
-    cat <<EOF > image/isolinux/grub.cfg
-
-search --set=root --file /ubuntu
-
-insmod all_video
-
-set default="0"
-set timeout=30
-
-menuentry "${GRUB_LIVEBOOT_LABEL}" {
-   linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
-   initrd /casper/initrd
-}
-
-menuentry "${GRUB_INSTALL_LABEL}" {
-   linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
-   initrd /casper/initrd
-}
-
-menuentry "Check disc for defects" {
-   linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
-   initrd /casper/initrd
-}
-
-menuentry "Test memory Memtest86+ (BIOS)" {
-   linux16 /install/memtest86+
-}
-
-menuentry "Test memory Memtest86 (UEFI, long load time)" {
-   insmod part_gpt
-   insmod search_fs_uuid
-   insmod chain
-   loopback loop /install/memtest86
-   chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
-}
-EOF
-
-    # generate manifest
-    sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
-    sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
-    for pkg in $TARGET_PACKAGE_REMOVE; do
-        sudo sed -i "/$pkg/d" image/casper/filesystem.manifest-desktop
-    done
+    # move image artifacts
+    sudo mv chroot/{image,certificates} .
 
     # compress rootfs
     sudo mksquashfs chroot image/casper/filesystem.squashfs \
         -noappend -no-duplicates -no-recovery \
         -wildcards \
+        -comp xz -b 1M -Xdict-size 100% \
         -e "var/cache/apt/archives/*" \
         -e "root/*" \
         -e "root/.*" \
         -e "tmp/*" \
         -e "tmp/.*" \
         -e "swapfile"
-    printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
 
-    # create diskdefines
-    cat <<EOF > image/README.diskdefines
-#define DISKNAME  ${GRUB_LIVEBOOT_LABEL}
-#define TYPE  binary
-#define TYPEbinary  1
-#define ARCH  amd64
-#define ARCHamd64  1
-#define DISKNUM  1
-#define DISKNUM1  1
-#define TOTALNUM  0
-#define TOTALNUM0  1
-EOF
-
-    # create iso image
-    pushd $SCRIPT_DIR/image
-    grub-mkstandalone \
-        --format=x86_64-efi \
-        --output=isolinux/bootx64.efi \
-        --locales="" \
-        --fonts="" \
-        "boot/grub/grub.cfg=isolinux/grub.cfg"
-
-    (
-        cd isolinux && \
-        dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
-        sudo mkfs.vfat efiboot.img && \
-        LC_CTYPE=C mmd -i efiboot.img efi efi/boot && \
-        LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
-    )
-
-    grub-mkstandalone \
-        --format=i386-pc \
-        --output=isolinux/core.img \
-        --install-modules="linux16 linux normal iso9660 biosdisk memdisk search tar ls" \
-        --modules="linux16 linux normal iso9660 biosdisk search" \
-        --locales="" \
-        --fonts="" \
-        "boot/grub/grub.cfg=isolinux/grub.cfg"
-
-    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
-
-    sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
+    # write the filesystem.size
+    printf $(sudo du -sx --block-size=1 chroot | cut -f1) | sudo tee image/casper/filesystem.size
 
     sudo xorriso \
         -as mkisofs \
@@ -262,7 +165,7 @@ EOF
         -boot-info-table \
         --eltorito-catalog boot/grub/boot.cat \
         --grub2-boot-info \
-        --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+        --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
         -eltorito-alt-boot \
         -e EFI/efiboot.img \
         -no-emul-boot \
