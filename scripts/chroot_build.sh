@@ -349,10 +349,15 @@ EOF
 
     popd # return to image directory
 
+    # grub version/release
+    GRUB_VERSION=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3 | cut -d'-' -f1`
+    GRUB_RELEASE=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3`
+    
     # create SBAT file
     cat <<EOF > isolinux/sbat.csv
 sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
-grub,1,Free Software Foundation,grub,2.04,https://www.gnu.org/software/grub/
+grub,1,Free Software Foundation,grub,$GRUB_VERSION,https://www.gnu.org/software/grub/
+grub.ubuntu,1,Ubuntu,grub2,$GRUB_RELEASE,https://www.ubuntu.com/
 EOF
 
     # create a grub UEFI image
