@@ -380,7 +380,7 @@ EOF
         LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
         LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/shimx64.efi.signed.previous ::efi/boot/bootx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/mmx64.efi ::efi/boot/mmx64.efi && \
-        LC_CTYPE=C mcopy -i efiboot.img ./isolinux/grubx64.efi ::efi/boot/grubx64.efi && \
+        LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/grubx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
     )
 
