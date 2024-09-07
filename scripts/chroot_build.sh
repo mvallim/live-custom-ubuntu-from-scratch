@@ -372,7 +372,7 @@ EOF
     sed -i 's/SecureBoot/SecureB00t/' isolinux/grubx64.efi
 
     # add .sbat sections
-    objcopy --set-section-alignment '.sbat=512' --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --adjust-section-vma .sbat+10000000
+    objcopy --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --change-section-address .sbat=10000000
 
     # UEFI secure boot signing
     sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi

@@ -662,7 +662,7 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
 4. Add .sbat sections
 
    ```shell
-   objcopy --set-section-alignment '.sbat=512' --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --adjust-section-vma .sbat+10000000
+   objcopy --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --change-section-address .sbat=10000000
    ```
 
 5. UEFI secure boot signing
