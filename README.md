@@ -55,7 +55,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
-     focal \
+     noble \
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
@@ -168,12 +168,10 @@ From this point we will be configuring the `live system`.
       sudo \
       ubuntu-standard \
       casper \
-      lupin-casper \
       discover \
       laptop-detect \
       os-prober \
       network-manager \
-      resolvconf \
       net-tools \
       wireless-tools \
       wpagui \
@@ -185,6 +183,8 @@ From this point we will be configuring the `live system`.
       grub2-common \
       grub-efi-amd64-signed \
       shim-signed \
+      memtest86+ \
+      mtools \
       binutils
    ```
 
@@ -217,9 +217,9 @@ From this point we will be configuring the `live system`.
 
     2. Console setup
 
-      <p align="center">
-      <img src="images/console-configure-01.png">
-      </p>
+       <p align="center">
+       <img src="images/console-configure-01.png">
+       </p>
 
 11. **Install window manager**
 
@@ -328,40 +328,20 @@ From this point we will be configuring the `live system`.
           <img src="images/locales-default.png">
           </p>
 
-    2. Reconfigure resolvconf
-
-       ```shell
-       dpkg-reconfigure resolvconf
-       ```
-
-       1. *Confirm changes*
-          <p align="center">
-          <img src="images/resolvconf-confirm-01.png">
-          </p>
-
-          <p align="center">
-          <img src="images/resolvconf-confirm-02.png">
-          </p>
-
-          <p align="center">
-          <img src="images/resolvconf-confirm-03.png">
-          </p>
-
-    3. Configure network-manager
+    2. Configure network-manager
 
        ```shell
        cat <<EOF > /etc/NetworkManager/NetworkManager.conf
        [main]
-       rc-manager=resolvconf
+       rc-manager=none
        plugins=ifupdown,keyfile
-       dns=dnsmasq
+       dns=systemd-resolved
 
        [ifupdown]
        managed=false
-       EOF
        ```
 
-    4. Reconfigure network-manager
+    3. Reconfigure network-manager
 
        ```shell
        dpkg-reconfigure network-manager
