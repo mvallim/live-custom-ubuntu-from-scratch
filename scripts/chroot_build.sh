@@ -220,7 +220,7 @@ menuentry "Check disc for defects" {
 grub_platform
 if [ "\$grub_platform" = "efi" ]; then
 menuentry 'UEFI Firmware Settings' {
-	fwsetup
+    fwsetup
 }
 
 menuentry "Test memory Memtest86 (UEFI, long load time)" {
