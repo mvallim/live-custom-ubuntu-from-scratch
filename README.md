@@ -43,7 +43,7 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 > | `jammy`  | `>= jammy`  |
 > | `noble`  | `>= noble`  |
 
-## Prerequisites (GNU/Linux Debian/Ubuntu)
+## Prerequisites (GNU/Linux Ubuntu)
 
 Install packages we need in the `build system` required by our scripts.
 
