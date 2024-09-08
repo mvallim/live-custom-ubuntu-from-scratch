@@ -41,29 +41,57 @@ export TARGET_PACKAGE_REMOVE="
 function customize_image() {
     # install graphics and desktop
     apt-get install -y \
-    plymouth-themes \
-    ubuntu-gnome-desktop \
-    ubuntu-gnome-wallpapers
+        plymouth-themes \
+        ubuntu-gnome-desktop \
+        ubuntu-gnome-wallpapers
 
     # useful tools
     apt-get install -y \
-    clamav-daemon \
-    terminator \
-    apt-transport-https \
-    curl \
-    vim \
-    nano \
-    less
+        clamav-daemon \
+        terminator \
+        apt-transport-https \
+        curl \
+        vim \
+        nano \
+        less
+
+    ### Install Visual Studio Code
+
+    # download and install the key
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+
+    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+
+    rm microsoft.gpg
+
+    # then update the package cache and install the package using
+    apt-get update
+
+    apt-get install -y code
+
+    ### Install Google Chrome
+
+    # download and install the key
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+    # then update the package cache and install the package using
+    apt-get update
+
+    apt-get install google-chrome-stable
 
     # purge
     apt-get purge -y \
-    transmission-gtk \
-    transmission-common \
-    gnome-mahjongg \
-    gnome-mines \
-    gnome-sudoku \
-    aisleriot \
-    hitori
+        transmission-gtk \
+        transmission-common \
+        gnome-mahjongg \
+        gnome-mines \
+        gnome-sudoku \
+        aisleriot \
+        hitori
 }
 
 # Used to version the configuration.  If breaking changes occur, manual
