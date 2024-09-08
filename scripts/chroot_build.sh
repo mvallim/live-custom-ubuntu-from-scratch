@@ -217,8 +217,10 @@ menuentry "Check disc for defects" {
     initrd /casper/initrd
 }
 
-menuentry "Test memory Memtest86+ (BIOS)" {
-    linux16 /install/memtest86+
+grub_platform
+if [ "\$grub_platform" = "efi" ]; then
+menuentry 'UEFI Firmware Settings' {
+	fwsetup
 }
 
 menuentry "Test memory Memtest86 (UEFI, long load time)" {
@@ -228,6 +230,11 @@ menuentry "Test memory Memtest86 (UEFI, long load time)" {
     loopback loop /install/memtest86
     chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
 }
+else
+menuentry "Test memory Memtest86+ (BIOS)" {
+    linux16 /install/memtest86+
+}
+fi
 EOF
 
     # generate manifest
