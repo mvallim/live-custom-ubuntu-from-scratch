@@ -21,6 +21,8 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 
 [![build-bionic](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml)
 [![build-focal](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml)
+[![build-jammy](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-jammy.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-jammy.yml)
+[![build-noble](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-noble.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-noble.yml)
 
 ## Terms
 

@@ -117,6 +117,7 @@ function install_pkg() {
         grub2-common \
         grub-efi-amd64-signed \
         shim-signed \
+        memtest86+ \
         mtools \
         binutils
     
@@ -179,7 +180,14 @@ function build_image() {
     cp /boot/initrd.img-**-**-generic casper/initrd
 
     # memtest86
-    cp /boot/memtest86+.bin install/memtest86+
+    case $TARGET_UBUNTU_VERSION in
+        "noble")
+            cp /boot/memtest86+x64.bin install/memtest86+
+            ;;
+        *)
+            cp /boot/memtest86+.bin install/memtest86+
+            ;;
+    esac
 
     # memtest86++
     wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O install/memtest86-usb.zip
