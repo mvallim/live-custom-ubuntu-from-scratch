@@ -410,38 +410,45 @@ We are now back in our `build environment` after setting up our `live system` an
       cat <<EOF > image/isolinux/grub.cfg
 
       search --set=root --file /ubuntu
-
+      
       insmod all_video
-
+      
       set default="0"
       set timeout=30
-
+      
       menuentry "Try Ubuntu FS without installing" {
-         linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
-         initrd /casper/initrd
+          linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
+          initrd /casper/initrd
       }
-
+      
       menuentry "Install Ubuntu FS" {
-         linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
-         initrd /casper/initrd
+          linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
+          initrd /casper/initrd
       }
-
+      
       menuentry "Check disc for defects" {
-         linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
-         initrd /casper/initrd
+          linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
+          initrd /casper/initrd
       }
-
-      menuentry "Test memory Memtest86+ (BIOS)" {
-         linux16 /install/memtest86+
+      
+      grub_platform
+      if [ "\$grub_platform" = "efi" ]; then
+      menuentry 'UEFI Firmware Settings' {
+          fwsetup
       }
-
+      
       menuentry "Test memory Memtest86 (UEFI, long load time)" {
-         insmod part_gpt
-         insmod search_fs_uuid
-         insmod chain
-         loopback loop /install/memtest86
-         chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
+          insmod part_gpt
+          insmod search_fs_uuid
+          insmod chain
+          loopback loop /install/memtest86
+          chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
       }
+      else
+      menuentry "Test memory Memtest86+ (BIOS)" {
+          linux16 /install/memtest86+
+      }
+      fi
       EOF
       ```
 
