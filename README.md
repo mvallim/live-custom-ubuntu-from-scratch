@@ -112,14 +112,14 @@ From this point we will be configuring the `live system`.
 
    ```shell
    cat <<EOF > /etc/apt/sources.list
-   deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble-security main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble-security main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble-updates main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble-updates main restricted universe multiverse
    EOF
    ```
 
