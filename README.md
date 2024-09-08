@@ -342,23 +342,25 @@ From this point we will be configuring the `live system`.
           </p>
 
     2. Configure network-manager
+   
+       1. Create config file
 
-       ```shell
-       cat <<EOF > /etc/NetworkManager/NetworkManager.conf
-       [main]
-       rc-manager=none
-       plugins=ifupdown,keyfile
-       dns=systemd-resolved
+          ```shell
+          cat <<EOF > /etc/NetworkManager/NetworkManager.conf
+          [main]
+          rc-manager=none
+          plugins=ifupdown,keyfile
+          dns=systemd-resolved
 
-       [ifupdown]
-       managed=false
-       ```
+          [ifupdown]
+          managed=false
+          ```
 
-    3. Reconfigure network-manager
+       2. Reconfigure network-manager
 
-       ```shell
-       dpkg-reconfigure network-manager
-       ```
+          ```shell
+          dpkg-reconfigure network-manager
+          ```
 
 ## Create the CD image directory and populate it
 
