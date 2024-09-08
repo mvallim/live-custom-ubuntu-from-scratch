@@ -34,10 +34,9 @@ Install packages we need in the `build system` required by our scripts.
 
 ```shell
 sudo apt-get install \
-    binutils \
-    debootstrap \
-    squashfs-tools \
-    xorriso
+   debootstrap \
+   squashfs-tools \
+   xorriso
 ```
 
 ```shell
@@ -799,6 +798,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 
    ```shell
    cd $HOME/live-ubuntu-from-scratch/image
+   ```
 
 2. Create iso from the image directory using the command-line
 
@@ -807,25 +807,26 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
+      -J -J -joliet-long \
       -volid "Ubuntu from scratch" \
       -output "../ubuntu-from-scratch.iso" \
-      -eltorito-boot boot/grub/bios.img \
-         -no-emul-boot \
-         -boot-load-size 4 \
-         -boot-info-table \
-         --eltorito-catalog boot/grub/boot.cat \
-         --grub2-boot-info \
-         --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
-      -eltorito-alt-boot \
-         -e EFI/efiboot.img \
-         -no-emul-boot \
+     -eltorito-boot boot/grub/bios.img \
+      -no-emul-boot \
+      -boot-load-size 4 \
+      -boot-info-table \
+      --eltorito-catalog boot/grub/boot.cat \
+      --grub2-boot-info \
+      --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
+     -eltorito-alt-boot \
+      -e EFI/efiboot.img \
+      -no-emul-boot \
       -append_partition 2 0xef isolinux/efiboot.img \
       -m "isolinux/efiboot.img" \
       -m "isolinux/bios.img" \
-      -graft-points \
-         "/EFI/efiboot.img=isolinux/efiboot.img" \
-         "/boot/grub/bios.img=isolinux/bios.img" \
-         "."
+     -graft-points \
+      "/EFI/efiboot.img=isolinux/efiboot.img" \
+      "/boot/grub/bios.img=isolinux/bios.img" \
+      "."
    ```
 
 ## Alternative way, if previous one fails, create an Hybrid ISO
@@ -868,17 +869,24 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 
    ```shell
    apt install -y syslinux-common && \
-   cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ && \
-   cp /usr/lib/syslinux/modules/bios/* isolinux/
+   cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/ && \
+   cp /usr/lib/syslinux/modules/bios/* image/isolinux/
    ```
 
-3. Create iso from the image directory
+3. Access build directory
+
+   ```shell
+   cd $HOME/live-ubuntu-from-scratch/image
+   ```
+
+4. Create iso from the image directory
 
    ```shell
    sudo xorriso \
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
+      -J -J -joliet-long \
       -volid "Ubuntu from scratch" \
       -output "../ubuntu-from-scratch.iso" \
     -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \

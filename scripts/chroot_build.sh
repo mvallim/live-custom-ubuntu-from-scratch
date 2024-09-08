@@ -3,7 +3,6 @@
 set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
-#set -x
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
@@ -107,7 +106,6 @@ function install_pkg() {
         laptop-detect \
         os-prober \
         network-manager \
-        resolvconf \
         net-tools \
         wireless-tools \
         wpagui \
@@ -150,14 +148,13 @@ function install_pkg() {
 
     # final touch
     dpkg-reconfigure locales
-    dpkg-reconfigure resolvconf
 
     # network manager
     cat <<EOF > /etc/NetworkManager/NetworkManager.conf
 [main]
-rc-manager=resolvconf
+rc-manager=none
 plugins=ifupdown,keyfile
-dns=dnsmasq
+dns=systemd-resolved
 
 [ifupdown]
 managed=false

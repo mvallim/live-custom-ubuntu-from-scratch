@@ -3,7 +3,6 @@
 set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
-#set -x
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
@@ -99,7 +98,7 @@ function check_config() {
 function setup_host() {
     echo "=====> running setup_host ..."
     sudo apt update
-    sudo apt install -y binutils debootstrap squashfs-tools xorriso dosfstools unzip
+    sudo apt install -y debootstrap squashfs-tools xorriso
     sudo mkdir -p chroot
 }
 
@@ -160,25 +159,26 @@ function build_iso() {
         -as mkisofs \
         -iso-level 3 \
         -full-iso9660-filenames \
+        -J -J -joliet-long \
         -volid "$TARGET_NAME" \
-        -eltorito-boot boot/grub/bios.img \
+        -output "$SCRIPT_DIR/$TARGET_NAME.iso" \
+      -eltorito-boot boot/grub/bios.img \
         -no-emul-boot \
         -boot-load-size 4 \
         -boot-info-table \
         --eltorito-catalog boot/grub/boot.cat \
         --grub2-boot-info \
         --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
-        -eltorito-alt-boot \
+      -eltorito-alt-boot \
         -e EFI/efiboot.img \
         -no-emul-boot \
         -append_partition 2 0xef isolinux/efiboot.img \
-        -output "$SCRIPT_DIR/$TARGET_NAME.iso" \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
-        -graft-points \
-           "/EFI/efiboot.img=isolinux/efiboot.img" \
-           "/boot/grub/bios.img=isolinux/bios.img" \
-           "."
+      -graft-points \
+         "/EFI/efiboot.img=isolinux/efiboot.img" \
+         "/boot/grub/bios.img=isolinux/bios.img" \
+         "."
 
     popd
 }
