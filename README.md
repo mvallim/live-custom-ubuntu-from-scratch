@@ -21,6 +21,8 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 
 [![build-bionic](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml)
 [![build-focal](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml)
+[![build-jammy](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-jammy.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-jammy.yml)
+[![build-noble](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-noble.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-noble.yml)
 
 ## Terms
 
@@ -34,13 +36,9 @@ Install packages we need in the `build system` required by our scripts.
 
 ```shell
 sudo apt-get install \
-    binutils \
-    debootstrap \
-    squashfs-tools \
-    xorriso \
-    grub-pc-bin \
-    grub-efi-amd64-bin \
-    mtools
+   debootstrap \
+   squashfs-tools \
+   xorriso
 ```
 
 ```shell
@@ -57,7 +55,7 @@ mkdir $HOME/live-ubuntu-from-scratch
   sudo debootstrap \
      --arch=amd64 \
      --variant=minbase \
-     focal \
+     noble \
      $HOME/live-ubuntu-from-scratch/chroot \
      http://us.archive.ubuntu.com/ubuntu/
   ```
@@ -78,7 +76,7 @@ mkdir $HOME/live-ubuntu-from-scratch
 
 *A chroot on Unix operating systems is an operation that changes the apparent root directory for the current running process and its children. A program that is run in such a modified environment cannot name (and therefore normally cannot access) files outside the designated directory tree. The term "chroot" may refer to the chroot system call or the chroot wrapper program. The modified environment is called a chroot jail.*
 
-> Reference: https://en.wikipedia.org/wiki/Chroot
+> Reference: <https://en.wikipedia.org/wiki/Chroot>
 
 From this point we will be configuring the `live system`.
 
@@ -114,14 +112,14 @@ From this point we will be configuring the `live system`.
 
    ```shell
    cat <<EOF > /etc/apt/sources.list
-   deb http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble-security main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble-security main restricted universe multiverse
 
-   deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
-   deb-src http://us.archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+   deb http://us.archive.ubuntu.com/ubuntu/ noble-updates main restricted universe multiverse
+   deb-src http://us.archive.ubuntu.com/ubuntu/ noble-updates main restricted universe multiverse
    EOF
    ```
 
@@ -167,24 +165,27 @@ From this point we will be configuring the `live system`.
 
    ```shell
    apt-get install -y \
-       sudo \
-       ubuntu-standard \
-       casper \
-       lupin-casper \
-       discover \
-       laptop-detect \
-       os-prober \
-       network-manager \
-       resolvconf \
-       net-tools \
-       wireless-tools \
-       wpagui \
-       locales \
-       grub-common \
-       grub-gfxpayload-lists \
-       grub-pc \
-       grub-pc-bin \
-       grub2-common
+      sudo \
+      ubuntu-standard \
+      casper \
+      discover \
+      laptop-detect \
+      os-prober \
+      network-manager \
+      net-tools \
+      wireless-tools \
+      wpagui \
+      locales \
+      grub-common \
+      grub-gfxpayload-lists \
+      grub-pc \
+      grub-pc-bin \
+      grub2-common \
+      grub-efi-amd64-signed \
+      shim-signed \
+      memtest86+ \
+      mtools \
+      binutils
    ```
 
    ```shell
@@ -206,19 +207,19 @@ From this point we will be configuring the `live system`.
 
     1. Configure keyboard
 
-      <p align="center">
-      <img src="images/keyboard-configure-01.png">
-      </p>
+       <p align="center">
+       <img src="images/keyboard-configure-01.png">
+       </p>
 
-      <p align="center">
-      <img src="images/keyboard-configure-02.png">
-      </p>
+       <p align="center">
+       <img src="images/keyboard-configure-02.png">
+       </p>
 
     2. Console setup
 
-      <p align="center">
-      <img src="images/console-configure-01.png">
-      </p>
+       <p align="center">
+       <img src="images/console-configure-01.png">
+       </p>
 
 11. **Install window manager**
 
@@ -244,43 +245,43 @@ From this point we will be configuring the `live system`.
 
 13. **Install Visual Studio Code (optional)**
 
-   1. Download and install the key
+    1. Download and install the key
 
-      ```shell
-      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+       ```shell
+       curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 
-      install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+       install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 
-      echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+       echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
 
-      rm microsoft.gpg
-      ```
+       rm microsoft.gpg
+       ```
 
-   2. Then update the package cache and install the package using
+    2. Then update the package cache and install the package using
 
-      ```shell
-      apt-get update
+       ```shell
+       apt-get update
 
-      apt-get install -y code
-      ```
+       apt-get install -y code
+       ```
 
 14. **Install Google Chrome (optional)**
 
-   1. Download and install the key
+    1. Download and install the key
 
-      ```shell
-      wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+       ```shell
+       wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 
-      echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-      ```
+       echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+       ```
 
-   2. Then update the package cache and install the package using
+    2. Then update the package cache and install the package using
 
-      ```shell
-      apt-get update
+       ```shell
+       apt-get update
 
-      apt-get install google-chrome-stable
-      ```
+       apt-get install google-chrome-stable
+       ```
 
 15. **Install Java JDK 8 (optional)**
 
@@ -311,134 +312,66 @@ From this point we will be configuring the `live system`.
 
 18. **Reconfigure packages**
 
-   1. Generate locales
+    1. Generate locales
 
-      ```shell
-      dpkg-reconfigure locales
-      ```
+       ```shell
+       dpkg-reconfigure locales
+       ```
 
-      1. *Select locales*
-         <p align="center">
-         <img src="images/locales-select.png">
-         </p>
+       1. *Select locales*
+          <p align="center">
+          <img src="images/locales-select.png">
+          </p>
 
-      2. *Select default locale*
-         <p align="center">
-         <img src="images/locales-default.png">
-         </p>   
+       2. *Select default locale*
+          <p align="center">
+          <img src="images/locales-default.png">
+          </p>
 
-   2. Reconfigure resolvconf
+    2. Configure network-manager
 
-      ```shell
-      dpkg-reconfigure resolvconf
-      ```
+       ```shell
+       cat <<EOF > /etc/NetworkManager/NetworkManager.conf
+       [main]
+       rc-manager=none
+       plugins=ifupdown,keyfile
+       dns=systemd-resolved
 
-      1. *Confirm changes*
-         <p align="center">
-         <img src="images/resolvconf-confirm-01.png">
-         </p>
+       [ifupdown]
+       managed=false
+       ```
 
-         <p align="center">
-         <img src="images/resolvconf-confirm-02.png">
-         </p>
+    3. Reconfigure network-manager
 
-         <p align="center">
-         <img src="images/resolvconf-confirm-03.png">
-         </p>
-
-   3. Configure network-manager
-
-      ```shell
-      cat <<EOF > /etc/NetworkManager/NetworkManager.conf
-      [main]
-      rc-manager=resolvconf
-      plugins=ifupdown,keyfile
-      dns=dnsmasq
-
-      [ifupdown]
-      managed=false
-      EOF
-      ```
-
-   4. Reconfigure network-manager
-
-      ```shell
-      dpkg-reconfigure network-manager
-      ```
-
-19. **Cleanup the chroot environment**
-
-   1. If you installed software, be sure to run
-
-      ```shell
-      truncate -s 0 /etc/machine-id
-      ```
-
-   2. Remove the diversion
-
-      ```shell
-      rm /sbin/initctl
-
-      dpkg-divert --rename --remove /sbin/initctl
-      ```
-
-   3. Clean up
-
-      ```shell
-      apt-get clean
-
-      rm -rf /tmp/* ~/.bash_history
-
-      umount /proc
-
-      umount /sys
-
-      umount /dev/pts
-
-      export HISTSIZE=0
-
-      exit
-      ```
-
-## Unbind mount points
-
-```shell
-sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
-
-sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
-```
+       ```shell
+       dpkg-reconfigure network-manager
+       ```
 
 ## Create the CD image directory and populate it
 
 We are now back in our `build environment` after setting up our `live system` and will continue creating files necessary to generate the ISO.
 
-1. Access build directory
+1. Create directories
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
+   mkdir -p /image/{casper,isolinux,install}
    ```
 
-2. Create directories
+2. Copy kernel images
 
    ```shell
-   mkdir -p image/{casper,isolinux,install}
+   cp /boot/vmlinuz-**-**-generic image/casper/vmlinuz
+
+   cp /boot/initrd.img-**-**-generic image/casper/initrd
    ```
 
-3. Copy kernel images
+3. Copy memtest86+ binary (BIOS)
 
    ```shell
-   sudo cp chroot/boot/vmlinuz-**-**-generic image/casper/vmlinuz
-
-   sudo cp chroot/boot/initrd.img-**-**-generic image/casper/initrd
+   cp /boot/memtest86+.bin image/install/memtest86+
    ```
 
-4. Copy memtest86+ binary (BIOS)
-
-   ```shell
-   sudo cp chroot/boot/memtest86+.bin image/install/memtest86+
-   ```
-
-5. Download and extract memtest86 binary (UEFI)
+4. Download and extract memtest86 binary (UEFI)
 
    ```shell
    wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
@@ -450,19 +383,13 @@ We are now back in our `build environment` after setting up our `live system` an
 
 ## GRUB menu configuration
 
-   1. Access build directory
-
-      ```shell
-      cd $HOME/live-ubuntu-from-scratch
-      ```
-
-   2. Create base point access file for grub
+   1. Create base point access file for grub
 
       ```shell
       touch image/ubuntu
       ```
 
-   3. Create image/isolinux/grub.cfg
+   2. Create image/isolinux/grub.cfg
 
       ```shell
       cat <<EOF > image/isolinux/grub.cfg
@@ -508,69 +435,32 @@ We are now back in our `build environment` after setting up our `live system` an
 Next we create a file `filesystem.manifest` to specify each package and it's version that is installed on the `live system`.  We create another file `filesystem.manifest-desktop` which specifies which files will be installed on the `target system`.  Once the Ubiquity installer completes, it will
 remove packages specified in `filesystem.manifest` that are *not* listed in `filesystem.manifest-desktop`.
 
-1. Access build directory
+1. Generate manifest
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
-   ```
+   dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee /image/casper/filesystem.manifest
 
-2. Generate manifest
+   cp -v /image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
 
-   ```shell
-   sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
+   sed -i '/ubiquity/d' /image/casper/filesystem.manifest-desktop
 
-   sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
+   sed -i '/casper/d' /image/casper/filesystem.manifest-desktop
 
-   sudo sed -i '/ubiquity/d' image/casper/filesystem.manifest-desktop
+   sed -i '/discover/d' /image/casper/filesystem.manifest-desktop
 
-   sudo sed -i '/casper/d' image/casper/filesystem.manifest-desktop
+   sed -i '/laptop-detect/d' /image/casper/filesystem.manifest-desktop
 
-   sudo sed -i '/discover/d' image/casper/filesystem.manifest-desktop
-
-   sudo sed -i '/laptop-detect/d' image/casper/filesystem.manifest-desktop
-
-   sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
-   ```
-
-## Compress the chroot
-
-After everything has been installed and preconfigured in the **chrooted** environment, we need to generate an image of everything that was done by following the next steps in the `build environment`.
-
-1. Access build directory
-
-   ```shell
-   cd $HOME/live-ubuntu-from-scratch
-   ```
-
-2. Create squashfs
-
-   ```shell
-   sudo mksquashfs chroot image/casper/filesystem.squashfs
-   ```
-
-   > **Squashfs** is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
-   > **Squashfs** is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used), and in constrained block device/memory systems (e.g. **embedded systems**) where low overhead is needed.
-
-3. Write the filesystem.size
-
-   ```shell
-   printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
+   sed -i '/os-prober/d' /image/casper/filesystem.manifest-desktop
    ```
 
 ## Create diskdefines
 
 **README** file often found on Linux LiveCD installer discs, such as an Ubuntu Linux installation CD; typically named “**README.diskdefines**” and may be referenced during installation.
 
-1. Access build directory
+1. Create file /image/README.diskdefines
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch
-   ```
-
-2. Create file image/README.diskdefines
-
-   ```shell
-   cat <<EOF > image/README.diskdefines
+   cat <<EOF > /image/README.diskdefines
    #define DISKNAME  Ubuntu from scratch
    #define TYPE  binary
    #define TYPEbinary  1
@@ -583,32 +473,201 @@ After everything has been installed and preconfigured in the **chrooted** enviro
    EOF
    ```
 
-## Create ISO Image for a LiveCD (BIOS + UEFI)
+### Creating the certificates to Secure Boot
+
+   1. Create the certificate template
+
+      ```shell
+      mkdir /certificates
+      ```
+
+      ```shell
+      cd /certificates
+      ```
+
+      ```shell
+      cat <<EOF > config.conf
+      [ req ]
+      default_bits            = 2048
+      default_md              = sha256
+      distinguished_name      = dn
+      prompt                  = no
+
+      [ dn ]
+      C                       = BR
+      ST                      = SP
+      L                       = Campinas
+      O                       = Scratch, Labs
+      OU                      = Labs
+      CN                      = \${ENV::CN}
+
+      [ root ]
+      basicConstraints        = critical,CA:TRUE
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always,issuer
+      keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
+
+      [ ca ]
+      basicConstraints        = critical,CA:TRUE,pathlen:0
+      subjectKeyIdentifier    = hash
+      authorityKeyIdentifier  = keyid:always,issuer:always
+      keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
+
+      [ db ]
+      subjectKeyIdentifier    = hash
+      basicConstraints        = critical,CA:FALSE
+      keyUsage                = critical,keyEncipherment,dataEncipherment
+      authorityKeyIdentifier  = keyid,issuer:always
+      EOF
+      ```
+
+   2. Create the Root CA certificate
+
+      ```shell
+      CN="Root, CA" \
+         openssl req -x509 -newkey rsa:2048 -nodes \
+            -keyout root.key \
+            -days 3650 \
+            -config config.conf \
+            -extensions root \
+            -out root.pem
+      ```
+
+   3. Create the intermediate CA certificate
+
+      ```shell
+      CN="Ubuntu live from scratch, CA" \
+         openssl req -newkey rsa:2048 -nodes \
+            -keyout ca.key \
+            -config config.conf \
+            -out ca.pem
+      ```
+
+   4. Create Database (DB) request certificate
+
+      ```shell
+      CN="Ubuntu live from scratch, Database" \
+         openssl req -newkey rsa:2048 -nodes \
+            -keyout db.key \
+            -config config.conf \
+            -out db.pem
+      ```
+
+   5. Sign the intermediate CA certificate with the Root CA certificate
+
+      ```shell
+      CN="Ubuntu live from scratch, CA" \
+         openssl x509 -req \
+            -extfile config.conf \
+            -extensions ca \
+            -in ca.pem \
+            -CA root.pem \
+            -CAkey root.key \
+            -CAcreateserial \
+            -out ca.pem \
+            -days 3650 -sha256
+      ```
+
+   6. Sign Database (DB) certificate using your own CA
+
+       ```shell
+       CN="Ubuntu live from scratch, Database" \
+          openssl x509 -req \
+             -extfile config.conf \
+             -extensions db \
+             -in db.pem \
+             -CA ca.pem \
+             -CAkey ca.key \
+             -CAcreateserial \
+             -out db.pem \
+             -days 3650 -sha256
+       ```
+
+   7. Create the intermediate CA certificate chain
+
+      ```shell
+      cat ca.pem root.pem > ca-chain.pem
+      ```
+
+   8. Verify the signatures
+
+      ```shell
+      openssl verify -CAfile ca-chain.pem db.pem
+      ```
+
+   9. Create DER version of our public key (CA)
+
+      ```shell
+      openssl x509 -outform DER -in ca.pem -out ca.cer
+      ```
+
+### Creating image
 
 1. Access image directory
 
    ```shell
-   cd $HOME/live-ubuntu-from-scratch/image
+   cd /image
    ```
 
-2. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+2. Create [SBAT](https://github.com/rhboot/shim/blob/main/SBAT.md) file
+
+   ```shell
+   GRUB_VERSION=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3 | cut -d'-' -f1`
+   GRUB_RELEASE=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3`
+    
+   # create SBAT file
+   cat <<EOF > isolinux/sbat.csv
+   sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
+   grub,1,Free Software Foundation,grub,$GRUB_VERSION,https://www.gnu.org/software/grub/
+   grub.ubuntu,1,Ubuntu,grub2,$GRUB_RELEASE,https://www.ubuntu.com/
+   EOF
+   ```
+
+3. Create a grub UEFI image
+
+   ```shell
+   grub-mkstandalone \
+      --format=x86_64-efi \
+      --output=isolinux/grubx64.efi \
+      --locales="" \
+      --fonts="" \
+      "boot/grub/grub.cfg=isolinux/grub.cfg"
+   ```
+
+   * Fix Secure Boot Grub
+
+   ```shell
+   sed -i 's/SecureBoot/SecureB00t/' isolinux/grubx64.efi
+   ```
+
+4. Add .sbat sections
+
+   ```shell
+   objcopy --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --change-section-address .sbat=10000000
+   ```
+
+5. UEFI secure boot signing
+
+   ```shell
+   sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi
+   ```
+
+6. Create a FAT16 UEFI boot disk image containing the EFI bootloader
 
    ```shell
    (
-       cd isolinux && \
-       sudo dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
-       LOOP_DEVICE=`sudo losetup --find --show $PWD/efiboot.img` && \
-       sudo mkfs.vfat -F 16 $LOOP_DEVICE && \
-       sudo mkdir efi && \
-       sudo mount $LOOP_DEVICE efi && \
-       sudo grub-install --target=x86_64-efi --efi-directory=efi --uefi-secure-boot --removable --no-nvram $LOOP_DEVICE && \
-       sudo umount $LOOP_DEVICE && \
-       sudo losetup --detach $LOOP_DEVICE && \
-       sudo rm -rf efi
+      cd isolinux && \
+      dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
+      mkfs.vfat -F 16 efiboot.img && \
+      LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
+      LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/shimx64.efi.signed.previous ::efi/boot/bootx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/mmx64.efi ::efi/boot/mmx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img /image/isolinux/grubx64.efi ::efi/boot/grubx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
    )
    ```
 
-3. Create a grub BIOS image
+7. Create a grub BIOS image
 
    ```shell
    grub-mkstandalone \
@@ -621,45 +680,135 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-4. Combine a bootable Grub cdboot.img
+8. Combine a bootable Grub cdboot.img
 
    ```shell
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-5. Generate md5sum.txt
+9. Generate md5sum.txt
 
    ```shell
-   sudo /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
+   /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
    ```
 
-6. Create iso from the image directory using the command-line
+## Cleanup the chroot environment
+
+   1. If you installed software, be sure to run
+
+      ```shell
+      truncate -s 0 /etc/machine-id
+      ```
+
+   2. Remove the diversion
+
+      ```shell
+      rm /sbin/initctl
+
+      dpkg-divert --rename --remove /sbin/initctl
+      ```
+
+   3. Clean up
+
+      ```shell
+      apt-get clean
+
+      rm -rf /tmp/* ~/.bash_history
+
+      umount /proc
+
+      umount /sys
+
+      umount /dev/pts
+
+      export HISTSIZE=0
+
+      exit
+      ```
+
+## Unbind mount points
+
+```shell
+sudo umount $HOME/live-ubuntu-from-scratch/chroot/dev
+
+sudo umount $HOME/live-ubuntu-from-scratch/chroot/run
+```
+
+## Compress the chroot
+
+After everything has been installed and preconfigured in the **chrooted** environment, we need to generate an image of everything that was done by following the next steps in the `build environment`.
+
+1. Access build directory
+
+   ```shell
+   cd $HOME/live-ubuntu-from-scratch
+   ```
+
+2. Move image artifacts
+
+   ```shell
+   sudo mv chroot/{image,certificates} .
+   ```
+
+3. Create squashfs
+
+   ```shell
+   sudo mksquashfs chroot image/casper/filesystem.squashfs \
+      -noappend -no-duplicates -no-recovery \
+      -wildcards \
+      -comp xz -b 1M -Xdict-size 100% \
+      -e "var/cache/apt/archives/*" \
+      -e "root/*" \
+      -e "root/.*" \
+      -e "tmp/*" \
+      -e "tmp/.*" \
+      -e "swapfile"
+   ```
+
+   > **Squashfs** is a highly compressed read-only filesystem for Linux. It uses zlib compression to compress both files, inodes and directories. Inodes in the system are very small and all blocks are packed to minimize data overhead. Block sizes greater than 4K are supported up to a maximum of 64K.
+   > **Squashfs** is intended for general read-only filesystem use, for archival use (i.e. in cases where a .tar.gz file may be used), and in constrained block device/memory systems (e.g. **embedded systems**) where low overhead is needed.
+
+4. Write the filesystem.size
+
+   ```shell
+   printf $(sudo du -sx --block-size=1 chroot | cut -f1) | sudo tee image/casper/filesystem.size
+   ```
+
+## Create ISO Image for a LiveCD (BIOS + UEFI + Secure Boot)
+
+1. Access build directory
+
+   ```shell
+   cd $HOME/live-ubuntu-from-scratch/image
+   ```
+
+2. Create iso from the image directory using the command-line
 
    ```shell
    sudo xorriso \
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
+      -J -J -joliet-long \
       -volid "Ubuntu from scratch" \
       -output "../ubuntu-from-scratch.iso" \
-      -eltorito-boot boot/grub/bios.img \
-         -no-emul-boot \
-         -boot-load-size 4 \
-         -boot-info-table \
-         --eltorito-catalog boot/grub/boot.cat \
-         --grub2-boot-info \
-         --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
-      -eltorito-alt-boot \
-         -e EFI/efiboot.img \
-         -no-emul-boot \
+     -eltorito-boot boot/grub/bios.img \
+      -no-emul-boot \
+      -boot-load-size 4 \
+      -boot-info-table \
+      --eltorito-catalog boot/grub/boot.cat \
+      --grub2-boot-info \
+      --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
+     -eltorito-alt-boot \
+      -e EFI/efiboot.img \
+      -no-emul-boot \
       -append_partition 2 0xef isolinux/efiboot.img \
       -m "isolinux/efiboot.img" \
       -m "isolinux/bios.img" \
-      -graft-points \
-         "/EFI/efiboot.img=isolinux/efiboot.img" \
-         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
-         "/boot/grub/bios.img=isolinux/bios.img" \
-         "."
+     -graft-points \
+      "/EFI/efiboot.img=isolinux/efiboot.img" \
+      "/boot/grub/bios.img=isolinux/bios.img" \
+      "."
    ```
 
 ## Alternative way, if previous one fails, create an Hybrid ISO
@@ -702,17 +851,24 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 
    ```shell
    apt install -y syslinux-common && \
-   cp /usr/lib/ISOLINUX/isolinux.bin isolinux/ && \
-   cp /usr/lib/syslinux/modules/bios/* isolinux/
+   cp /usr/lib/ISOLINUX/isolinux.bin image/isolinux/ && \
+   cp /usr/lib/syslinux/modules/bios/* image/isolinux/
    ```
 
-3. Create iso from the image directory
+3. Access build directory
+
+   ```shell
+   cd $HOME/live-ubuntu-from-scratch/image
+   ```
+
+4. Create iso from the image directory
 
    ```shell
    sudo xorriso \
       -as mkisofs \
       -iso-level 3 \
       -full-iso9660-filenames \
+      -J -J -joliet-long \
       -volid "Ubuntu from scratch" \
       -output "../ubuntu-from-scratch.iso" \
     -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \

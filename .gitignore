@@ -1,3 +1,4 @@
 scripts/chroot
 scripts/image
+scripts/certificates
 *.iso

@@ -1,4 +1,4 @@
-name: build-bionic
+name: build-noble
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -17,8 +17,9 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="bionic"/g' default_config.sh
+          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="noble"/g' default_config.sh
           ./build.sh -
+          cd ..
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
