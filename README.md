@@ -407,7 +407,7 @@ We are now back in our `build environment` after setting up our `live system` an
    2. Create image/isolinux/grub.cfg
 
       ```shell
-      cat <<EOF > image/isolinux/grub.cfg
+      cat <<EOF > /image/isolinux/grub.cfg
 
       search --set=root --file /ubuntu
       
