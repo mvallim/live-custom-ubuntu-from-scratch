@@ -384,7 +384,7 @@ We are now back in our `build environment` after setting up our `live system` an
 
    ```shell
    if [ -f "/boot/memtest86+x64.bin" ];
-       cp /boot/memtest86+x64.bin /image/intall/memtest86+
+       cp /boot/memtest86+x64.bin /image/install/memtest86+
    else
        cp /boot/memtest86+.bin /image/install/memtest86+
    fi
