@@ -375,25 +375,25 @@ We are now back in our `build environment` after setting up our `live system` an
 2. Copy kernel images
 
    ```shell
-   cp /boot/vmlinuz-**-**-generic image/casper/vmlinuz
+   cp /boot/vmlinuz-**-**-generic /image/casper/vmlinuz
 
-   cp /boot/initrd.img-**-**-generic image/casper/initrd
+   cp /boot/initrd.img-**-**-generic /image/casper/initrd
    ```
 
 3. Copy memtest86+ binary (BIOS)
 
    ```shell
-   cp /boot/memtest86+.bin image/install/memtest86+
+   cp /boot/memtest86+.bin /image/install/memtest86+
    ```
 
 4. Download and extract memtest86 binary (UEFI)
 
    ```shell
-   wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O image/install/memtest86-usb.zip
+   wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O /image/install/memtest86-usb.zip
 
-   unzip -p image/install/memtest86-usb.zip memtest86-usb.img > image/install/memtest86
+   unzip -p /image/install/memtest86-usb.zip memtest86-usb.img > /image/install/memtest86
 
-   rm -f image/install/memtest86-usb.zip
+   rm -f /image/install/memtest86-usb.zip
    ```
 
 ## GRUB menu configuration
