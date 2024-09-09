@@ -383,7 +383,11 @@ We are now back in our `build environment` after setting up our `live system` an
 3. Copy memtest86+ binary (BIOS)
 
    ```shell
-   cp /boot/memtest86+.bin /image/install/memtest86+
+   if [ -f "/boot/memtest86+x64.bin" ];
+       cp /boot/memtest86+x64.bin /image/intall/memtest86+
+   else
+       cp /boot/memtest86+.bin /image/install/memtest86+
+   fi
    ```
 
 4. Download and extract memtest86 binary (UEFI)
@@ -401,7 +405,7 @@ We are now back in our `build environment` after setting up our `live system` an
    1. Create base point access file for grub
 
       ```shell
-      touch image/ubuntu
+      touch /image/ubuntu
       ```
 
    2. Create image/isolinux/grub.cfg
