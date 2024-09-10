@@ -162,22 +162,28 @@ function build_iso() {
         -J -J -joliet-long \
         -volid "$TARGET_NAME" \
         -output "$SCRIPT_DIR/$TARGET_NAME.iso" \
-      -eltorito-boot boot/grub/bios.img \
+      -eltorito-boot isolinux/bios.img \
         -no-emul-boot \
         -boot-load-size 4 \
         -boot-info-table \
-        --eltorito-catalog boot/grub/boot.cat \
+        --eltorito-catalog boot.catalog \
         --grub2-boot-info \
         --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
       -eltorito-alt-boot \
-        -e EFI/efiboot.img \
         -no-emul-boot \
+        -e isolinux/efiboot.img \
         -append_partition 2 0xef isolinux/efiboot.img \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
+        -e '--interval:appended_partition_2:::' \
+      -exclude isolinux \
       -graft-points \
-         "/EFI/efiboot.img=isolinux/efiboot.img" \
-         "/boot/grub/bios.img=isolinux/bios.img" \
+         "/EFI/boot/bootx64.efi=isolinux/bootx64.efi" \
+         "/EFI/boot/mmx64.efi=isolinux/mmx64.efi" \
+         "/EFI/boot/grubx64.efi=isolinux/grubx64.efi" \
+         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
+         "/isolinux/bios.img=isolinux/bios.img" \
+         "/isolinux/efiboot.img=isolinux/efiboot.img" \
          "."
 
     popd

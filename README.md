@@ -237,22 +237,22 @@ From this point we will be configuring the `live system`.
 
     ```shell
     apt-get install -y \
-        plymouth-theme-ubuntu-logo \
-        ubuntu-gnome-desktop \
-        ubuntu-gnome-wallpapers
+       plymouth-themes \
+       ubuntu-gnome-desktop \
+       ubuntu-gnome-wallpapers
     ```
 
 12. **Install useful applications**
 
     ```shell
     apt-get install -y \
-        clamav-daemon \
-        terminator \
-        apt-transport-https \
-        curl \
-        vim \
-        nano \
-        less
+       clamav-daemon \
+       terminator \
+       apt-transport-https \
+       curl \
+       vim \
+       nano \
+       less
     ```
 
 13. **Install Visual Studio Code (optional)**
@@ -307,13 +307,13 @@ From this point we will be configuring the `live system`.
 
     ```shell
     apt-get purge -y \
-        transmission-gtk \
-        transmission-common \
-        gnome-mahjongg \
-        gnome-mines \
-        gnome-sudoku \
-        aisleriot \
-        hitori
+       transmission-gtk \
+       transmission-common \
+       gnome-mahjongg \
+       gnome-mines \
+       gnome-sudoku \
+       aisleriot \
+       hitori
     ```
 
 17. **Remove unused packages**
@@ -341,7 +341,7 @@ From this point we will be configuring the `live system`.
           </p>
 
     2. Configure network-manager
-   
+
        1. Create config file
 
           ```shell
@@ -625,7 +625,6 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
    GRUB_VERSION=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3 | cut -d'-' -f1`
    GRUB_RELEASE=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3`
     
-   # create SBAT file
    cat <<EOF > isolinux/sbat.csv
    sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
    grub,1,Free Software Foundation,grub,$GRUB_VERSION,https://www.gnu.org/software/grub/
@@ -662,7 +661,14 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
    sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi
    ```
 
-6. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+6. Copy Shim and MOK
+
+   ```shell
+    cp /usr/lib/shim/shimx64.efi.signed.previous isolinux/bootx64.efi
+    cp /usr/lib/shim/mmx64.efi isolinux/mmx64.efi
+   ```
+
+7. Create a FAT16 UEFI boot disk image containing the EFI bootloader
 
    ```shell
    (
@@ -670,14 +676,14 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
       dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
       mkfs.vfat -F 16 efiboot.img && \
       LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
-      LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/shimx64.efi.signed.previous ::efi/boot/bootx64.efi && \
-      LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/mmx64.efi ::efi/boot/mmx64.efi && \
-      LC_CTYPE=C mcopy -i efiboot.img /image/isolinux/grubx64.efi ::efi/boot/grubx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/ && \
+      LC_CTYPE=C mcopy -i efiboot.img ./mmx64.efi ::efi/boot/ && \
+      LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/ && \
       LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
    )
    ```
 
-7. Create a grub BIOS image
+8. Create a grub BIOS image
 
    ```shell
    grub-mkstandalone \
@@ -690,17 +696,17 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
       "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-8. Combine a bootable Grub cdboot.img
+9. Combine a bootable Grub cdboot.img
 
    ```shell
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-9. Generate md5sum.txt
+10. Generate md5sum.txt
 
-   ```shell
-   /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
-   ```
+    ```shell
+    /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
+    ```
 
 ## Cleanup the chroot environment
 
@@ -802,23 +808,29 @@ After everything has been installed and preconfigured in the **chrooted** enviro
       -J -J -joliet-long \
       -volid "Ubuntu from scratch" \
       -output "../ubuntu-from-scratch.iso" \
-     -eltorito-boot boot/grub/bios.img \
-      -no-emul-boot \
-      -boot-load-size 4 \
-      -boot-info-table \
-      --eltorito-catalog boot/grub/boot.cat \
-      --grub2-boot-info \
-      --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
-     -eltorito-alt-boot \
-      -e EFI/efiboot.img \
-      -no-emul-boot \
-      -append_partition 2 0xef isolinux/efiboot.img \
-      -m "isolinux/efiboot.img" \
-      -m "isolinux/bios.img" \
-     -graft-points \
-      "/EFI/efiboot.img=isolinux/efiboot.img" \
-      "/boot/grub/bios.img=isolinux/bios.img" \
-      "."
+      -eltorito-boot isolinux/bios.img \
+        -no-emul-boot \
+        -boot-load-size 4 \
+        -boot-info-table \
+        --eltorito-catalog boot.catalog \
+        --grub2-boot-info \
+        --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
+      -eltorito-alt-boot \
+        -no-emul-boot \
+        -e isolinux/efiboot.img \
+        -append_partition 2 0xef isolinux/efiboot.img \
+        -m "isolinux/efiboot.img" \
+        -m "isolinux/bios.img" \
+        -e '--interval:appended_partition_2:::' \
+      -exclude isolinux \
+      -graft-points \
+         "/EFI/boot/bootx64.efi=isolinux/bootx64.efi" \
+         "/EFI/boot/mmx64.efi=isolinux/mmx64.efi" \
+         "/EFI/boot/grubx64.efi=isolinux/grubx64.efi" \
+         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
+         "/isolinux/bios.img=isolinux/bios.img" \
+         "/isolinux/efiboot.img=isolinux/efiboot.img" \
+         "."
    ```
 
 ## Alternative way, if previous one fails, create an Hybrid ISO

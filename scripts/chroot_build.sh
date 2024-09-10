@@ -375,14 +375,18 @@ EOF
     # UEFI secure boot signing
     sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi
 
+    # Copy Shim and MOK
+    cp /usr/lib/shim/shimx64.efi.signed.previous isolinux/bootx64.efi
+    cp /usr/lib/shim/mmx64.efi isolinux/mmx64.efi
+
     # create a FAT16 UEFI boot disk image containing the EFI bootloader
     (
         cd isolinux && \
         dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
         mkfs.vfat -F 16 efiboot.img && \
         LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
-        LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/shimx64.efi.signed.previous ::efi/boot/bootx64.efi && \
-        LC_CTYPE=C mcopy -i efiboot.img /usr/lib/shim/mmx64.efi ::efi/boot/mmx64.efi && \
+        LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/bootx64.efi && \
+        LC_CTYPE=C mcopy -i efiboot.img ./mmx64.efi ::efi/boot/mmx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/grubx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
     )
