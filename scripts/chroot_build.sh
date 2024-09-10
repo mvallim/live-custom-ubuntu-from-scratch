@@ -117,7 +117,6 @@ function install_pkg() {
         grub2-common \
         grub-efi-amd64-signed \
         shim-signed \
-        memtest86+ \
         mtools \
         binutils
     
@@ -180,16 +179,10 @@ function build_image() {
     cp /boot/initrd.img-**-**-generic casper/initrd
 
     # memtest86
-    if [ -f "/boot/memtest86+x64.bin" ]; then
-        cp /boot/memtest86+x64.bin install/memtest86+
-    else
-        cp /boot/memtest86+.bin install/memtest86+
-    fi
-
-    # memtest86++
-    wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O install/memtest86-usb.zip
-    unzip -p install/memtest86-usb.zip memtest86-usb.img > install/memtest86
-    rm -f install/memtest86-usb.zip
+    wget --progress=dot https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip -O install/memtest86.zip
+    unzip -p install/memtest86.zip memtest64.bin > install/memtest86+.bin
+    unzip -p install/memtest86.zip memtest64.efi > install/memtest86+.efi
+    rm -f install/memtest86.zip
 
     # grub
     touch ubuntu
@@ -223,16 +216,12 @@ menuentry 'UEFI Firmware Settings' {
     fwsetup
 }
 
-menuentry "Test memory Memtest86 (UEFI, long load time)" {
-    insmod part_gpt
-    insmod search_fs_uuid
-    insmod chain
-    loopback loop /install/memtest86
-    chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
+menuentry "Test memory Memtest86+ (UEFI)" {
+    linux /install/memtest86+.efi
 }
 else
 menuentry "Test memory Memtest86+ (BIOS)" {
-    linux16 /install/memtest86+
+    linux16 /install/memtest86+.bin
 }
 fi
 EOF

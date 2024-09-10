@@ -196,7 +196,6 @@ From this point we will be configuring the `live system`.
       grub2-common \
       grub-efi-amd64-signed \
       shim-signed \
-      memtest86+ \
       mtools \
       binutils
    ```
@@ -380,24 +379,13 @@ We are now back in our `build environment` after setting up our `live system` an
    cp /boot/initrd.img-**-**-generic /image/casper/initrd
    ```
 
-3. Copy memtest86+ binary (BIOS)
+3. Copy memtest86+ binary (BIOS and UEFI)
 
    ```shell
-   if [ -f "/boot/memtest86+x64.bin" ];
-       cp /boot/memtest86+x64.bin /image/install/memtest86+
-   else
-       cp /boot/memtest86+.bin /image/install/memtest86+
-   fi
-   ```
-
-4. Download and extract memtest86 binary (UEFI)
-
-   ```shell
-   wget --progress=dot https://www.memtest86.com/downloads/memtest86-usb.zip -O /image/install/memtest86-usb.zip
-
-   unzip -p /image/install/memtest86-usb.zip memtest86-usb.img > /image/install/memtest86
-
-   rm -f /image/install/memtest86-usb.zip
+    wget --progress=dot https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip -O install/memtest86.zip
+    unzip -p install/memtest86.zip memtest64.bin > install/memtest86+.bin
+    unzip -p install/memtest86.zip memtest64.efi > install/memtest86+.efi
+    rm -f install/memtest86.zip
    ```
 
 ## GRUB menu configuration
@@ -414,43 +402,39 @@ We are now back in our `build environment` after setting up our `live system` an
       cat <<EOF > /image/isolinux/grub.cfg
 
       search --set=root --file /ubuntu
-      
+
       insmod all_video
-      
+
       set default="0"
       set timeout=30
-      
+
       menuentry "Try Ubuntu FS without installing" {
-          linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
-          initrd /casper/initrd
+         linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
+         initrd /casper/initrd
       }
-      
+
       menuentry "Install Ubuntu FS" {
-          linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
-          initrd /casper/initrd
+         linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
+         initrd /casper/initrd
       }
-      
+
       menuentry "Check disc for defects" {
-          linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
-          initrd /casper/initrd
+         linux /casper/vmlinuz boot=casper integrity-check quiet splash ---
+         initrd /casper/initrd
       }
-      
+
       grub_platform
       if [ "\$grub_platform" = "efi" ]; then
       menuentry 'UEFI Firmware Settings' {
-          fwsetup
+         fwsetup
       }
-      
-      menuentry "Test memory Memtest86 (UEFI, long load time)" {
-          insmod part_gpt
-          insmod search_fs_uuid
-          insmod chain
-          loopback loop /install/memtest86
-          chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
+
+      menuentry "Test memory Memtest86+ (UEFI)" {
+         linux /install/memtest86+.efi
       }
       else
       menuentry "Test memory Memtest86+ (BIOS)" {
-          linux16 /install/memtest86+
+         linux16 /install/memtest86+.bin
       }
       fi
       EOF
