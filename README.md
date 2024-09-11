@@ -383,10 +383,10 @@ We are now back in our `build environment` after setting up our `live system` an
 3. Copy memtest86+ binary (BIOS and UEFI)
 
    ```shell
-    wget --progress=dot https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip -O install/memtest86.zip
-    unzip -p install/memtest86.zip memtest64.bin > install/memtest86+.bin
-    unzip -p install/memtest86.zip memtest64.efi > install/memtest86+.efi
-    rm -f install/memtest86.zip
+    wget --progress=dot https://memtest.org/download/v7.00/mt86plus_7.00.binaries.zip -O /image/install/memtest86.zip
+    unzip -p /image/install/memtest86.zip memtest64.bin > /image/install/memtest86+.bin
+    unzip -p /image/install/memtest86.zip memtest64.efi > /image/install/memtest86+.efi
+    rm -f /image/install/memtest86.zip
    ```
 
 ### GRUB menu configuration
