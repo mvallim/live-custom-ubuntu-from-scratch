@@ -136,7 +136,7 @@ function build_iso() {
     echo "=====> running build_iso ..."
 
     # move image artifacts
-    sudo mv chroot/{image,certificates} .
+    sudo mv chroot/image .
 
     # compress rootfs
     sudo mksquashfs chroot image/casper/filesystem.squashfs \
@@ -169,10 +169,14 @@ function build_iso() {
         --eltorito-catalog boot.catalog \
         --grub2-boot-info \
         --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
+        -partition_offset 16 \
+        --mbr-force-bootable \
       -eltorito-alt-boot \
         -no-emul-boot \
         -e isolinux/efiboot.img \
-        -append_partition 2 0xef isolinux/efiboot.img \
+        -append_partition 2 28732ac11ff8d211ba4b00a0c93ec93b isolinux/efiboot.img \
+        -appended_part_as_gpt \
+        -iso_mbr_part_type a2a0d0ebe5b9334487c068b6b72699c7 \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
         -e '--interval:appended_partition_2:::' \
@@ -181,7 +185,7 @@ function build_iso() {
          "/EFI/boot/bootx64.efi=isolinux/bootx64.efi" \
          "/EFI/boot/mmx64.efi=isolinux/mmx64.efi" \
          "/EFI/boot/grubx64.efi=isolinux/grubx64.efi" \
-         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
+         "/EFI/ubuntu/grub.cfg=isolinux/grub.cfg" \
          "/isolinux/bios.img=isolinux/bios.img" \
          "/isolinux/efiboot.img=isolinux/efiboot.img" \
          "."

@@ -248,147 +248,21 @@ EOF
 #define TOTALNUM0  1
 EOF
 
-    # create certificates
-    rm -rf /certificates 
-    mkdir /certificates
-
-    pushd /certificates
-
-    # create the certificate template
-    cat <<EOF > config.conf
-[ req ]
-default_bits            = 2048
-default_md              = sha256
-distinguished_name      = dn
-prompt                  = no
-
-[ dn ]
-C                       = BR
-ST                      = SP
-L                       = Campinas
-O                       = Scratch, Labs
-OU                      = Labs
-CN                      = \${ENV::CN}
-
-[ root ]
-basicConstraints        = critical,CA:TRUE
-subjectKeyIdentifier    = hash
-authorityKeyIdentifier  = keyid:always,issuer
-keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
-
-[ ca ]
-basicConstraints        = critical,CA:TRUE,pathlen:0
-subjectKeyIdentifier    = hash
-authorityKeyIdentifier  = keyid:always,issuer:always
-keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
-
-[ db ]
-subjectKeyIdentifier    = hash
-basicConstraints        = critical,CA:FALSE
-keyUsage                = critical,keyEncipherment,dataEncipherment
-authorityKeyIdentifier  = keyid,issuer:always
-EOF
-
-    # create the Root CA certificate
-    CN="Root, CA" \
-        openssl req -x509 -newkey rsa:2048 -nodes \
-            -keyout root.key \
-            -days 3650 \
-            -config config.conf \
-            -extensions root \
-            -out root.pem
-
-    # create the intermediate CA certificate
-    CN="Ubuntu live from scratch, CA" \
-        openssl req -newkey rsa:2048 -nodes \
-            -keyout ca.key \
-            -config config.conf \
-            -out ca.pem
-
-    # create Database (DB) request certificate
-    CN="Ubuntu live from scratch, Database" \
-        openssl req -newkey rsa:2048 -nodes \
-            -keyout db.key \
-            -config config.conf \
-            -out db.pem
-
-    # sign the intermediate CA certificate with the Root CA certificate
-    CN="Ubuntu live from scratch, CA" \
-        openssl x509 -req \
-            -extfile config.conf \
-            -extensions ca \
-            -in ca.pem \
-            -CA root.pem \
-            -CAkey root.key \
-            -CAcreateserial \
-            -out ca.pem \
-            -days 3650 -sha256
-
-    # sign Database (DB) certificate using your own CA
-    CN="Ubuntu live from scratch, Database" \
-        openssl x509 -req \
-            -extfile config.conf \
-            -extensions db \
-            -in db.pem \
-            -CA ca.pem \
-            -CAkey ca.key \
-            -CAcreateserial \
-            -out db.pem \
-            -days 3650 -sha256
-
-    # create the intermediate CA certificate chain
-    cat ca.pem root.pem > ca-chain.pem
-
-    # verify the signatures
-    openssl verify -CAfile ca-chain.pem db.pem
-
-    # create DER version of our public key (CA)
-    openssl x509 -outform DER -in ca.pem -out ca.cer
-
-    popd # return to image directory
-
-    # grub version/release
-    GRUB_VERSION=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3 | cut -d'-' -f1`
-    GRUB_RELEASE=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3`
-    
-    # create SBAT file
-    cat <<EOF > isolinux/sbat.csv
-sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
-grub,1,Free Software Foundation,grub,$GRUB_VERSION,https://www.gnu.org/software/grub/
-grub.ubuntu,1,Ubuntu,grub2,$GRUB_RELEASE,https://www.ubuntu.com/
-EOF
-
-    # create a grub UEFI image
-    grub-mkstandalone \
-      --format=x86_64-efi \
-      --output=isolinux/grubx64.efi \
-      --locales="" \
-      --fonts="" \
-      "boot/grub/grub.cfg=isolinux/grub.cfg"
-
-    # fix secure boot grub
-    sed -i 's/SecureBoot/SecureB00t/' isolinux/grubx64.efi
-
-    # add .sbat sections
-    objcopy --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --change-section-address .sbat=10000000
-
-    # UEFI secure boot signing
-    sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi
-
-    # Copy Shim and MOK
+    # copy EFI loaders
     cp /usr/lib/shim/shimx64.efi.signed.previous isolinux/bootx64.efi
     cp /usr/lib/shim/mmx64.efi isolinux/mmx64.efi
+    cp /usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed isolinux/grubx64.efi
 
-    # create a FAT16 UEFI boot disk image containing the EFI bootloader
+    # create a FAT16 UEFI boot disk image containing the EFI bootloaders
     (
         cd isolinux && \
         dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
         mkfs.vfat -F 16 efiboot.img && \
-        LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
+        LC_CTYPE=C mmd -i efiboot.img efi efi/ubuntu efi/boot && \
         LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/bootx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img ./mmx64.efi ::efi/boot/mmx64.efi && \
         LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/grubx64.efi && \
-        LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
+        LC_CTYPE=C mcopy -i efiboot.img ./grub.cfg ::efi/ubuntu/grub.cfg
     )
 
     # create a grub BIOS image

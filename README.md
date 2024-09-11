@@ -361,7 +361,7 @@ From this point we will be configuring the `live system`.
           dpkg-reconfigure network-manager
           ```
 
-## Create the CD image directory and populate it
+## Create the image directory and populate it
 
 We are now back in our `build environment` after setting up our `live system` and will continue creating files necessary to generate the ISO.
 
@@ -388,7 +388,7 @@ We are now back in our `build environment` after setting up our `live system` an
     rm -f install/memtest86.zip
    ```
 
-## GRUB menu configuration
+### GRUB menu configuration
 
    1. Create base point access file for grub
 
@@ -440,7 +440,7 @@ We are now back in our `build environment` after setting up our `live system` an
       EOF
       ```
 
-## Create manifest
+### Create manifest
 
 Next we create a file `filesystem.manifest` to specify each package and it's version that is installed on the `live system`.  We create another file `filesystem.manifest-desktop` which specifies which files will be installed on the `target system`.  Once the Ubiquity installer completes, it will
 remove packages specified in `filesystem.manifest` that are *not* listed in `filesystem.manifest-desktop`.
@@ -463,7 +463,7 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
    sed -i '/os-prober/d' /image/casper/filesystem.manifest-desktop
    ```
 
-## Create diskdefines
+### Create diskdefines
 
 **README** file often found on Linux LiveCD installer discs, such as an Ubuntu Linux installation CD; typically named “**README.diskdefines**” and may be referenced during installation.
 
@@ -483,134 +483,6 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
    EOF
    ```
 
-### Creating the certificates to Secure Boot
-
-   1. Create the certificate template
-
-      ```shell
-      mkdir /certificates
-      ```
-
-      ```shell
-      cd /certificates
-      ```
-
-      ```shell
-      cat <<EOF > config.conf
-      [ req ]
-      default_bits            = 2048
-      default_md              = sha256
-      distinguished_name      = dn
-      prompt                  = no
-
-      [ dn ]
-      C                       = BR
-      ST                      = SP
-      L                       = Campinas
-      O                       = Scratch, Labs
-      OU                      = Labs
-      CN                      = \${ENV::CN}
-
-      [ root ]
-      basicConstraints        = critical,CA:TRUE
-      subjectKeyIdentifier    = hash
-      authorityKeyIdentifier  = keyid:always,issuer
-      keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
-
-      [ ca ]
-      basicConstraints        = critical,CA:TRUE,pathlen:0
-      subjectKeyIdentifier    = hash
-      authorityKeyIdentifier  = keyid:always,issuer:always
-      keyUsage                = critical,digitalSignature,keyEncipherment,keyCertSign,cRLSign
-
-      [ db ]
-      subjectKeyIdentifier    = hash
-      basicConstraints        = critical,CA:FALSE
-      keyUsage                = critical,keyEncipherment,dataEncipherment
-      authorityKeyIdentifier  = keyid,issuer:always
-      EOF
-      ```
-
-   2. Create the Root CA certificate
-
-      ```shell
-      CN="Root, CA" \
-         openssl req -x509 -newkey rsa:2048 -nodes \
-            -keyout root.key \
-            -days 3650 \
-            -config config.conf \
-            -extensions root \
-            -out root.pem
-      ```
-
-   3. Create the intermediate CA certificate
-
-      ```shell
-      CN="Ubuntu live from scratch, CA" \
-         openssl req -newkey rsa:2048 -nodes \
-            -keyout ca.key \
-            -config config.conf \
-            -out ca.pem
-      ```
-
-   4. Create Database (DB) request certificate
-
-      ```shell
-      CN="Ubuntu live from scratch, Database" \
-         openssl req -newkey rsa:2048 -nodes \
-            -keyout db.key \
-            -config config.conf \
-            -out db.pem
-      ```
-
-   5. Sign the intermediate CA certificate with the Root CA certificate
-
-      ```shell
-      CN="Ubuntu live from scratch, CA" \
-         openssl x509 -req \
-            -extfile config.conf \
-            -extensions ca \
-            -in ca.pem \
-            -CA root.pem \
-            -CAkey root.key \
-            -CAcreateserial \
-            -out ca.pem \
-            -days 3650 -sha256
-      ```
-
-   6. Sign Database (DB) certificate using your own CA
-
-       ```shell
-       CN="Ubuntu live from scratch, Database" \
-          openssl x509 -req \
-             -extfile config.conf \
-             -extensions db \
-             -in db.pem \
-             -CA ca.pem \
-             -CAkey ca.key \
-             -CAcreateserial \
-             -out db.pem \
-             -days 3650 -sha256
-       ```
-
-   7. Create the intermediate CA certificate chain
-
-      ```shell
-      cat ca.pem root.pem > ca-chain.pem
-      ```
-
-   8. Verify the signatures
-
-      ```shell
-      openssl verify -CAfile ca-chain.pem db.pem
-      ```
-
-   9. Create DER version of our public key (CA)
-
-      ```shell
-      openssl x509 -outform DER -in ca.pem -out ca.cer
-      ```
-
 ### Creating image
 
 1. Access image directory
@@ -619,71 +491,30 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
    cd /image
    ```
 
-2. Create [SBAT](https://github.com/rhboot/shim/blob/main/SBAT.md) file
+2. Copy EFI loaders
 
    ```shell
-   GRUB_VERSION=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3 | cut -d'-' -f1`
-   GRUB_RELEASE=`grub-mkstandalone -V | tr -s ' ' | cut -d' ' -f3`
-    
-   cat <<EOF > isolinux/sbat.csv
-   sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
-   grub,1,Free Software Foundation,grub,$GRUB_VERSION,https://www.gnu.org/software/grub/
-   grub.ubuntu,1,Ubuntu,grub2,$GRUB_RELEASE,https://www.ubuntu.com/
-   EOF
+   cp /usr/lib/shim/shimx64.efi.signed.previous isolinux/bootx64.efi
+   cp /usr/lib/shim/mmx64.efi isolinux/mmx64.efi
+   cp /usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed isolinux/grubx64.efi
    ```
 
-3. Create a grub UEFI image
-
-   ```shell
-   grub-mkstandalone \
-      --format=x86_64-efi \
-      --output=isolinux/grubx64.efi \
-      --locales="" \
-      --fonts="" \
-      "boot/grub/grub.cfg=isolinux/grub.cfg"
-   ```
-
-   * Fix Secure Boot Grub
-
-   ```shell
-   sed -i 's/SecureBoot/SecureB00t/' isolinux/grubx64.efi
-   ```
-
-4. Add .sbat sections
-
-   ```shell
-   objcopy --add-section .sbat=isolinux/sbat.csv isolinux/grubx64.efi --change-section-address .sbat=10000000
-   ```
-
-5. UEFI secure boot signing
-
-   ```shell
-   sbsign --key /certificates/db.key --cert /certificates/db.pem --output isolinux/grubx64.efi isolinux/grubx64.efi
-   ```
-
-6. Copy Shim and MOK
-
-   ```shell
-    cp /usr/lib/shim/shimx64.efi.signed.previous isolinux/bootx64.efi
-    cp /usr/lib/shim/mmx64.efi isolinux/mmx64.efi
-   ```
-
-7. Create a FAT16 UEFI boot disk image containing the EFI bootloader
+3. Create a FAT16 UEFI boot disk image containing the EFI bootloaders
 
    ```shell
    (
       cd isolinux && \
       dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
       mkfs.vfat -F 16 efiboot.img && \
-      LC_CTYPE=C mmd -i efiboot.img certificates efi efi/boot && \
-      LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/ && \
-      LC_CTYPE=C mcopy -i efiboot.img ./mmx64.efi ::efi/boot/ && \
-      LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/ && \
-      LC_CTYPE=C mcopy -i efiboot.img /certificates/ca.cer ::certificates/
+      LC_CTYPE=C mmd -i efiboot.img efi efi/ubuntu efi/boot && \
+      LC_CTYPE=C mcopy -i efiboot.img ./bootx64.efi ::efi/boot/bootx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img ./mmx64.efi ::efi/boot/mmx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img ./grubx64.efi ::efi/boot/grubx64.efi && \
+      LC_CTYPE=C mcopy -i efiboot.img ./grub.cfg ::efi/ubuntu/grub.cfg
    )
    ```
 
-8. Create a grub BIOS image
+4. Create a grub BIOS image
 
    ```shell
    grub-mkstandalone \
@@ -696,19 +527,19 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
       "boot/grub/grub.cfg=isolinux/grub.cfg"
    ```
 
-9. Combine a bootable Grub cdboot.img
+5. Combine a bootable Grub cdboot.img
 
    ```shell
    cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
    ```
 
-10. Generate md5sum.txt
+6. Generate md5sum.txt
 
-    ```shell
-    /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
-    ```
+   ```shell
+   /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
+   ```
 
-## Cleanup the chroot environment
+### Cleanup the chroot environment
 
    1. If you installed software, be sure to run
 
@@ -763,7 +594,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
 2. Move image artifacts
 
    ```shell
-   sudo mv chroot/{image,certificates} .
+   sudo mv chroot/image .
    ```
 
 3. Create squashfs
@@ -815,10 +646,14 @@ After everything has been installed and preconfigured in the **chrooted** enviro
         --eltorito-catalog boot.catalog \
         --grub2-boot-info \
         --grub2-mbr ../chroot/usr/lib/grub/i386-pc/boot_hybrid.img \
+        -partition_offset 16 \
+        --mbr-force-bootable \
       -eltorito-alt-boot \
         -no-emul-boot \
         -e isolinux/efiboot.img \
-        -append_partition 2 0xef isolinux/efiboot.img \
+        -append_partition 2 28732ac11ff8d211ba4b00a0c93ec93b isolinux/efiboot.img \
+        -appended_part_as_gpt \
+        -iso_mbr_part_type a2a0d0ebe5b9334487c068b6b72699c7 \
         -m "isolinux/efiboot.img" \
         -m "isolinux/bios.img" \
         -e '--interval:appended_partition_2:::' \
@@ -827,7 +662,7 @@ After everything has been installed and preconfigured in the **chrooted** enviro
          "/EFI/boot/bootx64.efi=isolinux/bootx64.efi" \
          "/EFI/boot/mmx64.efi=isolinux/mmx64.efi" \
          "/EFI/boot/grubx64.efi=isolinux/grubx64.efi" \
-         "/boot/grub/grub.cfg=isolinux/grub.cfg" \
+         "/EFI/ubuntu/grub.cfg=isolinux/grub.cfg" \
          "/isolinux/bios.img=isolinux/bios.img" \
          "/isolinux/efiboot.img=isolinux/efiboot.img" \
          "."
