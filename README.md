@@ -536,7 +536,7 @@ remove packages specified in `filesystem.manifest` that are *not* listed in `fil
 6. Generate md5sum.txt
 
    ```shell
-   /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'md5sum.txt' -e 'bios.img' -e 'efiboot.img' > md5sum.txt)"
+   /bin/bash -c "(find . -type f -print0 | xargs -0 md5sum | grep -v -e 'isolinux' > md5sum.txt)"
    ```
 
 ### Cleanup the chroot environment
