@@ -353,6 +353,7 @@ From this point we will be configuring the `live system`.
 
           [ifupdown]
           managed=false
+          EOF
           ```
 
        2. Reconfigure network-manager
