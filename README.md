@@ -6,6 +6,17 @@
 
 This project guides you through building a fully customized version of Ubuntu Linux from scratch. It covers creating a live ISO image that includes pre-installed packages, configurations, and custom scripts tailored to your needs. The steps walk you through setting up the environment, configuring the chroot, installing software, modifying the kernel, and finally generating the ISO image. This is ideal for those who want complete control over their Linux distribution, whether for personal or professional use.
 
+## Requirements
+
+* Basic knowledge of Linux commands and scripting.
+* Sufficient disk space and memory.
+
+## Steps
+1. Prepare the Environment: Install necessary dependencies.
+2. Create a Base System: Use debootstrap to set up a minimal Ubuntu system.
+3. Customize Packages: Add/remove software, configure kernel.
+4. Generate ISO: Package the system into a bootable ISO.
+
 ## Authors
 
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
