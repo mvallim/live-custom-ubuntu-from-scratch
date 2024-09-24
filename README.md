@@ -12,10 +12,10 @@ This project guides you through building a fully customized version of Ubuntu Li
 * Sufficient disk space and memory.
 
 ## Steps
-1. Prepare the Environment: Install necessary dependencies.
-2. Create a Base System: Use debootstrap to set up a minimal Ubuntu system.
-3. Customize Packages: Add/remove software, configure kernel.
-4. Generate ISO: Package the system into a bootable ISO.
+1. **Prepare the Environment**: Install necessary dependencies.
+2. **Create a Base System**: Use debootstrap to set up a minimal Ubuntu system.
+3. **Customize Packages**: Add/remove software, configure kernel.
+4. **Generate ISO**: Package the system into a bootable ISO.
 
 ## Authors
 
