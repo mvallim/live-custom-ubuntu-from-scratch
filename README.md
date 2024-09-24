@@ -8,8 +8,8 @@ This project guides you through building a fully customized version of Ubuntu Li
 
 ## Requirements
 
-* Basic knowledge of Linux commands and scripting.
-* Sufficient disk space and memory.
+* Proficiency with Linux shell commands and scripting.
+* Sufficient disk space and memory for building an ISO.
 
 ## Steps
 1. **Prepare the Environment**: Install necessary dependencies.
