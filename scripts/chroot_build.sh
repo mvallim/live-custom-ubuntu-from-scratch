@@ -118,6 +118,7 @@ function install_pkg() {
         grub-efi-amd64-signed \
         shim-signed \
         mtools \
+        unzip \
         binutils
     
     case $TARGET_UBUNTU_VERSION in
