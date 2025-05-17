@@ -135,7 +135,7 @@ function install_pkg() {
 
 	# graphic installer - calamares
 	apt install -y calamares \
-		calamares-settings-kubuntu
+		calamares-settings-debian
 
 	# Call into config function
 	customize_image
