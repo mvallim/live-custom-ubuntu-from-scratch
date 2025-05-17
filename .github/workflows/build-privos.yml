@@ -1,0 +1,29 @@
+name: build-privos
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          cd scripts
+          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="noble"/g' config.sh
+          ./build.sh -
+          cd ..
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: privos
+          path: |
+            scripts/privos.iso
+            scripts/image/md5sum.txt
