@@ -233,7 +233,7 @@ EOF
 	cp -v casper/filesystem.manifest casper/filesystem.manifest-desktop
 
 	for pkg in $TARGET_PACKAGE_REMOVE; do
-		sudo sed -i "/$pkg/d" casper/filesystem.manifest-desktop
+		sudo sed -i "/^$pkg/d" casper/filesystem.manifest-desktop
 	done
 
 	# create diskdefines
