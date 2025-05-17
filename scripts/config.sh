@@ -144,6 +144,12 @@ function add_flatpak() {
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
+function boot_logo()
+{
+	apt install -y \
+		plymouth-theme-spinner
+}
+
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -161,6 +167,7 @@ function customize_image() {
 	add_brave
 	add_signal
 	branding
+	boot_logo
 	cleanup
 }
 
