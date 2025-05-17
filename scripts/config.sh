@@ -7,7 +7,7 @@
 
 # The version of Ubuntu to generate.  Successfully tested LTS: bionic, focal, jammy, noble
 # See https://wiki.ubuntu.com/DevelopmentCodeNames for details
-export TARGET_UBUNTU_VERSION="noble"
+export TARGET_UBUNTU_VERSION="plucky"
 
 # The Ubuntu Mirror URL. It's better to change for faster download.
 # More mirrors see: https://launchpad.net/ubuntu/+archivemirrors
@@ -19,7 +19,7 @@ export TARGET_KERNEL_PACKAGE="linux-generic"
 
 # The file (no extension) of the ISO containing the generated disk image,
 # the volume id, and the hostname of the live environment are set from this name.
-export TARGET_NAME="privos"
+export TARGET_NAME="PrivOS"
 
 # The text label shown in GRUB for booting into the live environment
 export GRUB_LIVEBOOT_LABEL="Try PrivOS without installing"
@@ -31,7 +31,7 @@ export GRUB_INSTALL_LABEL="Install PrivOS"
 export TARGET_PACKAGE_REMOVE="
 	ubiquity \
 	ubiquity-casper \
-	ubiquity-frontend-kde \
+	ubiquity-frontend-gtk \
 	ubiquity-slideshow-kubuntu \
 	casper \
 	discover \
@@ -84,29 +84,35 @@ function remove_snaps() {
 
 function install_desktop() {
 	apt-get install -y \
-		plymouth-themes \
 		xserver-xorg-video-all \
 		xserver-xorg-input-all \
 		xserver-xorg-core \
 		xinit \
 		x11-xserver-utils \
-		plasma-desktop \
+		kde-plasma-desktop \
 		plasma-discover \
+		plasma-nm \
 		sddm \
 		sddm-theme-breeze \
-		plasma-nm \
-		dolphin \
-		konsole \
-		plasma-workspace
+		software-properties-qt
 }
 
 function install_apps() {
 	apt-get install -y \
+		synaptic \
 		vlc \
 		qbittorrent \
+		kde-spectacle \
 		okular \
 		gwenview \
+		keepassxc \
 		kate
+}
+
+function install_firewall() {
+	apt-get install -y \
+		plasma-firewall \
+		ufw
 }
 
 function install_extras() {
@@ -149,6 +155,7 @@ function customize_image() {
 	install_apps
 	cli_tools
 	remove_snaps
+	install_firewall
 	add_flatpak
 	add_brave
 	add_signal

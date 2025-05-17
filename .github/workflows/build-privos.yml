@@ -13,7 +13,7 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="noble"/g' config.sh
+          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="plucky"/g' config.sh
           ./build.sh -
           cd ..
       - name: Archive artifacts

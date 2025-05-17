@@ -107,7 +107,7 @@ function install_pkg() {
 		os-prober \
 		network-manager \
 		net-tools \
-		wireless-tools \
+		iw \
 		wpagui \
 		locales \
 		grub-common \
@@ -136,7 +136,7 @@ function install_pkg() {
 	# graphic installer - ubiquity kde
 	apt install -y ubiquity \
 		ubiquity-casper \
-		ubiquity-frontend-kde \
+		ubiquity-frontend-gtk \
 		ubiquity-slideshow-kubuntu
 
 	# Call into config function

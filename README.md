@@ -6,7 +6,7 @@ This is a project to create a privacy-first Ubuntu derivative as a learning expe
 Now everything is an extremely experimental weekend project, but it will keep improving.
 
 ## Features:
-* Heavily debloated Ubuntu 22.04 with a minimal Plasma session
+* Heavily debloated Ubuntu 25.04 with a minimal Plasma session
 * Replaced snaps with flatpaks
 * Preconfigured Brave Browser from the official signed repos (Disabled telemetry and annoying features, a bit of hardening)
 * Signal preinstalled with the official signed repos
