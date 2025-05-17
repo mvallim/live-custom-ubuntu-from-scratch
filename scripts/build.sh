@@ -116,6 +116,9 @@ function run_chroot() {
 		sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
 	fi
 
+	# Copy distro files
+	sudo cp -r $SCRIPT_DIR/distro_files/* chroot/
+
 	# Launch into chroot environment to build install image.
 	sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-readline} /root/chroot_build.sh -
 
