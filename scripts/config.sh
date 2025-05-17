@@ -113,6 +113,7 @@ function install_firewall() {
 	apt-get install -y \
 		plasma-firewall \
 		ufw
+	systemctl enable ufw.service
 }
 
 function install_extras() {

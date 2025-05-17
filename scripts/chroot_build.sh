@@ -108,7 +108,6 @@ function install_pkg() {
 		network-manager \
 		net-tools \
 		iw \
-		wpagui \
 		locales \
 		grub-common \
 		grub-gfxpayload-lists \
