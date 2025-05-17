@@ -29,8 +29,10 @@ export GRUB_INSTALL_LABEL="Install PrivOS"
 
 # Packages to be removed from the target system after installation completes succesfully
 export TARGET_PACKAGE_REMOVE="
-	calamares \
-	calamares-settings-kubuntu \
+	ubiquity \
+	ubiquity-casper \
+	ubiquity-frontend-kde \
+	ubiquity-slideshow-kubuntu \
 	casper \
 	discover \
 	laptop-detect \

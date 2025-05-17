@@ -133,9 +133,11 @@ function install_pkg() {
 	# install kernel
 	apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
 
-	# graphic installer - calamares
-	apt install -y calamares \
-		calamares-settings-debian
+	# graphic installer - ubiquity kde
+	apt install -y ubiquity \
+		ubiquity-casper \
+		ubiquity-frontend-kde \
+		ubiquity-slideshow-kubuntu
 
 	# Call into config function
 	customize_image
