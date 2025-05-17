@@ -128,7 +128,7 @@ function cli_tools() {
 }
 
 function add_flatpak() {
-	apt-get install -y
+	apt-get install -y \
 		flatpak \
 		plasma-discover-backend-flatpak \
 		kde-config-flatpak
