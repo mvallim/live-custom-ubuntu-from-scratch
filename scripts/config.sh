@@ -150,6 +150,19 @@ function boot_logo()
 		plymouth-theme-spinner
 }
 
+function mullvad_dns()
+{
+	cat <<EOF >> /etc/systemd/resolved.conf
+
+#Mullvad Config
+DNS=194.242.2.4#base.dns.mullvad.net
+DNSSEC=no
+DNSOverTLS=yes
+Domains=~.
+EOF
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+}
+
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -163,6 +176,7 @@ function customize_image() {
 	cli_tools
 	remove_snaps
 	install_firewall
+	mullvad_dns
 	add_flatpak
 	add_brave
 	add_signal
