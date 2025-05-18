@@ -163,6 +163,13 @@ EOF
 ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 }
 
+function disable_ipv6()
+{
+	sysctl -w net.ipv6.conf.all.disable_ipv6=1
+	sysctl -w net.ipv6.conf.default.disable_ipv6=1
+	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
+}
+
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -177,6 +184,7 @@ function customize_image() {
 	remove_snaps
 	install_firewall
 	mullvad_dns
+	disable_ipv6
 	add_flatpak
 	add_brave
 	add_signal
