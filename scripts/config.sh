@@ -84,7 +84,6 @@ function remove_snaps() {
 
 function install_desktop() {
 	apt-get install -y \
-		thiswillerror \
 		xserver-xorg-video-all \
 		xserver-xorg-input-all \
 		xserver-xorg-core \
