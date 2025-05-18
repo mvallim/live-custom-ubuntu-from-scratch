@@ -4,6 +4,9 @@ set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 
+# Handle errors so the host doesn't lock up
+trap 'chroot_unbind $? $LINENO' ERR
+
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 CMD=(setup_host install_pkg build_image finish_up)
@@ -92,6 +95,11 @@ function load_config() {
 	fi
 }
 
+function chroot_unbind() {
+	chroot umount /proc
+	chroot umount /sys
+	chroot umount /dev/pts
+}
 
 function install_pkg() {
 	echo "=====> running install_pkg ... will take a long time ..."
@@ -118,7 +126,8 @@ function install_pkg() {
 		shim-signed \
 		mtools \
 		unzip \
-		binutils
+		binutils \
+		ubuntu-drivers-common
 
 	case $TARGET_UBUNTU_VERSION in
 		"focal" | "bionic")

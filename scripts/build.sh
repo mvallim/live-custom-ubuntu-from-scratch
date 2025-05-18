@@ -4,6 +4,8 @@ set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 
+trap 'chroot_exit_teardown $? $LINENO' ERR
+
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 CMD=(setup_host debootstrap run_chroot build_iso)
