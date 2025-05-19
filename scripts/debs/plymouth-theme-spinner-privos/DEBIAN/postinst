@@ -1,0 +1,44 @@
+#!/bin/sh
+# This script can be called in the following ways:
+#
+# After the package was installed:
+#       <postinst> configure <old-version>
+#
+#
+# If prerm fails during upgrade or fails on failed upgrade:
+#       <old-postinst> abort-upgrade <new-version>
+#
+# If prerm fails during deconfiguration of a package:
+#       <postinst> abort-deconfigure in-favour <new-package> <version>
+#                  removing <old-package> <version>
+#
+# If prerm fails during replacement due to conflict:
+#       <postinst> abort-remove in-favour <new-package> <version>
+
+set -e
+
+case "$1" in
+    configure)
+	update-alternatives \
+		--install /usr/share/plymouth/themes/default.plymouth default.plymouth \
+		/usr/share/plymouth/themes/bgrt-privos/bgrt-privos.plymouth 115
+
+	dpkg-trigger update-initramfs
+
+	if [ -e /boot/grub/grub.cfg ] && which update-grub >/dev/null 2>&1; then
+		update-grub || true
+	fi
+
+	;;
+
+    abort-upgrade|abort-deconfigure|abort-remove)
+	;;
+
+    *)
+	echo "$0 called with unknown argument \`$1'" 1>&2
+	exit 1
+	;;
+esac
+
+
+exit 0

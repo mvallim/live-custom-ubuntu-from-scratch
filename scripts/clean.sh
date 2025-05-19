@@ -6,3 +6,4 @@ sudo umount ./chroot/dev || sudo umount -lf ./chroot/dev || true
 sudo umount ./chroot/run || sudo umount -lf ./chroot/run || true
 sudo rm -rf ./chroot || true
 sudo rm -rf ./image || true
+rm -f debs/*.deb

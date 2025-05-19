@@ -33,6 +33,11 @@ function help() {
 	exit 0
 }
 
+function build_debs()
+{
+	for DEB in debs/*; do dpkg -b "$DEB" "$DEB".deb; done
+}
+
 function find_index() {
 	local ret;
 	local i;
@@ -117,6 +122,11 @@ function run_chroot() {
 	if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
 		sudo ln -f $SCRIPT_DIR/config.sh chroot/root/config.sh
 	fi
+
+	# Build debs from source and copy them to the chroot
+	build_debs
+	sudo mkdir chroot/tmp/debs/
+	sudo cp $SCRIPT_DIR/debs/*.deb chroot/tmp/debs/
 
 	# Launch into chroot environment to build install image.
 	sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-readline} /root/chroot_build.sh -

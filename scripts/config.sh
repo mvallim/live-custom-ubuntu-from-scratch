@@ -170,6 +170,12 @@ function disable_ipv6()
 	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 }
 
+function install_debs()
+{
+	sudo apt install -y \
+	/tmp/debs/*.deb
+}
+
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -188,6 +194,7 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
+	install_debs
 	branding
 	boot_logo
 	cleanup

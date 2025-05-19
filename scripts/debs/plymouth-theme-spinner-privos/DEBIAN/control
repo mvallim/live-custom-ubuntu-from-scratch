@@ -1,0 +1,23 @@
+Package: plymouth-theme-spinner-privos
+Source: plymouth
+Version: 24.004.60-2ubuntu7
+Architecture: amd64
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Installed-Size: 427
+Depends: libc6 (>= 2.38), libplymouth5 (>= 23.360.11), plymouth (= 24.004.60-2ubuntu7), plymouth-label (= 24.004.60-2ubuntu7), lsb-release, plymouth-theme-spinner
+Breaks: plymouth-themes (<< 0.9.4git20190712-0ubuntu1~)
+Replaces: plymouth-themes (<< 0.9.4git20190712-0ubuntu1~)
+Provides: plymouth-theme
+Section: misc
+Priority: optional
+Homepage: https://www.freedesktop.org/wiki/Software/Plymouth
+Description: boot animation, logger and I/O multiplexer - spinner theme
+ Plymouth provides a boot-time I/O multiplexing framework - the most obvious
+ use for which is to provide an attractive graphical animation in place of
+ the text messages that normally get shown during boot. (The messages are
+ instead redirected to a logfile for later viewing.) However, in event-driven
+ boot systems Plymouth can also usefully handle user interaction such as
+ password prompts for encrypted file systems.
+ .
+ This package contains the PrivOS spinner theme.
+Original-Maintainer: Laurent Bigonville <bigon@debian.org>
