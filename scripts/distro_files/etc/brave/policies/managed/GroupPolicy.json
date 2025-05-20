@@ -1,6 +1,0 @@
-{
-    // Disable Tor, use Tor Browser instead
-    "TorDisabled": true,
-    // Uncheck Automatically send diagnostic reports
-    "MetricsReportingEnabled": false
-}
