@@ -35,7 +35,9 @@ function help() {
 
 function build_debs()
 {
-	for DEB in debs/*; do dpkg -b "$DEB" "$DEB".deb; done
+	for DIR in $(find ./debs -maxdepth 1 -mindepth 1 -type d ); do
+    	dpkg-deb --root-owner-group --build $DIR $DIR.deb
+	done
 }
 
 function find_index() {

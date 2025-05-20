@@ -41,6 +41,7 @@ export TARGET_PACKAGE_REMOVE="
 
 function branding() {
 	sed -i 's/NAME="[^"]*"/NAME="PrivOS"/g' /etc/os-release
+	echo privos > /etc/hostname
 }
 
 function add_brave() {
@@ -84,6 +85,7 @@ function remove_snaps() {
 
 function install_desktop() {
 	apt-get install -y \
+		plymouth-theme-spinner \
 		xserver-xorg-video-all \
 		xserver-xorg-input-all \
 		xserver-xorg-core \
@@ -144,25 +146,6 @@ function add_flatpak() {
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
-function boot_logo()
-{
-	apt install -y \
-		plymouth-theme-spinner
-}
-
-function mullvad_dns()
-{
-	cat <<EOF >> /etc/systemd/resolved.conf
-
-#Mullvad Config
-DNS=194.242.2.4#base.dns.mullvad.net
-DNSSEC=no
-DNSOverTLS=yes
-Domains=~.
-EOF
-ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-}
-
 function disable_ipv6()
 {
 	sysctl -w net.ipv6.conf.all.disable_ipv6=1
@@ -170,10 +153,28 @@ function disable_ipv6()
 	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 }
 
+function disable_cups()
+{
+	systemctl disable cups.service cups-browsed.service cups.socket cups.path
+	systemctl mask cups.service cups-browsed.service cups.socket cups.path
+}
+
+function disable_avahi()
+{
+	systemctl disable avahi-daemon.service avahi-daemon.socket
+	systemctl mask avahi-daemon.service avahi-daemon.socket
+}
+
+function remove_packages()
+{
+	apt purge -y apport
+}
+
 function install_debs()
 {
-	sudo apt install -y \
-	/tmp/debs/*.deb
+	for DEB in $(find /tmp/debs/ -maxdepth 1 -type f -iname "*deb"); do
+		apt install -y $DEB
+	done
 }
 
 function cleanup() {
@@ -188,15 +189,16 @@ function customize_image() {
 	install_apps
 	cli_tools
 	remove_snaps
-	install_firewall
-	mullvad_dns
-	disable_ipv6
 	add_flatpak
 	add_brave
 	add_signal
 	install_debs
+	disable_ipv6
+	disable_cups
+	disable_avahi
+	install_firewall
+	remove_packages
 	branding
-	boot_logo
 	cleanup
 }
 
