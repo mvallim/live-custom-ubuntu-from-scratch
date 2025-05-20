@@ -5,8 +5,8 @@ Architecture: amd64
 Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
 Installed-Size: 427
 Depends: libc6 (>= 2.38), libplymouth5 (>= 23.360.11), plymouth (= 24.004.60-2ubuntu7), plymouth-label (= 24.004.60-2ubuntu7), lsb-release, plymouth-theme-spinner
-Breaks: plymouth-themes (<< 0.9.4git20190712-0ubuntu1~)
-Replaces: plymouth-themes (<< 0.9.4git20190712-0ubuntu1~)
+Breaks: plymouth-themes
+Replaces: plymouth-themes
 Provides: plymouth-theme
 Section: misc
 Priority: optional
@@ -20,4 +20,3 @@ Description: boot animation, logger and I/O multiplexer - spinner theme
  password prompts for encrypted file systems.
  .
  This package contains the PrivOS spinner theme.
-Original-Maintainer: Laurent Bigonville <bigon@debian.org>

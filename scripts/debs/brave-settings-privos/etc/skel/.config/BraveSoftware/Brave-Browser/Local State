@@ -1,0 +1,24 @@
+{
+    // Uncheck Continue running apps when Brave is closed to disable background apps
+    "background_mode": {
+        "enabled": false
+    },
+    // Disable Tor, use Tor Browser instead
+    "tor": {
+        "tor_disabled": true
+    },
+    "brave": {
+        // Uncheck Allow privacy-preserving product analytics (P3A)
+        "p3a": {
+            "enabled": false
+        },
+        // Uncheck Automatically send daily usage ping to Brave
+        "stats": {
+            "reporting_enabled": false
+        }
+    },
+    // Uncheck Automatically send diagnostic reports
+    "user_experience_metrics": {
+        "reporting_enabled": false
+    }
+}

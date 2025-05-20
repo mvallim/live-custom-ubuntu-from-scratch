@@ -1,0 +1,8 @@
+Package: nm-randomize-mac-privos
+Version: 20252025-1
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: Settings to randomize the mac address on wireless connections

@@ -1,0 +1,123 @@
+{
+    "brave": {
+        // Hide Brave Rewards button
+        "brave_ads": {
+            "should_allow_ads_subdivision_targeting": false
+        },
+        // Select Auto-redirect AMP pages
+        "de_amp": {
+            "enabled": true
+        },
+        // Select Auto-redirect tracking URLs
+        "debounce": {
+            "enabled": true
+        },
+        "enable_window_closing_confirm": true,
+        // Uncheck all social media components
+        "fb_embed_default": false,
+        // Uncheck all social media components
+        "linkedin_embed_default": false,
+        // Uncheck Use Google services for push messaging
+        "gcm": {
+            "channel_status": false
+        },
+        "new_tab_page": {
+            "hide_all_widgets": true,
+            "show_background_image": false,
+            "show_brave_news": false,
+            "show_rewards": false,
+            "show_stats": false,
+            "show_together": false
+        },
+        // Select Prevent sites from fingerprinting me based on my language preferences
+        "reduce_language": true,
+        // Hide Brave Rewards button
+        "rewards": {
+            "badge_text": "",
+            "show_brave_rewards_button_in_location_bar": false
+        },
+        "today": {
+            "should_show_toolbar_button": false
+        },
+        // Uncheck all social media components
+        "twitter_embed_default": false,
+        "wallet": {
+            // Select Extensions (no fallback) under Default Solana wallet
+            "default_solana_wallet": 1,
+            // Select Extensions (no fallback) under Default Ethereum wallet
+            "default_wallet2": 1,
+            "show_wallet_icon_on_toolbar": false
+        },
+        // Uncheck all built-in extensions you don't use
+        "webtorrent_enabled": false
+    },
+    "browser": {
+        "custom_chrome_frame": false,
+        "has_seen_welcome_page": true
+    },
+    // Uncheck all built-in extensions you don't use
+    "media_router": {
+        "enable_media_router": false
+    },
+    "ntp": {
+        "custom_background_inspiration": false,
+        "custom_background_local_to_device": false,
+        "shortcust_visible": false
+    },
+    // Select Aggressive under Trackers & ads blocking
+    "profile": {
+        "content_settings": {
+            "exceptions": {
+                "cosmeticFiltering": {
+                    "*,*": {
+                        "setting": 2
+                    },
+                    "*,https://firstparty": {
+                        "setting": 2
+                    }
+                },
+                // Check Block fingerprinting
+                "fingerprintingV2": {
+                    "*,*": {
+                        "setting": 3
+                    }
+                },
+                "shieldsAds": {
+                    "*,*": {
+                        "setting": 2
+                    }
+                },
+                "trackers": {
+                    "*,*": {
+                        "setting": 2
+                    }
+                }
+            }
+        },
+        // Select Block third-party cookies
+        "cookie_controls_mode": 1,
+        "default_content_setting_values": {
+            // Check Forget me when I close this site 
+            "brave_remember_1p_storage": 2,
+            // Select Delete data sites have saved to your device when you close all windows under Sites and Shields Settings → Content → Additional content settings → On-device site data.
+            "cookies": 4,
+            // Select Strict under Upgrade connections to HTTPS
+            "httpsUpgrades": 2,
+            "javascript_jit": 2
+        }
+    },
+    // Select Automatically remove permissions from unused sites under Sites and Shields Settings
+    "safety_hub": {
+        "unused_site_permissions_revocation": {
+            "enabled": false
+        }
+    },
+    // Disable Show search suggestions
+    "search": {
+        "suggest_enabled": false
+    },
+    // Select Disable non-proxied UDP under WebRTC IP Handling Policy
+    "webrtc": {
+        "ip_handling_policy": "disable_non_proxied_udp"
+    }
+}

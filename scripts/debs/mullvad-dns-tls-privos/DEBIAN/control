@@ -1,0 +1,8 @@
+Package: mullvad-dns-tls-privos
+Version: 20252025-1
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: Enables DNS over tls based on this: https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#linux
