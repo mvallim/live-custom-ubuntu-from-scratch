@@ -1,5 +1,12 @@
 {
     "brave": {
+		// Disable AI chat
+		"ai_chat": {
+            "context_menu_enabled": false,
+            "show_toolbar_button": false,
+            "storage_enabled": false,
+            "tab_organization_enabled": false
+        },
         // Hide Brave Rewards button
         "brave_ads": {
             "should_allow_ads_subdivision_targeting": false
@@ -21,6 +28,7 @@
         "gcm": {
             "channel_status": false
         },
+		// Clean new tab page
         "new_tab_page": {
             "hide_all_widgets": true,
             "show_background_image": false,
@@ -28,6 +36,25 @@
             "show_rewards": false,
             "show_stats": false,
             "show_together": false
+        },
+		// Disable AI and Wallet from sidebar
+		"sidebar": {
+            "hidden_built_in_items": [
+                7,
+                1,
+                2
+            ],
+            "last_used_built_in_item_type": 3,
+            "sidebar_items": [
+                {
+                    "built_in_item_type": 3,
+                    "type": 0
+                },
+                {
+                    "built_in_item_type": 4,
+                    "type": 0
+                }
+            ]
         },
         // Select Prevent sites from fingerprinting me based on my language preferences
         "reduce_language": true,
@@ -51,6 +78,7 @@
         // Uncheck all built-in extensions you don't use
         "webtorrent_enabled": false
     },
+	// Skip welcome
     "browser": {
         "custom_chrome_frame": false,
         "has_seen_welcome_page": true
