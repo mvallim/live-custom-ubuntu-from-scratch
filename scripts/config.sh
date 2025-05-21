@@ -47,7 +47,7 @@ function branding() {
 function add_brave() {
 	apt install curl
 	curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-	echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" | tee /etc/apt/sources.list.d/brave-browser-release.list
+	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" | tee /etc/apt/sources.list.d/brave-browser-release.list
 	apt update
 	sudo apt install -y brave-browser
 }
@@ -60,6 +60,14 @@ function add_signal() {
 	  tee /etc/apt/sources.list.d/signal-xenial.list
 	apt update
 	apt install -y signal-desktop
+}
+
+function add_mullvad_browser()
+{
+	curl -fsSLo /usr/share/keyrings/mullvad-keyring.asc https://repository.mullvad.net/deb/mullvad-keyring.asc
+	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/mullvad-keyring.asc] https://repository.mullvad.net/deb/stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mullvad.list
+	apt update
+	apt install -y mullvad-browser
 }
 
 function remove_snaps() {
@@ -109,6 +117,7 @@ function install_apps() {
 		okular \
 		gwenview \
 		keepassxc \
+		torbrowser-launcher \
 		kate
 }
 
@@ -197,6 +206,7 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
+	add_mullvad_browser
 	install_debs
 	disable_ipv6
 	disable_cups
