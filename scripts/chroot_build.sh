@@ -205,7 +205,7 @@ set default="0"
 set timeout=30
 
 menuentry "Try PrivOS without installing" {
-	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
+	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash apparmor=0 ---
 	initrd /casper/initrd
 }
 
