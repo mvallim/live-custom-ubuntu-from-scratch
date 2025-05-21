@@ -168,7 +168,11 @@ function disable_avahi()
 
 function remove_packages()
 {
-	apt purge -y apport
+	apt purge -y \
+		apport \
+		gnome-keyring
+	apt autoremove
+
 }
 
 function install_debs()
