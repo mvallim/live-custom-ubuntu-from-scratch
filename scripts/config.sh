@@ -180,7 +180,7 @@ function remove_packages()
 	apt purge -y \
 		apport \
 		gnome-keyring
-	apt autoremove
+	apt autoremove -y
 
 }
 
