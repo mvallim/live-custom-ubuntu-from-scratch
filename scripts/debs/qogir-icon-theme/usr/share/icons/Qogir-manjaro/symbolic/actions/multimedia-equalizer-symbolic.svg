@@ -1,0 +1,8 @@
+<svg width="16" height="16" enable-background="new" version="1.1" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-380 -63.997)" color="#5d656b" fill="#5d656b">
+  <path d="m387 64.997v2h1v-2zm0 6v8h1v-8zm5-6v9h1v-9zm0 13v1h1v-1zm-10-13v7h1v-7zm0 11v3h1v-3z" enable-background="accumulate" overflow="visible"/>
+  <rect x="381" y="72.997" width="3" height="2" rx="1" ry="1" enable-background="accumulate" overflow="visible"/>
+  <rect x="386" y="67.997" width="3" height="2" rx="1" ry="1" enable-background="accumulate" overflow="visible"/>
+  <rect x="391" y="74.997" width="3" height="2" rx="1" ry="1" enable-background="accumulate" overflow="visible"/>
+ </g>
+</svg>

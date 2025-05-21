@@ -1,0 +1,10 @@
+Package: qogir-icon-theme
+Version: 2025-05-22
+Architecture: amd64
+Section: custom
+Priority: optional
+Build-Depends: gtk-update-icon-cache
+Provides: qogir-icon-theme
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: A colorful design icon theme for linux desktops
+Installed-Size: 69985
