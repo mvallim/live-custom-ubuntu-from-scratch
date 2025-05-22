@@ -149,22 +149,6 @@ export BUILD_SYSTEM="Ubuntu"
 export FLAVOUR="Ubuntu"
 EOF
 
-	# Enable user namespaces just for the live session (so chromium works)
-	cat <<'EOF' > /usr/share/initramfs-tools/scripts/casper-bottom/99-enable-userns
-#!/bin/sh
-
-. /scripts/casper-functions
-log_begin_msg "Setting kernel.apparmor_restrict_unprivileged_userns=0"
-
-# Apply sysctl setting
-echo 0 > /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-
-log_end_msg
-
-exit 0
-EOF
-	chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/99-enable-userns
-
 	# install kernel
 	apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
 
@@ -232,7 +216,7 @@ set default="0"
 set timeout=30
 
 menuentry "Try PrivOS without installing" {
-	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
+	linux /casper/vmlinuz boot=casper nopersistent toram apparmor=0 quiet splash ---
 	initrd /casper/initrd
 }
 
