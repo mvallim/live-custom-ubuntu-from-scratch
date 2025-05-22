@@ -1,0 +1,11 @@
+[General]
+Name=Breeze Dark
+widgetStyle=Breeze
+
+[Icons]
+Theme=Qogir-Dark
+
+[KDE]
+ColorScheme=Breeze
+LookAndFeelPackage=org.kde.breezedark.desktop
+contrast=4
