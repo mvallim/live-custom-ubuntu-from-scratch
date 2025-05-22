@@ -129,15 +129,6 @@ function install_pkg() {
 		binutils \
 		ubuntu-drivers-common
 
-	case $TARGET_UBUNTU_VERSION in
-		"focal" | "bionic")
-			apt-get install -y lupin-casper
-			;;
-		*)
-			echo "Package lupin-casper is not needed. Skipping."
-			;;
-	esac
-
 	# Modify casper file
 	sed -i s/ubuntu/$TARGET_NAME/g /etc/casper.conf
 
@@ -208,7 +199,7 @@ set default="0"
 set timeout=30
 
 menuentry "Try PrivOS without installing" {
-	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
+	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash apparmor=0 ---
 	initrd /casper/initrd
 }
 
