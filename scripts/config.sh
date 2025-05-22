@@ -116,6 +116,7 @@ function install_apps() {
 		okular \
 		gwenview \
 		keepassxc \
+		kcalc \
 		torbrowser-launcher \
 		kate
 }
