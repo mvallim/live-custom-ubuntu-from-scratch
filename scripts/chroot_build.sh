@@ -57,6 +57,7 @@ function check_host() {
 function setup_host() {
 	echo "=====> running setup_host ..."
 
+	# Set up all the ubuntu repos
    cat <<EOF > /etc/apt/sources.list
 deb $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION main restricted universe multiverse
 deb-src $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION main restricted universe multiverse
@@ -68,6 +69,7 @@ deb $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-updates main restricted univers
 deb-src $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
 EOF
 
+	# Hostname
 	echo "$TARGET_NAME" > /etc/hostname
 
 	# we need to install systemd first, to configure machine id
@@ -129,8 +131,39 @@ function install_pkg() {
 		binutils \
 		ubuntu-drivers-common
 
-	# Modify casper file
-	sed -i s/ubuntu/$TARGET_NAME/g /etc/casper.conf
+	# Configure casper.conf
+	cat <<EOF > /etc/casper.conf
+# This file should go in /etc/casper.conf
+# Supported variables are:
+# USERNAME, USERFULLNAME, HOST, BUILD_SYSTEM, FLAVOUR
+
+export USERNAME="live"
+export USERFULLNAME="Live session user"
+export HOST="privOS"
+export BUILD_SYSTEM="Ubuntu"
+
+# USERNAME and HOSTNAME as specified above won't be honoured and will be set to
+# flavour string acquired at boot time, unless you set FLAVOUR to any
+# non-empty string.
+
+export FLAVOUR="Ubuntu"
+EOF
+
+	# Enable user namespaces just for the live session (so chromium works)
+	cat <<'EOF' > /usr/share/initramfs-tools/scripts/casper-bottom/99-enable-userns
+#!/bin/sh
+
+. /scripts/casper-functions
+log_begin_msg "Setting kernel.apparmor_restrict_unprivileged_userns=0"
+
+# Apply sysctl setting
+echo 0 > /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+
+log_end_msg
+
+exit 0
+EOF
+	chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/99-enable-userns
 
 	# install kernel
 	apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
@@ -199,7 +232,7 @@ set default="0"
 set timeout=30
 
 menuentry "Try PrivOS without installing" {
-	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash apparmor=0 ---
+	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
 	initrd /casper/initrd
 }
 
