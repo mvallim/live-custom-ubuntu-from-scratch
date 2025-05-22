@@ -41,7 +41,6 @@ export TARGET_PACKAGE_REMOVE="
 
 function branding() {
 	sed -i 's/NAME="[^"]*"/NAME="PrivOS"/g' /etc/os-release
-	echo privos > /etc/hostname
 }
 
 function add_brave() {
@@ -143,7 +142,6 @@ function cli_tools() {
 		man \
 		man-db \
 		htop \
-		neofetch \
 		net-tools \
 		less
 }

@@ -128,13 +128,17 @@ function run_chroot() {
 	# Build debs from source and copy them to the chroot
 	build_debs
 	sudo mkdir chroot/tmp/debs/
-	sudo cp $SCRIPT_DIR/debs/*.deb chroot/tmp/debs/
+	sudo cp debs/*.deb chroot/tmp/debs/
 
 	# Launch into chroot environment to build install image.
 	sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-readline} /root/chroot_build.sh -
 
 	# Copy distro files
-	sudo cp -r $SCRIPT_DIR/distro_files/* chroot/
+	for FILE in $(find distro_files -type f); do
+		NEWFILE="chroot/$(echo $FILE | sed s/distro_files//g)"
+		sudo cp $FILE $NEWFILE
+		sudo chmod 644 $NEWFILE
+	done
 
 	# Cleanup after image changes
 	sudo rm -f chroot/root/chroot_build.sh

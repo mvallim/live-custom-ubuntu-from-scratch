@@ -68,6 +68,23 @@ deb $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-updates main restricted univers
 deb-src $TARGET_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
 EOF
 
+	cat <<EOF > /etc/casper.conf
+# This file should go in /etc/casper.conf
+# Supported variables are:
+# USERNAME, USERFULLNAME, HOST, BUILD_SYSTEM, FLAVOUR
+
+export USERNAME="live"
+export USERFULLNAME="Live session user"
+export HOST="privOS"
+export BUILD_SYSTEM="Ubuntu"
+
+# USERNAME and HOSTNAME as specified above won't be honoured and will be set to
+# flavour string acquired at boot time, unless you set FLAVOUR to any
+# non-empty string.
+
+export FLAVOUR="Ubuntu"
+EOF
+
 	echo "$TARGET_NAME" > /etc/hostname
 
 	# we need to install systemd first, to configure machine id
@@ -205,7 +222,7 @@ set default="0"
 set timeout=30
 
 menuentry "Try PrivOS without installing" {
-	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash apparmor=0 ---
+	linux /casper/vmlinuz boot=casper nopersistent toram quiet splash ---
 	initrd /casper/initrd
 }
 
