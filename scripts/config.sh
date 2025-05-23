@@ -32,7 +32,6 @@ export TARGET_PACKAGE_REMOVE="
 	ubiquity \
 	ubiquity-casper \
 	ubiquity-frontend-gtk \
-	ubiquity-slideshow-kubuntu \
 	casper \
 	discover \
 	laptop-detect \

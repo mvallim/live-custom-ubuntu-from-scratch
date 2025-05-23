@@ -119,6 +119,8 @@ function install_pkg() {
 		net-tools \
 		iw \
 		locales \
+		btrfs-progs \
+		lvm2 \
 		grub-common \
 		grub-gfxpayload-lists \
 		grub-pc \
