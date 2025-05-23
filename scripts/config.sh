@@ -112,6 +112,7 @@ function install_apps() {
 		vlc \
 		qbittorrent \
 		kde-spectacle \
+		ark \
 		okular \
 		gwenview \
 		keepassxc \
