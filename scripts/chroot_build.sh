@@ -120,6 +120,7 @@ function install_pkg() {
 		iw \
 		locales \
 		btrfs-progs \
+		cryptsetup \
 		lvm2 \
 		grub-common \
 		grub-gfxpayload-lists \
@@ -154,11 +155,10 @@ EOF
 	# install kernel
 	apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
 
-	# graphic installer - ubiquity kde
+	# graphic installer - privos
 	apt install -y ubiquity \
 		ubiquity-casper \
-		ubiquity-frontend-gtk \
-		ubiquity-slideshow-kubuntu
+		ubiquity-frontend-gtk
 
 	# Call into config function
 	customize_image
