@@ -2,6 +2,7 @@
     "brave": {
 		// Disable AI chat
 		"ai_chat": {
+            "autocomplete_provider_enabled": false,
             "context_menu_enabled": false,
             "show_toolbar_button": false,
             "storage_enabled": false,
