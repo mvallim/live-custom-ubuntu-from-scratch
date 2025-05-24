@@ -6,10 +6,12 @@ This is a project to create a privacy-first Ubuntu derivative as a learning expe
 Now everything is an extremely experimental weekend project, but it will keep improving.
 
 ## Features:
-* Heavily debloated Ubuntu 25.04 with a minimal KDE Plasma session
+* Heavily debloated Ubuntu 24.04 with a minimal KDE Plasma session
 * Replaced snaps with flatpaks
+* Added NVIDIA installer script that fixes the [sleep/hybernate issues](https://gist.github.com/bmcbm/375f14eaa17f88756b4bdbbebbcfd029)
+* Added a [fix for the buggy USB file transfer](https://codeberg.org/wonky/arch-udev-usb-sync) that plagues most distros
 * [Preconfigured](https://forum.qubes-os.org/t/set-custom-preferences-for-brave-browser-in-disposable-qube/27351) Brave Browser from the official signed repos (Disabled telemetry and annoying features, a bit of hardening and disabled WebRTC leaks)
-* [Mullvad Browser](https://mullvad.net/en/browser) and Tor Browser
+* Tor Browser
 * Signal preinstalled with the official signed repos
 * [MAC Address randomization](https://wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization)
 * [Base Mullvad DNS](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#linux) with TLS. Blocks ads, malware and trackers system-wide
@@ -23,7 +25,7 @@ Now everything is an extremely experimental weekend project, but it will keep im
 For now, you can try the latest developments getting the ISO images from [Github Actions](https://github.com/polkaulfield/privOS-builder/actions)
 
 ## Todo:
-* Harden the system all we can without breaking user experience
+* Make the system [CIS Workstation Compliant](https://www.cisecurity.org/benchmark/ubuntu_linux) using openscap
 * Document all the network connections
 * Set up an outbound firewall with sane defaults that prompts the user when some connection isn't recognized.
 * And a lot more...
