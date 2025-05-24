@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -13,7 +13,7 @@ jobs:
       - name: Build
         run: |
           cd scripts
-          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="plucky"/g' config.sh
+          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="noble"/g' config.sh
           ./build.sh -
           cd ..
       - name: Archive artifacts
