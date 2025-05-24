@@ -1,7 +1,0 @@
-#! /bin/sh
-set -e
-
-if [ "$1" = rtupdate ]; then
-	py3clean -p ubiquity-frontend-kde /usr/lib/ubiquity
-	py3compile -p ubiquity-frontend-kde -V 3.1- /usr/lib/ubiquity
-fi

@@ -1,5 +1,0 @@
-# Disable all buttons but maximize/restore
-[Style]
-CustomButtonPositions=true
-ButtonsOnLeft=
-ButtonsOnRight=A
