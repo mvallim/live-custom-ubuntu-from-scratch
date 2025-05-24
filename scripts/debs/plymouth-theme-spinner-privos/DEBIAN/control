@@ -1,9 +1,8 @@
 Package: plymouth-theme-spinner-privos
 Source: plymouth
-Version: 24.004.60-2ubuntu7
+Version: 1
 Architecture: amd64
 Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
-Installed-Size: 427
 Depends: libc6, libplymouth5, plymouth, plymouth-label, lsb-release, plymouth-theme-spinner
 Breaks: plymouth-themes
 Replaces: plymouth-themes

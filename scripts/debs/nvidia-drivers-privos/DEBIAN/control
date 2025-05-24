@@ -1,5 +1,5 @@
 Package: nvidia-drivers-privos
-Version: 0.1
+Version: 1
 Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
 Architecture: all
 Depends: pkexec

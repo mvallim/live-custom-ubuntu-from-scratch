@@ -1,5 +1,5 @@
 Package: nm-randomize-mac-privos
-Version: 20252025-1
+Version: 1
 Section: custom
 Priority: optional
 Architecture: all
