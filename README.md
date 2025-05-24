@@ -1,6 +1,6 @@
 # WIP building tools for the PrivOS distribution project
 
-![Logo](https://raw.githubusercontent.com/polkaulfield/privOS-builder/refs/heads/25.04/images/banner.png)
+![Logo](https://raw.githubusercontent.com/polkaulfield/privOS-builder/refs/heads/24.04/images/banner.png)
 
 This is a project to create a privacy-first Ubuntu derivative as a learning experience by some 42-Barcelona students.
 Now everything is an extremely experimental weekend project, but it will keep improving.
