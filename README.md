@@ -20,7 +20,7 @@ Now everything is an extremely experimental weekend project, but it will keep im
 * Disabled CUPS and Avahi services. [They are known for being exploited a lot](https://gist.github.com/FlyingFathead/880238cb2ecb4f64d81a2c4e5600511a)
 
 ## Screenshot
-![Screenshot](https://raw.githubusercontent.com/polkaulfield/privOS-builder/refs/heads/25.04/images/privos.png)
+![Screenshot](https://raw.githubusercontent.com/polkaulfield/privOS-builder/refs/heads/24.04/images/privos.png)
 
 ## Downloads:
 For now, you can try the latest developments getting the ISO images from [Github Actions](https://github.com/polkaulfield/privOS-builder/actions)
