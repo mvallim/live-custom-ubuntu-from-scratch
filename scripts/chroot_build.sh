@@ -166,10 +166,9 @@ EOF
 	# remove unused and clean up apt cache
 	apt-get autoremove -y
 
-	# Update locales
-	update-locale "LANG=en_US.UTF-8"
-	locale-gen --purge "en_US.UTF-8"
-	dpkg-reconfigure --frontend noninteractive locales
+	# Locales
+	sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+	dpkg-reconfigure --frontend=noninteractive locales
 
 	# Set up network manager
 	cat << EOF > /etc/NetworkManager/NetworkManager.conf
