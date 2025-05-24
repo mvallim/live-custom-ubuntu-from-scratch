@@ -108,6 +108,7 @@ function install_desktop() {
 
 function install_apps() {
 	apt-get install -y \
+		dolphin \
 		konsole \
 		synaptic \
 		vlc \
