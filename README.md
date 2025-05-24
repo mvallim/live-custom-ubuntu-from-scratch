@@ -15,6 +15,7 @@ Now everything is an extremely experimental weekend project, but it will keep im
 * Signal preinstalled with the official signed repos
 * [MAC Address randomization](https://wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization)
 * [Base Mullvad DNS](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#linux) with TLS. Blocks ads, malware and trackers system-wide
+* Hardened the default home permissions from 755 to 700 so only users can access their files.
 * Disabled IPv6 support systemwide
 * Disabled CUPS and Avahi services. [They are known for being exploited a lot](https://gist.github.com/FlyingFathead/880238cb2ecb4f64d81a2c4e5600511a)
 
