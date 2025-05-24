@@ -7,7 +7,7 @@
 
 # The version of Ubuntu to generate.  Successfully tested LTS: bionic, focal, jammy, noble, plucky
 # See https://wiki.ubuntu.com/DevelopmentCodeNames for details
-export TARGET_UBUNTU_VERSION="plucky"
+export TARGET_UBUNTU_VERSION="noble"
 
 # The Ubuntu Mirror URL. It's better to change for faster download.
 # More mirrors see: https://launchpad.net/ubuntu/+archivemirrors
@@ -98,7 +98,7 @@ function install_desktop() {
 		xserver-xorg-core \
 		xinit \
 		x11-xserver-utils \
-		kde-plasma-desktop \
+		plasma-desktop \
 		plasma-discover \
 		plasma-nm \
 		sddm \
@@ -108,6 +108,7 @@ function install_desktop() {
 
 function install_apps() {
 	apt-get install -y \
+		konsole \
 		synaptic \
 		vlc \
 		qbittorrent \
@@ -178,7 +179,9 @@ function remove_packages()
 {
 	apt purge -y \
 		apport \
-		gnome-keyring
+		gnome-keyring \
+		ubuntu-pro-client \
+		zutty
 	apt autoremove -y
 
 }
@@ -205,10 +208,10 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
-	add_mullvad_browser
+	#add_mullvad_browser
 	install_debs
 	disable_ipv6
-	disable_cups
+	#disable_cups
 	disable_avahi
 	install_firewall
 	remove_packages

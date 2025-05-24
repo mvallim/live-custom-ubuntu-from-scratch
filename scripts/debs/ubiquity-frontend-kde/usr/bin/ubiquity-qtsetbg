@@ -1,0 +1,56 @@
+#!/usr/bin/python3
+
+'''
+Helper program to draw a background image on each screen of the system.
+'''
+
+import sys
+
+from PyQt5.QtCore import Qt
+from PyQt5 import QtGui, QtWidgets
+
+
+def die(msg):
+    print(msg, file=sys.stderr)
+    sys.exit(1)
+
+
+def create_window(wallpaper, geometry):
+    win = QtWidgets.QWidget()
+
+    wallpaper = wallpaper.scaled(geometry.size(),
+                                 Qt.KeepAspectRatioByExpanding,
+                                 Qt.SmoothTransformation)
+    palette = QtGui.QPalette()
+    palette.setBrush(win.backgroundRole(), QtGui.QBrush(wallpaper))
+
+    win.setPalette(palette)
+    win.setAttribute(Qt.WA_X11NetWmWindowTypeDesktop)
+    win.setGeometry(geometry)
+    win.show()
+    return win
+
+
+def main():
+    if len(sys.argv) != 2:
+        die('usage: {} <path/to/wallpaper.png>'.format(sys.argv[0]))
+    path = sys.argv[1]
+
+    app = QtWidgets.QApplication(sys.argv)
+    wallpaper = QtGui.QPixmap(path)
+    if wallpaper.isNull():
+        die('Failed to load {}'.format(path))
+
+    desktop = app.desktop()
+    # Keep a trace of the windows to ensure they are not garbage collected
+    windows = []
+    for idx in range(desktop.screenCount()):
+        geometry = desktop.screenGeometry(idx)
+        win = create_window(wallpaper, geometry)
+        windows.append(win)
+
+    return app.exec_()
+
+
+if __name__ == '__main__':
+    main()

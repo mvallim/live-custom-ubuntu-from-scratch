@@ -1,0 +1,13 @@
+QFrame[isBreadcrumb=true] {
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    background-image: none;
+    border-image: url(/usr/share/ubiquity/qt/images/breadcrumb$direction.png) 10px;
+}
+
+.QLabel {
+    color: #333;
+    border-image: none;
+}
+
+/* vim: set ft=css: */

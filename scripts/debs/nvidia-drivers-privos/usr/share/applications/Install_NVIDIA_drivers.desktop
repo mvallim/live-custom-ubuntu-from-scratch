@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=pkexec ubuntu-drivers --gpgpu install
+Exec=pkexec /usr/bin/install-nvidia-privos
 GenericName=Installs the NVIDIA drivers using ubuntu-drivers
 Icon=state-download
 Name=Install NVIDIA drivers
@@ -8,6 +8,7 @@ NoDisplay=false
 Path=
 StartupNotify=true
 Terminal=true
+Categories=System;
 TerminalOptions=
 Type=Application
 X-KDE-SubstituteUID=false

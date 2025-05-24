@@ -1,0 +1,90 @@
+/*- Backgrounds -----------------------------*/
+QMainWindow {
+    /* repeat horizontally, stretch vertically */
+    border-image: url(/usr/share/ubiquity/qt/images/sidebar.png) 0 repeat stretch;
+}
+
+#setup_page,
+#footer_frame {
+    background-image: url(/usr/share/ubiquity/qt/images/main.png);
+}
+
+#sidebar_header_frame,
+#steps_filler_widget,
+QFrame[isBreadcrumb="true"],
+#sidebar_footer_frame {
+    background-image: url(/usr/share/ubiquity/qt/images/sidebar_shadow$direction.png);
+}
+
+#sidebar_header_frame {
+    padding-bottom: 24px;
+}
+
+/*- Footer ----------------------------------*/
+#footer_frame,
+#sidebar_footer_frame {
+    padding: 6px;
+}
+
+/*- Sidebar header --------------------------*/
+#distro_name_label,
+#distro_release_label {
+	color: #fff;
+	font-size: 12pt;
+}
+
+#install_process_label {
+	color: #fff;
+	font-size: 8pt;
+}
+
+/*- Sidebar steps ---------------------------*/
+#steps_widget {
+}
+
+#steps_widget QLabel {
+     color: #fff;
+}
+
+/*- Errors ----------------------------------*/
+#fullname_error_reason,
+#username_error_reason,
+#password_error_reason,
+#hostname_error_reason
+{
+    font-size: 8pt;
+    color: #ff5555;
+}
+
+/*- Headings --------------------------------*/
+#welcome_heading_label,
+#prepare_heading_label,
+#wireless_heading_label,
+#timezone_heading_label,
+#keyboard_heading_label,
+#part_auto_heading_label,
+#part_advanced_heading_label,
+#userinfo_heading_label,
+#reading_heading_label
+{
+	color: #3DAEE9;
+	font-size: 10pt;
+	qproperty-alignment: AlignCenter;
+}
+
+/*- Content ---------------------------------*/
+#try_ubuntu,
+#install_ubuntu
+{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+#map_frame,
+#keyboard_frame
+{
+	border-radius: 5px;
+	border: 1px solid #bac8d1;
+}
+
+/* vim: set ft=css: */

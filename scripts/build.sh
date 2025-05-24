@@ -133,13 +133,6 @@ function run_chroot() {
 	# Launch into chroot environment to build install image.
 	sudo chroot chroot /usr/bin/env DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-readline} /root/chroot_build.sh -
 
-	# Copy distro files
-	for FILE in $(find distro_files -type f); do
-		NEWFILE="chroot/$(echo $FILE | sed s/distro_files//g)"
-		sudo cp $FILE $NEWFILE
-		sudo chmod 644 $NEWFILE
-	done
-
 	# Cleanup after image changes
 	sudo rm -f chroot/root/chroot_build.sh
 	sudo rm -f chroot/root/default_config.sh

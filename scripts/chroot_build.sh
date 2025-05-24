@@ -117,7 +117,7 @@ function install_pkg() {
 		os-prober \
 		network-manager \
 		net-tools \
-		iw \
+		wireless-tools \
 		locales \
 		btrfs-progs \
 		cryptsetup \

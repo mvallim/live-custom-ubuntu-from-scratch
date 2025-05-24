@@ -1,0 +1,64 @@
+Ubiquity was formerly known as "Espresso", and originally as "Ubuntu
+Express", which is written and maintained by Javier Carranza
+<javier.carranza@interactors.coop> and Juanje Ojeda Croissier
+<juanje@interactors.coop>. This version draws on the work done on Ubuntu
+Express, but was renamed to avoid confusion, to reduce awkward branding
+considerations, and because Ubiquity concentrates on reusing
+debian-installer code and reducing duplicated translation and branding work
+as much as possible. Ubiquity has now substantially diverged from Ubuntu
+Express and is an independent project.
+
+The original Guadalinex source can be found at:
+	http://ws314.juntadeandalucia.es/guadalinex2005/live_installer/
+
+and Ubiquity is developed at:
+	http://bazaar.launchpad.net/~ubuntu-installer/ubiquity/trunk/
+
+Copyright (C) 2005  Javier Carranza
+Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010  Canonical Ltd.
+
+Ubiquity has been adapted for usage by the Mythbuntu
+team for the purposes of a Ubuntu derivative focused
+upon setting up a standalone MythTV box.
+
+Portions copyright (C) 2007 Mario Limonciello
+
+oem-config was written by Colin Watson <cjwatson@ubuntu.com>.
+It is:
+  Copyright (C) 2005, 2006, 2007, 2008 Canonical Ltd.
+  Copyright (C) 2006, 2007 Anirudh Ramesh
+
+Some code in oem-config is borrowed from base-config, whose copyright
+declaration is as follows:
+
+  This package is copyright 2000-2004 by Joey Hess <joeyh@debian.org>.
+  Portions are also copyright by Bruce Perens <bruce@hams.com>, Enrique
+  Zanardi <ezanard@debian.org>, Sven Rudolph, Luis Francisco Gonzalez
+  <luisgh@debian.org>, Ben Collins <bcollins@debian.org>, Matt Kraai
+  <kraai@debian.org>, Petter Reinholdtsen <pere@debian.org>, VA Linux
+  Systems, and Software in the Public Interest.
+
+License:
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this package; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  02110-1301, USA.
+
+On Debian systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
+ubiquity-kde.png icon copyright 2007 David Vignoni.
+License: LGPL 3, see /usr/share/common-licenses/LGPL
+
+ubiquity.svg icon copyright 2010 K.Vishnoo Charan Reddy GPL-2+

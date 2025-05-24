@@ -1,0 +1,8 @@
+Package: nvidia-drivers-privos
+Version: 0.1
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Architecture: all
+Depends: pkexec
+Conflicts: 
+Provides: nvidia-drivers-privos
+Description: Installer script for the NVIDIA drivers that applies a suspend/sleep fix

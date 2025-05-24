@@ -4,7 +4,7 @@ Version: 24.004.60-2ubuntu7
 Architecture: amd64
 Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
 Installed-Size: 427
-Depends: libc6 (>= 2.38), libplymouth5 (>= 23.360.11), plymouth (= 24.004.60-2ubuntu7), plymouth-label (= 24.004.60-2ubuntu7), lsb-release, plymouth-theme-spinner
+Depends: libc6, libplymouth5, plymouth, plymouth-label, lsb-release, plymouth-theme-spinner
 Breaks: plymouth-themes
 Replaces: plymouth-themes
 Provides: plymouth-theme

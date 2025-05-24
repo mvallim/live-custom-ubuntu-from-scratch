@@ -1,0 +1,192 @@
+<ui version="4.0" >
+ <class>partition_create_dialog</class>
+ <widget class="QDialog" name="partition_create_dialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>468</width>
+    <height>219</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Create Partition</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="6" column="0" colspan="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>441</width>
+       <height>21</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="7" column="0" colspan="2" >
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" >
+    <widget class="QComboBox" name="partition_create_mount_combo" >
+     <property name="editable" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" >
+    <widget class="QLabel" name="partition_create_mount_label" >
+     <property name="text" >
+      <string>Mount point:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" >
+    <widget class="QLabel" name="partition_create_use_label" >
+     <property name="text" >
+      <string>Use as:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1" >
+    <widget class="QComboBox" name="partition_create_use_combo" />
+   </item>
+   <item row="3" column="0" >
+    <widget class="QLabel" name="partition_create_place_label" >
+     <property name="text" >
+      <string>Location for the new partition:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" >
+    <widget class="QSpinBox" name="partition_create_size_spinbutton" />
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="partition_create_size_label" >
+     <property name="text" >
+      <string>New partition size in megabytes (1000000 bytes):</string>
+     </property>
+     <property name="wordWrap" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="partition_create_type_label" >
+     <property name="text" >
+      <string>Type for the new partition:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2" >
+    <widget class="QLabel" name="partition_create_heading_label" >
+     <property name="text" >
+      <string>&lt;b>Create a new partition&lt;/b></string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" >
+    <widget class="QWidget" native="1" name="partition_create_place_widget" >
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>0</number>
+      </property>
+      <item row="0" column="1" >
+       <widget class="QRadioButton" name="partition_create_place_end" >
+        <property name="text" >
+         <string>End</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QRadioButton" name="partition_create_place_beginning" >
+        <property name="text" >
+         <string>Beginning</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="QWidget" native="1" name="partition_create_type_widget" >
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>0</number>
+      </property>
+      <item row="0" column="1" >
+       <widget class="QRadioButton" name="partition_create_type_logical" >
+        <property name="text" >
+         <string>Logical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QRadioButton" name="partition_create_type_primary" >
+        <property name="text" >
+         <string>Primary</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>partition_create_dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>partition_create_dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
