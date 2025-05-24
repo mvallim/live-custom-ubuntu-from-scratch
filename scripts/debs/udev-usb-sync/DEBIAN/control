@@ -1,0 +1,8 @@
+Package: udev-usb-sync
+Version: 0.12
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Architecture: all
+Depends: hdparm, bc
+Conflicts: 
+Provides: udev-usb-sync
+Description: Fine tune write cache and impose buffer limits when USB storage device is plugged

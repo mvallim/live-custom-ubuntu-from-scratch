@@ -1,0 +1,70 @@
+#!/usr/bin/bash
+#
+# The script is part of udev-usb-sync package
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the Affero GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#    @linux-aarhus - root.nix.dk
+#
+# configuration : /etc/usb-dev-sync/usb-dev-sync.conf
+# triggered by  : /etc/udev/rules.d/99-usb-sync.rules
+#
+# contributors: @megavolt (Manjaro Forum)
+#             : @linux-aarhus (Manjaro Forum)
+# inspired by : @kwg (EndeavourOS Forum)
+#
+# Arguments provided by udev rule
+#     $1: usb block device
+#     $2: usb bandwidth reported by device
+#
+
+set -euo pipefail
+
+LANG=C
+LC_NUMERIC=C
+
+AUTOCALC=${AUTOCALC:-1}
+CONFIG='/etc/udev-usb-sync/udev-usb-sync.conf'
+
+[[ -f $CONFIG ]] && source $CONFIG
+
+BLOCKDEVICE="$1"
+SPEED="$2"
+
+# disable write cache for device if possible
+[[ -n $(which hdparm) ]] && $(which hdparm) -W 0 /dev/$BLOCKDEVICE > /dev/null
+
+# the following rules is introduced with kernel 6.2
+# https://docs.kernel.org/admin-guide/abi-testing.html#abi-sys-class-bdi-bdi-max-bytes
+
+case $AUTOCALC in 
+    0)  # apply 16M as max_bytes
+        echo 16777216 > /sys/block/$BLOCKDEVICE/bdi/max_bytes
+    ;;
+    1) BUFFER_TIME=${BUFFER_TIME:-"0.05"}
+       SAFETY_FACTOR=${SAFETY_FACTOR:-"1.3"}
+       BUFFER_SIZE=$(printf '%.0f' `echo "( ($SPEED / 8) * $BUFFER_TIME * $SAFETY_FACTOR) * 1024 * 1024" | bc`)
+       # for x in 12 480 5000 10000; do echo -n "$x -> " ;printf "%.0f\n" ` echo "(($x / 8) * 0.05 * 1.3) * 1024 * 1024" | bc`; done
+       # 62915
+       # 4089446
+       # 42593157
+       # 85196800
+       # apply calculated buffer size
+       echo "$BUFFER_SIZE" > /sys/block/$BLOCKDEVICE/bdi/max_bytes
+    ;;
+esac
+
+# https://docs.kernel.org/admin-guide/abi-testing.html#abi-sys-class-bdi-bdi-strict-limit
+# apply strict limit
+echo 1 > /sys/block/$BLOCKDEVICE/bdi/strict_limit
