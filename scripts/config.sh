@@ -157,13 +157,6 @@ function add_flatpak() {
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
-function disable_ipv6()
-{
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1
-	sysctl -w net.ipv6.conf.default.disable_ipv6=1
-	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
-}
-
 function disable_cups()
 {
 	systemctl disable cups.service cups-browsed.service cups.socket cups.path
@@ -211,7 +204,6 @@ function customize_image() {
 	add_signal
 	#add_mullvad_browser
 	install_debs
-	disable_ipv6
 	#disable_cups
 	disable_avahi
 	install_firewall
