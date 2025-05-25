@@ -1,0 +1,8 @@
+Package: disable-ipv6-grub
+Version: 1
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: Kernel argument set in grub to disable ipv6
