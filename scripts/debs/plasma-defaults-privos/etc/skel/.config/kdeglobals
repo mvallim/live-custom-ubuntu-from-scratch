@@ -9,3 +9,4 @@ Theme=Qogir-Dark
 ColorScheme=Breeze
 LookAndFeelPackage=org.kde.breezedark.desktop
 contrast=4
+SingleClick=false
