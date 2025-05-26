@@ -187,6 +187,11 @@ function install_debs()
 	done
 }
 
+function harden_umask()
+{
+	sed -i 's/^HOME_MODE.*/HOME_MODE\t0700/g' /etc/login.defs
+}
+
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -208,6 +213,7 @@ function customize_image() {
 	disable_avahi
 	install_firewall
 	remove_packages
+	harden_umask
 	branding
 	cleanup
 }
