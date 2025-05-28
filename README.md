@@ -16,7 +16,7 @@ Now everything is an extremely experimental weekend project, but it will keep im
 * [MAC Address randomization](https://wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization)
 * [Base Mullvad DNS](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#linux) with TLS. Blocks ads, malware and trackers system-wide
 * Hardened the default home permissions from 755 to 700 so only users can access their files.
-* Disabled IPv6 support systemwide
+* [Added IP related hardening tweaks from the Brace project](https://github.com/divestedcg/Brace/blob/master/brace/usr/lib/sysctl.d/60-restrict.conf)
 * Disabled CUPS and Avahi services. [They are known for being exploited a lot](https://gist.github.com/FlyingFathead/880238cb2ecb4f64d81a2c4e5600511a)
 
 ## Screenshot
