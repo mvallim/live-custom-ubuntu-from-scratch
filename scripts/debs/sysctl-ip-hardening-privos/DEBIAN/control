@@ -1,8 +1,8 @@
-Package: grub2-disable-ipv6
+Package: sysctl-ip-hardening-privos
 Version: 1
 Section: custom
 Priority: optional
 Architecture: all
 Essential: no
 Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
-Description: Kernel argument set in grub to disable ipv6
+Description: IPv4 and IPv6 hardened sysctl settings from the Brace project
