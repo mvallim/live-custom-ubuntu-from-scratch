@@ -1,8 +1,0 @@
-Package: user-umask-privos
-Version: 1
-Section: custom
-Priority: optional
-Architecture: all
-Essential: no
-Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
-Description: Set permissions of 700 in home folers so only the owner can access the files

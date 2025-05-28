@@ -190,6 +190,7 @@ function install_debs()
 function harden_umask()
 {
 	sed -i 's/^HOME_MODE.*/HOME_MODE\t0700/g' /etc/login.defs
+	sed -i 's/^UMASK.*/UMASK\t\t700/g' /etc/login.defs
 }
 
 function cleanup() {
