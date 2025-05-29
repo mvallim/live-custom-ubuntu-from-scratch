@@ -1,0 +1,9 @@
+Package: firefox-settings-privos
+Version: 1
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Depends: firefox
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: Firefox settings from Arkenfox and Brace projects.

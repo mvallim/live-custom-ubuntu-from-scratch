@@ -1,0 +1,72 @@
+{
+	"policies": {
+		"CaptivePortal": false,
+		"Cookies": {
+			"Behavior": "reject-tracker-and-partition-foreign",
+			"BehaviorPrivateBrowsing": "reject-tracker-and-partition-foreign"
+		},
+		"DisableFirefoxAccounts": true,
+		"DisableFirefoxStudies": true,
+		"DisablePocket": true,
+		"DisableSecurityBypass": false,
+		"DisableTelemetry": true,
+		"EnableTrackingProtection": {
+			"Value": true,
+			"Locked": false,
+			"Cryptomining": true,
+			"Fingerprinting": true,
+			"EmailTracking": true
+		},
+		"DNSOverHTTPS": {
+			"Enabled": true,
+			"Locked": false,
+			"Fallback": false,
+			"ProviderURL": "https://base.dns.mullvad.net/dns-query"
+		},
+		"Extensions": {
+			"Install": [
+				"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+				]
+		},
+		"ExtensionSettings": {
+			"*": {
+				"blocked_install_message": "Denied by Brace",
+				"install_sources": [ "about:addons", "https://addons.mozilla.org/" ],
+				"installation_mode": "blocked",
+				"allowed_types": [ "extension" ]
+			},
+			"uBlock0@raymondhill.net": {
+				"installation_mode": "force_installed",
+				"install_url": "https://addons.mozilla.org/firefox/downloads/latest/uBlock0@raymondhill.net/latest.xpi"
+			},
+			"{73a6fe31-595d-460b-a920-fcc0f8843232}": {
+				"installation_mode": "allowed",
+				"install_url": "https://addons.mozilla.org/firefox/downloads/latest/{73a6fe31-595d-460b-a920-fcc0f8843232}/latest.xpi"
+			}
+		},
+		"FirefoxHome": {
+			"Search": true,
+			"TopSites": false,
+			"SponsoredTopSites": false,
+			"Highlights": false,
+			"Pocket": false,
+			"SponsoredPocket": false,
+			"Snippets": false,
+			"Locked": false
+		},
+		"FirefoxSuggest": {
+			"WebSuggestions": false,
+			"SponsoredSuggestions": false,
+			"ImproveSuggest": false,
+			"Locked": false
+		},
+		"NetworkPrediction": false,
+		"OverrideFirstRunPage": "about:home",
+		"UserMessaging": {
+			"WhatsNew": false,
+			"ExtensionRecommendations": false,
+			"FeatureRecommendations": false,
+			"SkipOnboarding": false
+		}
+	}
+}

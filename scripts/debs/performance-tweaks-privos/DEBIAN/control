@@ -1,0 +1,8 @@
+Package: performance-tweaks-privos
+Version: 1
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Description: Misc tweaks to improve performance
