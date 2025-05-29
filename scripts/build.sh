@@ -86,18 +86,7 @@ function load_config() {
 	if [[ -f "$SCRIPT_DIR/config.sh" ]]; then
 		. "$SCRIPT_DIR/config.sh"
 	else
-		>&2 echo "Unable to find default config file  $SCRIPT_DIR/default_config.sh, aborting."
-		exit 1
-	fi
-}
-
-# Verify that necessary configuration values are set and they are valid
-function check_config() {
-	local expected_config_version
-	expected_config_version="0.4"
-
-	if [[ "$CONFIG_FILE_VERSION" != "$expected_config_version" ]]; then
-		>&2 echo "Invalid or old config version $CONFIG_FILE_VERSION, expected $expected_config_version. Please update your configuration file from the default."
+		>&2 echo "Unable to find default config file  $SCRIPT_DIR/config.sh, aborting."
 		exit 1
 	fi
 }
@@ -210,7 +199,6 @@ function build_iso() {
 cd $SCRIPT_DIR
 
 load_config
-check_config
 check_host
 
 # check number of args

@@ -68,6 +68,19 @@ function add_mullvad_browser()
 	apt install -y mullvad-browser
 }
 
+restore_firefox() {
+    wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- > /etc/apt/keyrings/packages.mozilla.org.asc
+    echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /etc/apt/sources.list.d/mozilla.list 
+    echo '
+Package: *
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
+' > /etc/apt/preferences.d/mozilla
+    apt update
+    apt install firefox -y
+}
+
+
 function remove_snaps() {
 	while [ "$(snap list | wc -l)" -gt 0 ]; do
 		   for snap in $(snap list | tail -n +2 | cut -d ' ' -f 1); do
@@ -187,11 +200,6 @@ function install_debs()
 	done
 }
 
-function harden_umask()
-{
-	sed -i 's/^HOME_MODE.*/HOME_MODE\t0700/g' /etc/login.defs
-}
-
 function cleanup() {
 	rm -rf /tmp/* ~/.bash_history
 	export HISTSIZE=0
@@ -207,17 +215,14 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
+	restore_firefox
 	#add_mullvad_browser
 	install_debs
-	#disable_cups
+	disable_cups
 	disable_avahi
 	install_firewall
 	remove_packages
-	harden_umask
 	branding
 	cleanup
 }
 
-# Used to version the configuration.  If breaking changes occur, manual
-# updates to this file from the default may be necessary.
-export CONFIG_FILE_VERSION="0.4"
