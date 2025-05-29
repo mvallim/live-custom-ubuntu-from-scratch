@@ -10,12 +10,13 @@ Now everything is an extremely experimental weekend project, but it will keep im
 * Replaced snaps with flatpaks
 * Added NVIDIA installer script that fixes the [sleep/hybernate issues](https://gist.github.com/bmcbm/375f14eaa17f88756b4bdbbebbcfd029)
 * Added a [fix for the buggy USB file transfer](https://codeberg.org/wonky/arch-udev-usb-sync) that plagues most distros
+* WIP [Performance tweaks](https://wiki.archlinux.org/title/Improving_performance). For now udev rules for dynamic io schedulers.
 * [Preconfigured](https://forum.qubes-os.org/t/set-custom-preferences-for-brave-browser-in-disposable-qube/27351) Brave Browser from the official signed repos (Disabled telemetry and annoying features, a bit of hardening and disabled WebRTC leaks)
+* [Preconfigured](https://github.com/divestedcg/Brace/tree/master/brace/usr/lib/firefox) Firefox browser from Mozilla's repos with settingd from the Brace and Arkenfox projects for hardening.
 * Tor Browser
 * Signal preinstalled with the official signed repos
 * [MAC Address randomization](https://wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization)
 * [Base Mullvad DNS](https://mullvad.net/en/help/dns-over-https-and-dns-over-tls#linux) with TLS. Blocks ads, malware and trackers system-wide
-* Hardened the default home permissions from 755 to 700 so only users can access their files.
 * [Added IP related hardening tweaks from the Brace project](https://github.com/divestedcg/Brace/blob/master/brace/usr/lib/sysctl.d/60-restrict.conf)
 * Disabled CUPS and Avahi services. [They are known for being exploited a lot](https://gist.github.com/FlyingFathead/880238cb2ecb4f64d81a2c4e5600511a)
 
