@@ -1,26 +1,25 @@
 #!/bin/bash
 
 set -e
-set -o pipefail
 
-ubuntu-drivers --gpgpu install
 if [ $(id -u) -ne 0 ]
   then echo Please run this script as root or using sudo!
   exit 1
 fi
-echo "[*] Trying to install NVIDIA Propietary drivers"
-ubuntu-drivers --gpgpu install
 # Add suspend fix
 echo "[*] Applying the suspend/sleep fixes"
 cat<<EOF>/etc/modprobe.d/nvidia.conf
 options nvidia NVreg_PreserveVideoMemoryAllocations=1
 options nvidia NVreg_TemporaryFilePath=/var/tmp
 options nvidia NVreg_EnableGpuFirmware=0
+EOF
+#Install drivers
+echo "[*] Installing NVIDIA Propietary drivers"
+ubuntu-drivers install
 
 sudo systemctl enable nvidia-hibernate
 sudo systemctl enable nvidia-suspend
 sudo systemctl enable nvidia-resume
-EOF
 
 read -p "Drivers installed! Reboot now? (y/n)" -n 1 -r
 echo    
