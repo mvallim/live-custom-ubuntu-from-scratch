@@ -11,7 +11,7 @@ export TARGET_UBUNTU_VERSION="noble"
 
 # The Ubuntu Mirror URL. It's better to change for faster download.
 # More mirrors see: https://launchpad.net/ubuntu/+archivemirrors
-export TARGET_UBUNTU_MIRROR="https://archive.ubuntu.com/ubuntu"
+export TARGET_UBUNTU_MIRROR="https://us.archive.ubuntu.com/ubuntu"
 
 # The packaged version of the Linux kernel to install on target image.
 # See https://wiki.ubuntu.com/Kernel/LTSEnablementStack for details
@@ -172,8 +172,8 @@ function add_flatpak() {
 
 function disable_cups()
 {
-	systemctl disable cups.service cups-browsed.service cups.socket cups.path
-	systemctl mask cups.service cups-browsed.service cups.socket cups.path
+	systemctl disable cups.service cups-browsed.service cups.socket cups.path || true
+	systemctl mask cups.service cups-browsed.service cups.socket cups.path || true
 }
 
 function disable_avahi()
@@ -218,7 +218,7 @@ function customize_image() {
 	restore_firefox
 	#add_mullvad_browser
 	install_debs
-	disable_cups
+	#disable_cups
 	disable_avahi
 	install_firewall
 	remove_packages
