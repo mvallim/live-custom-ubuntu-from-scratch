@@ -111,7 +111,9 @@ function install_desktop() {
 		xserver-xorg-core \
 		xinit \
 		x11-xserver-utils \
+		alsa-utils \
 		plasma-desktop \
+		plasma-workspace-wayland \
 		plasma-discover \
 		plasma-nm \
 		sddm \
