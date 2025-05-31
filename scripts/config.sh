@@ -68,7 +68,7 @@ function add_mullvad_browser()
 	apt install -y mullvad-browser
 }
 
-restore_firefox() {
+function restore_firefox() {
     wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- > /etc/apt/keyrings/packages.mozilla.org.asc
     echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /etc/apt/sources.list.d/mozilla.list 
     echo '
@@ -78,6 +78,12 @@ Pin-Priority: 1000
 ' > /etc/apt/preferences.d/mozilla
     apt update
     apt install firefox -y
+}
+
+function add_torbrowser()
+{
+	apt install --no-install-recommends -y \
+	torbrowser-launcher
 }
 
 
@@ -134,7 +140,6 @@ function install_apps() {
 		gwenview \
 		keepassxc \
 		kcalc \
-		torbrowser-launcher \
 		kate
 }
 
@@ -220,8 +225,8 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
-	#restore_firefox
 	add_mullvad_browser
+	add_torbrowser
 	install_debs
 	disable_cups
 	disable_avahi
