@@ -143,6 +143,9 @@ function install_firewall() {
 		plasma-firewall \
 		ufw
 	systemctl enable ufw.service
+	ufw default deny incoming
+	ufw default allow outgoing
+	ufw enable
 }
 
 function install_extras() {
@@ -217,10 +220,10 @@ function customize_image() {
 	add_flatpak
 	add_brave
 	add_signal
-	restore_firefox
-	#add_mullvad_browser
+	#restore_firefox
+	add_mullvad_browser
 	install_debs
-	#disable_cups
+	disable_cups
 	disable_avahi
 	install_firewall
 	remove_packages
