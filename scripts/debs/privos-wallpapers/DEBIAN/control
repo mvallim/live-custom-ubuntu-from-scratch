@@ -1,0 +1,8 @@
+Package: privos-wallpapers
+Version: 1
+Architecture: all
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Depends: privos-wallpapers
+Priority: optional
+Description: Privos Wallpapers
+ Includes PrivOS default wallpaper. Photo taken by John Towner
