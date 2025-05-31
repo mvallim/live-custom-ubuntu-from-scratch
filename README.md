@@ -12,7 +12,7 @@ Now everything is an extremely experimental weekend project, but it will keep im
 * Added a [fix for the buggy USB file transfer](https://codeberg.org/wonky/arch-udev-usb-sync) that plagues most distros
 * WIP [Performance tweaks](https://wiki.archlinux.org/title/Improving_performance). For now udev rules for dynamic io schedulers.
 * [Preconfigured](https://forum.qubes-os.org/t/set-custom-preferences-for-brave-browser-in-disposable-qube/27351) Brave Browser from the official signed repos (Disabled telemetry and annoying features, a bit of hardening and disabled WebRTC leaks)
-* [Preconfigured](https://github.com/divestedcg/Brace/tree/master/brace/usr/lib/firefox) Firefox browser from Mozilla's repos with settingd from the Brace and Arkenfox projects for hardening.
+* [Mullvad Browser](https://mullvad.net/en/browser) Hardened Firefox based browser with a focus on privacy.
 * Tor Browser
 * Signal preinstalled with the official signed repos
 * [MAC Address randomization](https://wiki.archlinux.org/title/NetworkManager#Configuring_MAC_address_randomization)
