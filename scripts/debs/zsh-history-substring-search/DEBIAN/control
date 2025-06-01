@@ -1,0 +1,12 @@
+Package: zsh-history-substring-search
+Version: 1.1.0-git
+Architecture: all
+Maintainer: Pol Kaulfield <kaulfield@protonmail.com>
+Depends: zsh
+Enhances: zsh
+Section: shells
+Priority: optional
+Homepage: https://github.com/zsh-users/zsh-history-substring-search/
+Description: This is a clean-room implementation of the Fish shell's history search feature,
+ where you can type in any part of any command from history and then press chosen keys,
+ such as the UP and DOWN arrows, to cycle through matches.

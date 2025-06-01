@@ -203,6 +203,14 @@ function remove_packages()
 
 }
 
+function add_zsh()
+{
+	apt install -y \
+		zsh \
+		zsh-syntax-highlighting \
+		zsh-autosuggestions
+}
+
 function install_debs()
 {
 	for DEB in $(find /tmp/debs/ -maxdepth 1 -type f -iname "*deb"); do
@@ -221,6 +229,7 @@ function customize_image() {
 	install_desktop
 	install_apps
 	cli_tools
+	add_zsh
 	remove_snaps
 	add_flatpak
 	add_brave
