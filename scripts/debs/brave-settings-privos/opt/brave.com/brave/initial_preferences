@@ -81,7 +81,6 @@
     },
 	// Skip welcome
     "browser": {
-        "custom_chrome_frame": false,
         "has_seen_welcome_page": true
     },
     // Uncheck all built-in extensions you don't use
@@ -126,10 +125,6 @@
         // Select Block third-party cookies
         "cookie_controls_mode": 1,
         "default_content_setting_values": {
-            // Check Forget me when I close this site 
-            "brave_remember_1p_storage": 2,
-            // Select Delete data sites have saved to your device when you close all windows under Sites and Shields Settings → Content → Additional content settings → On-device site data.
-            "cookies": 4,
             // Select Strict under Upgrade connections to HTTPS
             "httpsUpgrades": 2,
             "javascript_jit": 2
