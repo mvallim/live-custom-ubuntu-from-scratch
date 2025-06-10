@@ -1,0 +1,4 @@
+# sudo will always be present in the target system
+calamares-settings-privos: desktop-command-not-in-package sudo *
+# there will be no manpage for any of this in the foreseeable future
+calamares-settings-privos: no-manual-page *

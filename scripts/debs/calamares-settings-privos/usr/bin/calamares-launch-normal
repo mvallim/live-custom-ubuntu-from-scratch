@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Launch Calamares normally.
+
+if [ -e '/etc/calamares/OEM_MODE_ACTIVATED' ]; then
+  msg="$(cat <<EOL
+The installer was previously run in OEM mode. Please reboot to reset the
+configuration and try again.
+EOL
+  )";
+  kdialog --msgbox "${msg}";
+  exit 1;
+fi
+
+export BROWSER='sudo -H -u live brave-browser'
+calamares -D8;

@@ -156,9 +156,8 @@ EOF
 	apt-get install -y --no-install-recommends $TARGET_KERNEL_PACKAGE
 
 	# graphic installer - privos
-	apt install -y ubiquity \
-		ubiquity-casper \
-		ubiquity-frontend-gtk
+	apt install -y calamares \
+		calamares-settings-ubuntu-common
 
 	# Call into config function
 	customize_image
@@ -218,13 +217,8 @@ insmod all_video
 set default="0"
 set timeout=30
 
-menuentry "Try PrivOS without installing" {
+menuentry "Try or install PrivOS" {
 	linux /casper/vmlinuz boot=casper nopersistent toram apparmor=0 quiet splash ---
-	initrd /casper/initrd
-}
-
-menuentry "Install PrivOS" {
-	linux /casper/vmlinuz boot=casper only-ubiquity quiet splash ---
 	initrd /casper/initrd
 }
 

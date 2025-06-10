@@ -29,9 +29,9 @@ export GRUB_INSTALL_LABEL="Install PrivOS"
 
 # Packages to be removed from the target system after installation completes succesfully
 export TARGET_PACKAGE_REMOVE="
-	ubiquity \
-	ubiquity-casper \
-	ubiquity-frontend-gtk \
+	calamares \
+	calamares-settings-ubuntu-common \
+	calamares-settings-privos \
 	casper \
 	discover \
 	laptop-detect \
@@ -223,6 +223,11 @@ function cleanup() {
 	export HISTSIZE=0
 }
 
+function set_user_umask() {
+	sed -i -E 's/^UMASK\s+022/UMASK 027/g' /etc/login.defs
+	sed -i -E 's/^USERGROUPS_ENAB\s+yes/USERGROUPS_ENAB no/g' /etc/login.defs
+}
+
 # Package customisation function.  Update this function to customize packages
 # present on the installed system.
 function customize_image() {
@@ -243,5 +248,6 @@ function customize_image() {
 	remove_packages
 	branding
 	cleanup
+	set_user_umask
 }
 

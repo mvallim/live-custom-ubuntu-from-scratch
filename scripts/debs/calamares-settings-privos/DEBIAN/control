@@ -1,0 +1,17 @@
+Package: calamares-settings-privos
+Source: calamares-settings-ubuntu
+Version: 1:24.04.40
+Architecture: all
+Maintainer: Lubuntu Developers <lubuntu-devel@lists.ubuntu.com>
+Installed-Size: 43070
+Depends: calamares-settings-ubuntu-common (>= 1:24.04.40)
+Conflicts: calamares-settings-ubuntu-flavor
+Provides: calamares-settings-ubuntu-flavor
+Section: devel
+Priority: optional
+Homepage: https://code.launchpad.net/~ubuntu-qt-code/+git/calamares-settings-ubuntu
+Description: PrivOS Calamares Settings and Branding
+ This package contains the Calamares settings and branding for PrivOS.
+ As part of the branding the installer slideshow is contained within.
+ The settings ensure a proper PrivOS desktop is installed with the
+ KDE Plasma desktop environment.
