@@ -226,6 +226,7 @@ function cleanup() {
 function set_user_umask() {
 	sed -i -E 's/^UMASK\s+022/UMASK 027/g' /etc/login.defs
 	sed -i -E 's/^USERGROUPS_ENAB\s+yes/USERGROUPS_ENAB no/g' /etc/login.defs
+	chmod -R 700 /etc/skel/
 }
 
 # Package customisation function.  Update this function to customize packages
