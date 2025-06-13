@@ -1,0 +1,29 @@
+---
+componentName: privos
+
+windowExpanding:    fullscreen
+
+strings:
+    productName:         PrivOS
+    shortProductName:    PrivOS
+    version:             24.04 LTS
+    shortVersion:        noble
+    versionedName:       PrivOS
+    shortVersionedName:  PrivOS 24.04 LTS
+    bootloaderEntryName: PrivOS
+    productUrl:          https://privos-linux.github.io/
+    supportUrl:          https://privos-linux.github.io/
+
+images:
+    productLogo:         "logo.png"
+    productIcon:         "icon.png"
+    productWelcome:      "welcome.png"
+
+slideshow:               "show.qml"
+
+slideshowAPI:            1
+
+style:
+   SidebarBackground:    "#74808C"
+   SidebarText:          "#FFFFFF"
+   SidebarTextCurrent:   "#0068C8"
