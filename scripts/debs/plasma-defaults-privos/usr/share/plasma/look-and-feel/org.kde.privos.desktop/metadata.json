@@ -1,0 +1,20 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "plasma-devel@kde.org",
+        "Name": "KDE Visual Design Group"
+      }
+    ],
+    "Description": "PrivOS",
+    "Id": "org.kde.privos.desktop",
+    "License": "GPLv2+",
+    "Name": "PrivOS",
+    "ServiceTypes": [
+      "Plasma/LookAndFeel"
+    ],
+    "Version": "2.0",
+    "Website": "https://www.kde.org"
+  },
+  "X-Plasma-MainScript": "defaults"
+}
