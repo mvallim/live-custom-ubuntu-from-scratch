@@ -56,6 +56,7 @@ function chroot_exit_teardown() {
     sudo chroot chroot umount /sys
     sudo chroot chroot umount /dev/pts
     sudo umount chroot/dev
+    sudo fuser -kim chroot/run
     sudo umount chroot/run
 }
 
