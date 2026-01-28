@@ -1,4 +1,23 @@
+[![GitHub stars](https://img.shields.io/github/stars/mvallim/live-custom-ubuntu-from-scratch?style=social)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/mvallim/live-custom-ubuntu-from-scratch?style=social)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/mvallim/live-custom-ubuntu-from-scratch?style=social)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/watchers)
+
 # How to create a custom Ubuntu live from scratch
+
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/graphs/commit-activity)
+[![Project Status](https://img.shields.io/badge/status-active-success.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch)
+[![GitHub last commit](https://img.shields.io/github/last-commit/mvallim/live-custom-ubuntu-from-scratch)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/commits/master)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+[![Ubuntu 18.04 Bionic](https://img.shields.io/badge/Ubuntu-18.04%20Bionic-E95420?logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/18.04/)
+[![Ubuntu 20.04 Focal](https://img.shields.io/badge/Ubuntu-20.04%20Focal-E95420?logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/20.04/)
+[![Ubuntu 22.04 Jammy](https://img.shields.io/badge/Ubuntu-22.04%20Jammy-E95420?logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/22.04/)
+[![Ubuntu 24.04 Noble](https://img.shields.io/badge/Ubuntu-24.04%20Noble-E95420?logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/24.04/)
+
+[![GitHub issues](https://img.shields.io/github/issues/mvallim/live-custom-ubuntu-from-scratch)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/mvallim/live-custom-ubuntu-from-scratch)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/pulls)
+[![Contributors](https://img.shields.io/github/contributors/mvallim/live-custom-ubuntu-from-scratch)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/graphs/contributors)
+[![GitHub release](https://img.shields.io/github/release/mvallim/live-custom-ubuntu-from-scratch)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/releases)
 
 <p align="center">
    <img src="images/live-boot.png">
