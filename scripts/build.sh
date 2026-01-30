@@ -61,7 +61,7 @@ function chroot_kill_proc() {
         if echo $LINK | grep -q ${CHROOT}
         then
             PID=$(basename $(dirname "$ROOT"))
-            KILL_PID $PID
+            kill -9 $PID
         fi
     done
 }
