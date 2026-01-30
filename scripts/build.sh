@@ -51,12 +51,27 @@ function chroot_enter_setup() {
     sudo chroot chroot mount none -t devpts /dev/pts
 }
 
+function chroot_kill_proc() {
+    CHROOT=chroot
+
+    for ROOT in $(find /proc/*/root)
+    do
+        LINK=$(readlink -f $ROOT)
+
+        if echo $LINK | grep -q ${CHROOT}
+        then
+            PID=$(basename $(dirname "$ROOT"))
+            KILL_PID $PID
+        fi
+    done
+}
+
 function chroot_exit_teardown() {
     sudo chroot chroot umount /proc
     sudo chroot chroot umount /sys
     sudo chroot chroot umount /dev/pts
     sudo umount chroot/dev
-    sudo umount -f chroot/run
+    sudo umount chroot/run
 }
 
 function check_host() {
@@ -129,6 +144,7 @@ function run_chroot() {
         sudo rm -f chroot/root/config.sh
     fi
 
+    chroot_kill_proc
     chroot_exit_teardown
 }
 
