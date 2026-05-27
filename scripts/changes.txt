@@ -1,0 +1,159 @@
+Things I have changed from mvallim his version:
+
+--> BUILD.SH:
+
+- Converted all echo commands to fprint. Reason: echo works differently on different shells while fprint the same everywhere.
+
+- Bracketed and double-quoted all variables to avoid globbing and text splitting errors (so $VAR becomes "${VAR}").
+
+- Ran the script through shellcheck and used its suggestions to improve a few other things.
+
+- Converted the #write filesystem info command to 'sudo du -sx --block-size=1 chroot | cut -f1 | sudo tee image/casper/filesystem.size >/dev/null' which is a bit faster and cleaner.
+
+- Converted the parts that kept track of the index in the main loop. The inclusion of $(($...)) here is unnecessary (according to shellcheck and web sources).
+	from: end_index=$(($index+1))
+		  end_index=$(($start_index + 1))
+		  for ((ii=$start_index; ii<$end_index; ii++)); do
+	to:	  ((end_index = index + 1))
+		  ((end_index = start_index + 1))
+		  for ((ii = start_index; ii < end_index; ii++)); do
+
+
+- DATE variable now actually gets used.
+	I discovered the DATE variable was not used anywhere at all. See below for more.
+
+- DATE variable now uses local time.
+ 	This is to make the naming of the iso (see next point) less confusing. With UTC time,
+ 	I get a time that is two hours behind my local time. Now, the iso filename reflects the local time it
+ 	was generated at.
+
+- DATE variable gets used in naming of generated iso.
+  This makes it so that a new iso will not overwrite a previously generated one
+  and also makes versioning easier. Now one can know when an iso was generated right from the filename.
+
+
+- Changed root detection.
+	Now, the script can be run with sudo, but not in a root shell.
+	Root can still run the script with sudo however.
+	The reason to allow the script to be run with sudo is due to sudo timeouts.
+	I (and others too, methinks) would preferably run this script and let it do its thing without having to constantly eye it
+	in case it asks for sudo password again. Sudo can time out, making the script exit and leaving the iso creation process
+	in an unfinished state. Then one would have to re-run the iso creation process again. Squashfs takes a while and it is not
+	fun to have to wait for that process.
+	Hence, I want to run the script with sudo by default so it can keep going and I can do something else in the meanwhile.
+
+
+- Added extra error handling - cleanup after script error.
+	I have added a function error_cleanup(), which will get called when the script exits (due to errors or a ctrl+c for example)
+	This is done by adding a 'trap error_cleanup EXIT' right before the main loop.
+	The error_cleanup() function calls chroot_exit_teardown(), so that eventual mounted directories in chroot
+	get unmounted again. This is to prevent the script from bind-mounting several /dev instances onto chroot/dev,
+	which causes errors in the terminal for the host user.
+
+
+- Improved unmount function.
+	The chroot_exit_teardown() function as it was would cause the script to exit when it could not unmount
+	a directory. This has been fixed now with the addition of a safe_unmount() function.
+	If one directory cannot be unmounted (because of it still being used
+	or because it simply was not mounted) the script will proceed to try and unmount the rest.
+
+- Added a function to run hooks and added a call to that function to run pre-chroot hooks before chrooting.
+
+- In function build_iso:
+	- Fixed up the error of mv not being able to find chroot/image and crashing the script
+	  when re-running build_iso by including a check to see if chroot/image actually exists.
+	- Also included a check to see if ./image actually exists.
+	- Added functionality so one can configure mksquashfs to use either gzip or xz compression.
+		- Using gzip to create a quick test iso is much, much faster.
+
+- Added a fix for when the image directory already exists in script directory.
+	- First, script check if image directory exists in chroot. If so, it deletes image directory in script dir
+		and then moves the new image dir to there.
+
+- Added a variable called "script_stage" which gets set during each part of the live system creation.
+	This gets printed after a succesfull run of a stage of the script.
+
+
+- Also made the script check for the last run stage of the script and made it show a more meaningfull message
+  upon succesfully finishing the last stage.
+
+
+
+--> CHROOT_BUILD.SH
+
+- Converted all echo commands to fprint. Reason: echo works differently on different shells while fprint the same everywhere.
+
+- Bracketed and double-quoted all variables to avoid globbing and text splitting errors (so $VAR becomes "${VAR}").
+
+- Ran the script through shellcheck and used its suggestions to improve a few other things.
+
+- Converted the parts that kept track of the index in the main loop. The inclusion of $(($...)) here is unnecessary (according to shellcheck and web sources).
+	from: end_index=$(($index+1))
+		  end_index=$(($start_index + 1))
+		  for ((ii=$start_index; ii<$end_index; ii++)); do
+	to:	  ((end_index = index + 1))
+		  ((end_index = start_index + 1))
+		  for ((ii = start_index; ii < end_index; ii++)); do
+
+
+In function setup_host:
+	- changed 'ln -s /bin/true /sbin/initctl' to 'ln -fs /bin/true /sbin/initctl'
+		This is to ensure that /sbin/initctl will get linked again. Without the -f flag,
+		the script will quit when /sbin/initcl already exists.
+
+
+In function install_pkg:
+	- Replaced 'wireless-tools' with 'iw'.
+		Wireless-tools package is no longer available and has been superseded by iw.
+
+	- Added a method to allow automatic locales + keyboard-configuration + console charset setup.
+		One can configure these things to be configured automatically in config.sh.
+		Settings for locales, keyboard and console are then also used from config.sh.
+		This allows the build script to run fully unattended.
+
+	- Removed 'dpkg-reconfigure locales' at the end of the function because it is unnecessary.
+	  Locales get configured at the start of the install_pkg function now and will either invoke the manual configuration screen
+	  or will be automatically configured, depending on user config.
+
+	- Added configuration for netplan.io. Without it, my isos would start and leave me without any network connection.
+		Apparently, the default 01-network-manager-all.yaml in /etc/netplan/ does not get created automatically upon install of netplan.io.
+		It was there on a vanilla ubuntu live iso so I copied the contents and now networking stuff stuff works again.
+
+	- Removed Network-Manager config. It is unnecessary to create, the default config that gets installed by the package works.
+		That default config is also used in the vanilla ubuntu live isos.
+
+
+In function build_image():
+	- Made the creation of isolinux/grub.cfg use the 'GRUB_LIVEBOOT_LABEL' and 'GRUB_INSTALL_LABEL' config settings
+	  as defined in config.sh
+	- Temporarely removed the install option until I figure out how to set that up so users can start install from grub menu, like
+	  on the official isos.
+
+- Added a function to run hooks and added a call to that function to run chroot hooks during chroot.
+	- Also moved the installed packages lists (default packages, bootloader, grub etc) to chroot hook scripts.
+	- Removed the customize_image function from config.sh and moved it to a chroot hook script.
+		- Reason: Now users can update the package lists without having to edit the chroot_build.sh script.
+	- Changed graphical installer from ubiquity to calamares.
+
+
+- Added a variable called "script_stage" which gets set during each part of the live system creation.
+	This gets printed after a succesfull run of a stage of the script.
+
+
+- Also made the script check for the last run stage of the script and made it show a more meaningfull message
+  upon succesfully finishing the last stage.
+
+
+
+--> DEFAULT_CONFIG.SH
+- Added extra config options to allow for automated locales, keyboard and console charset setup.
+- Added extra config option to configure mksquashfs compression type.
+- Moved the customize_image function to chroot hook script.
+- Moved the TARGET_PACKAGES_REMOVE export to hook script.
+
+
+
+--> README.MD
+- Added some more explanation to the config section.
+- Added a temporary explanation about how to use hook scripts.
+
