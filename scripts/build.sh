@@ -43,6 +43,11 @@ function find_index() {
     help "Command not found : $1"
 }
 
+function chroot_enter_debug() {
+      sudo chroot chroot
+}
+export -f chroot_enter_debug
+
 function chroot_enter_setup() {
     sudo mount --bind /dev chroot/dev
     sudo mount --bind /run chroot/run
@@ -50,14 +55,16 @@ function chroot_enter_setup() {
     sudo chroot chroot mount none -t sysfs /sys
     sudo chroot chroot mount none -t devpts /dev/pts
 }
+export -f chroot_enter_setup
 
 function chroot_exit_teardown() {
-    sudo chroot chroot umount -l /proc
     sudo chroot chroot umount -l /sys
     sudo chroot chroot umount -l /dev/pts
+    sudo chroot chroot umount -l /proc
     sudo umount -l chroot/dev
     sudo umount -l chroot/run
 }
+export -f chroot_exit_teardown
 
 function check_host() {
     local os_ver
