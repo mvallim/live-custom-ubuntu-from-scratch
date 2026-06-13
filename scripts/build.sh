@@ -112,6 +112,14 @@ function run_chroot() {
 
     chroot_enter_setup
 
+    # If there is an unexpected stop or error, you need to unmount the chroot. If you clear the ./script/chroot directory and umount chroot dirs, then only a reboot will help.
+    # ERR=script error, INT=Ctrl+C, TERM=kill, HUP=hangup, QUIT=quit
+    trap chroot_exit_teardown ERR
+    trap chroot_exit_teardown SIGINT
+    trap chroot_exit_teardown SIGTERM
+    trap chroot_exit_teardown SIGHUP
+    trap chroot_exit_teardown SIGQUIT
+
     # Setup build scripts in chroot environment
     sudo ln -f $SCRIPT_DIR/chroot_build.sh chroot/root/chroot_build.sh
     sudo ln -f $SCRIPT_DIR/default_config.sh chroot/root/default_config.sh
