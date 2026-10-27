@@ -52,11 +52,11 @@ function chroot_enter_setup() {
 }
 
 function chroot_exit_teardown() {
-    sudo chroot chroot umount -l /proc
-    sudo chroot chroot umount -l /sys
-    sudo chroot chroot umount -l /dev/pts
-    sudo umount -l chroot/dev
-    sudo umount -l chroot/run
+    sudo chroot chroot umount -l /proc || true
+    sudo chroot chroot umount -l /sys || true
+    sudo chroot chroot umount -l /dev/pts || true
+    sudo umount -l chroot/dev || true
+    sudo umount -l chroot/run || true
 }
 
 function check_host() {
